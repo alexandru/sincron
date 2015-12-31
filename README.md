@@ -9,7 +9,7 @@ Low level primitives and building blocks for Scala and Scala.js
 [![Build Status](https://travis-ci.org/monifu/asterix.png?branch=master)](https://travis-ci.org/monifu/asterix)
 [![Coverage Status](https://coveralls.io/repos/monifu/asterix/badge.svg?branch=master&service=github)](https://coveralls.io/github/monifu/asterix?branch=master)
 [![License](http://img.shields.io/:license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11/badge.png)](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/monifu/monix?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 

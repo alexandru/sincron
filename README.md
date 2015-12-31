@@ -1,6 +1,6 @@
-# Asterix
+<img src="https://raw.githubusercontent.com/monifu/asterix/8cf94d21a26e6a42d85c23dcfbc5f38b7f2d4454/logo.png" align="right" width="200" />
 
-<img src="https://raw.githubusercontent.com/monifu/asterix/8cf94d21a26e6a42d85c23dcfbc5f38b7f2d4454/logo.png" align="right" width="280" />
+# Asterix
 
 Low-level concurrency primitives for Scala and Scala.js
 
@@ -18,13 +18,17 @@ helping with cross compiled code.
 
 ### Atomic References (asterix-atomic)
 
-Usafe for the JVM:
+See [Atomic References](https://github.com/monifu/asterix/wiki/Atomic-References)
+in the Wiki.
+
+Dependency for the JVM:
 
 ```scala
 libraryDependencies += "org.monifu" %% "asterix-atomic" % "0.1"
 ```
 
-For Scala.js / Javascript:
+For [Scala.js](https://github.com/monifu/asterix/wiki/Atomic-References)
+/ Javascript or for cross-compiled projects:
 
 ```scala
 libraryDependencies += "org.monix" %%% "asterix-atomic" % "0.1"

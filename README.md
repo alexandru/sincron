@@ -2,7 +2,9 @@
 
 <img src="https://raw.githubusercontent.com/monifu/asterix/8cf94d21a26e6a42d85c23dcfbc5f38b7f2d4454/logo.png" align="right" width="200" />
 
-Low-level concurrency primitives for Scala and Scala.js
+Low level primitives and building blocks for Scala and Scala.js
+
+> "Ils sont fous ces Romains!" -- Asterix the Gaul
 
 [![Build Status](https://travis-ci.org/monifu/asterix.png?branch=master)](https://travis-ci.org/monifu/asterix)
 [![Coverage Status](https://coveralls.io/repos/monifu/asterix/badge.svg?branch=master&service=github)](https://coveralls.io/github/monifu/asterix?branch=master)
@@ -31,7 +33,7 @@ For [Scala.js](https://github.com/monifu/asterix/wiki/Atomic-References)
 / Javascript or for cross-compiled projects:
 
 ```scala
-libraryDependencies += "org.monix" %%% "asterix-atomic" % "0.1"
+libraryDependencies += "org.monifu" %%% "asterix-atomic" % "0.1"
 ```
 
 ## Maintainers

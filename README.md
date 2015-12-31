@@ -1,5 +1,7 @@
 # Asterix
 
+<img src="https://raw.githubusercontent.com/monifu/asterix/8cf94d21a26e6a42d85c23dcfbc5f38b7f2d4454/logo.png" align="right" width="280" />
+
 Low-level concurrency primitives for Scala and Scala.js
 
 [![Build Status](https://travis-ci.org/monifu/asterix.png?branch=master)](https://travis-ci.org/monifu/asterix)

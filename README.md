@@ -8,6 +8,26 @@ Low-level concurrency primitives for Scala and Scala.js
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/monifu/monix?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Usage
+
+Asterix is being split in small and reusable packages. Some will provide
+a Scala.js / Javascript compatible implementation (within reason) for
+helping with cross compiled code.
+
+### Atomic References (asterix-atomic)
+
+Usafe for the JVM:
+
+```scala
+libraryDependencies += "org.monifu" %% "asterix-atomic" % "0.1"
+```
+
+For Scala.js / Javascript:
+
+```scala
+libraryDependencies += "org.monix" %%% "asterix-atomic" % "0.1"
+```
+
 ## Maintainers
 
 The current maintainers (people who can help you) are:

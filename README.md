@@ -6,7 +6,7 @@ Low level primitives and building blocks for Scala and Scala.js
 
 > "Ils sont fous ces Romains!" -- Asterix the Gaul
 
-[![Build Status](https://travis-ci.org/monifu/asterix.png?branch=master)](https://travis-ci.org/monifu/asterix)
+[![Build Status](https://travis-ci.org/monifu/asterix.svg?branch=master)](https://travis-ci.org/monifu/asterix)
 [![Coverage Status](https://coveralls.io/repos/monifu/asterix/badge.svg?branch=master&service=github)](https://coveralls.io/github/monifu/asterix?branch=master)
 [![License](http://img.shields.io/:license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11)

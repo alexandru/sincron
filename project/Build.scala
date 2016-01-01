@@ -23,7 +23,7 @@ import sbt.{Build => SbtBuild, _}
 import sbtrelease.ReleasePlugin.autoImport._
 import sbtunidoc.Plugin._
 import sbtunidoc.Plugin.UnidocKeys._
-import scoverage.ScoverageSbtPlugin.ScoverageKeys._
+import scoverage.ScoverageSbtPlugin.autoImport._
 
 object Build extends SbtBuild {
   val doNotPublishArtifact = Seq(
@@ -155,9 +155,8 @@ object Build extends SbtBuild {
   )
 
   val crossSettings = sharedSettings ++ Seq(
-    libraryDependencies <+= scalaVersion("org.scala-lang" % "scala-reflect" % _ % "compile"),
-    unmanagedSourceDirectories in Compile <+= baseDirectory(_ / ".." / "shared" / "src" / "main" / "scala"),
-    unmanagedSourceDirectories in Test <+= baseDirectory(_ / ".." / "shared" / "src" / "test" / "scala")
+    unmanagedSourceDirectories in Compile <+= baseDirectory(_.getParentFile / "shared" / "src" / "main" / "scala"),
+    unmanagedSourceDirectories in Test <+= baseDirectory(_.getParentFile / "shared" / "src" / "test" / "scala")
   )
 
   lazy val asterix = project.in(file("."))

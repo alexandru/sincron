@@ -2,13 +2,13 @@
 
 <img src="https://raw.githubusercontent.com/monifu/asterix/8cf94d21a26e6a42d85c23dcfbc5f38b7f2d4454/logo.png" align="right" width="200" />
 
-Low level concurrency primitives for Scala, with equivalents or 
+Low level concurrency primitives for Scala, with equivalents or
 shims for Scala.js for source-level compatibility, where possible.
 
 > "Ils sont fous ces Romains!" -- Asterix the Gaul
 
 [![Build Status](https://travis-ci.org/monifu/asterix.svg?branch=master)](https://travis-ci.org/monifu/asterix)
-[![Coverage Status](https://coveralls.io/repos/monifu/asterix/badge.svg?branch=master&service=github)](https://coveralls.io/github/monifu/asterix?branch=master)
+[![Coverage Status](https://codecov.io/github/monifu/asterix/coverage.svg?branch=master)](https://codecov.io/github/monifu/asterix?branch=master)
 [![License](http://img.shields.io/:license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11)
 

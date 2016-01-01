@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014-2015 by its authors. Some rights reserved.
- * See the project's home at: https://github.com/monifu/asterix
+ * Copyright (c) 2014-2016 by its authors. Some rights reserved.
+ * See the project homepage at: https://github.com/monifu/asterix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,18 @@ trait Atomic[T] extends Any {
    * @param update will be the new value returned by `get()`
    */
   def set(update: T): Unit
+
+  /**
+   * Alias for `set()`. Updates the current value.
+   * @param value will be the new value returned by `get()`
+   */
+  def update(value: T): Unit
+
+  /**
+   * Alias for `set()`. Updates the current value.
+   * @param value will be the new value returned by `get()`
+   */
+  def `:=`(value: T): Unit
 
   /**
    * Does a compare-and-set operation on the current value. For more info, checkout the related

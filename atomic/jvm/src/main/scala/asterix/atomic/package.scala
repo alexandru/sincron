@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014-2015 by its authors. Some rights reserved.
- * See the project's home at: https://github.com/monifu/asterix
+ * Copyright (c) 2014-2016 by its authors. Some rights reserved.
+ * See the project homepage at: https://github.com/monifu/asterix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package asterix
 
 import scala.concurrent.TimeoutException
@@ -53,11 +53,11 @@ import scala.concurrent.TimeoutException
  * (`incrementAndGet`, `getAndAdd`, etc...).
  *
  * A high-level documentation describing the rationale for these can be found here:
- * [[https://github.com/alexandru/monix/blob/master/docs/atomic.md Atomic Reference]]
+ * [[https://github.com/alexandru/monifu/blob/master/docs/atomic.md Atomic Reference]]
  */
 package object atomic {
   /**
-   * For private use only by the `monix` package.
+   * For private use only by the `monifu` package.
    *
    * Checks if the current thread has been interrupted, throwing
    * an `InterruptedException` in case it is.
@@ -68,7 +68,7 @@ package object atomic {
   }
 
   /**
-   * For private use only by the `monix` package.
+   * For private use only by the `monifu` package.
    *
    * Checks if the timeout is due, throwing a `TimeoutException` in case it is.
    */

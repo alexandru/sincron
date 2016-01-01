@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014-2015 by its authors. Some rights reserved.
- * See the project's home at: https://github.com/monifu/asterix
+ * Copyright (c) 2014-2016 by its authors. Some rights reserved.
+ * See the project homepage at: https://github.com/monifu/asterix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,10 +34,10 @@ private[padded] final class PaddedJavaAtomicLong(value: Long)
   extends JavaAtomicLong(value) {
 
   @volatile
-  var p1, p2, p3, p4, p5, p6 = 7L
+  var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15 = 10L
 
   def `$sum$` = {
-    p1 + p2 + p3 + p4 + p5 + p6
+    p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11 + p12 + p13 + p14 + p15
   }
 }
 
@@ -48,10 +48,10 @@ private[padded] final class PaddedJavaAtomicInteger(value: Int)
   extends JavaAtomicInteger(value) {
 
   @volatile
-  var p1, p2, p3, p4, p5, p6 = 7L
+  var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15 = 10L
 
   def `$sum$` = {
-    p1 + p2 + p3 + p4 + p5 + p6 
+    p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11 + p12 + p13 + p14 + p15
   }
 }
 
@@ -62,10 +62,10 @@ private[padded] final class PaddedJavaAtomicBoolean(value: Boolean)
   extends JavaAtomicBoolean(value) {
 
   @volatile
-  var p1, p2, p3, p4, p5, p6 = 7L
+  var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15 = 10L
 
   def `$sum$` = {
-    p1 + p2 + p3 + p4 + p5 + p6
+    p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11 + p12 + p13 + p14 + p15
   }
 }
 
@@ -76,16 +76,16 @@ private[padded] final class PaddedJavaAtomicReference[T](value: T)
   extends JavaAtomicReference[T](value) {
 
   @volatile
-  var p1, p2, p3, p4, p5, p6 = 7L
+  var p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15 = 10L
 
   def `$sum$` = {
-    p1 + p2 + p3 + p4 + p5 + p6
+    p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10 + p11 + p12 + p13 + p14 + p15
   }
 }
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.Atomic Atomic]] references.
+ * [[monifu.concurrent.atomic.Atomic Atomic]] references.
  */
 object Atomic {
   /**
@@ -109,7 +109,7 @@ object Atomic {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicAny AtomicAny]] references.
+ * [[monifu.concurrent.atomic.AtomicAny AtomicAny]] references.
  */
 object AtomicAny {
   def apply[T](initialValue: T): AtomicAny[T] =
@@ -118,7 +118,7 @@ object AtomicAny {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicBoolean AtomicBoolean]] references.
+ * [[monifu.concurrent.atomic.AtomicBoolean AtomicBoolean]] references.
  */
 object AtomicBoolean {
   def apply(initialValue: Boolean): AtomicBoolean =
@@ -127,7 +127,7 @@ object AtomicBoolean {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicByte AtomicByte]] references.
+ * [[monifu.concurrent.atomic.AtomicByte AtomicByte]] references.
  */
 object AtomicByte {
   def apply(initialValue: Byte): AtomicByte =
@@ -136,7 +136,7 @@ object AtomicByte {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicChar AtomicChar]] references.
+ * [[monifu.concurrent.atomic.AtomicChar AtomicChar]] references.
  */
 object AtomicChar {
   def apply(initialValue: Char): AtomicChar =
@@ -145,7 +145,7 @@ object AtomicChar {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicDouble AtomicDouble]] references.
+ * [[monifu.concurrent.atomic.AtomicDouble AtomicDouble]] references.
  */
 object AtomicDouble {
   def apply(initialValue: Double): AtomicDouble =
@@ -154,7 +154,7 @@ object AtomicDouble {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicFloat AtomicFloat]] references.
+ * [[monifu.concurrent.atomic.AtomicFloat AtomicFloat]] references.
  */
 object AtomicFloat {
   def apply(initialValue: Float): AtomicFloat =
@@ -163,7 +163,7 @@ object AtomicFloat {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicInt AtomicInt]] references.
+ * [[monifu.concurrent.atomic.AtomicInt AtomicInt]] references.
  */
 object AtomicInt {
   def apply(initialValue: Int): AtomicInt =
@@ -172,7 +172,7 @@ object AtomicInt {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicLong AtomicLong]] references.
+ * [[monifu.concurrent.atomic.AtomicLong AtomicLong]] references.
  */
 object AtomicLong {
   def apply(initialValue: Long): AtomicLong =
@@ -181,7 +181,7 @@ object AtomicLong {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicNumberAny AtomicNumberAny]] references.
+ * [[monifu.concurrent.atomic.AtomicNumberAny AtomicNumberAny]] references.
  */
 object AtomicNumberAny {
   def apply[T : Numeric](initialValue: T): AtomicNumberAny[T] =
@@ -190,7 +190,7 @@ object AtomicNumberAny {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[asterix.atomic.AtomicShort AtomicShort]] references.
+ * [[monifu.concurrent.atomic.AtomicShort AtomicShort]] references.
  */
 object AtomicShort {
   def apply(initialValue: Short): AtomicShort =

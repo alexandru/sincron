@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014-2015 by its authors. Some rights reserved.
- * See the project's home at: https://github.com/monifu/asterix
+ * Copyright (c) 2014-2016 by its authors. Some rights reserved.
+ * See the project homepage at: https://github.com/monifu/asterix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package asterix.atomic
 
 import minitest.SimpleTestSuite
 import scala.concurrent.{Await, Future}
-import concurrent.duration._
+import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import java.util.concurrent.{TimeUnit, CountDownLatch}
 
-abstract class ConcurrentAtomicNumberSuite[T, R <: AtomicNumber[T]]
+abstract class ConcurrentAtomicNumberSuite[T, R <: AtomicNumber[T] with BlockableAtomic[T]]
   (name: String, builder: AtomicBuilder[T, R],
    value: T, nan1: Option[T], maxValue: T, minValue: T)(implicit ev: Numeric[T])
   extends SimpleTestSuite {
@@ -53,6 +53,18 @@ abstract class ConcurrentAtomicNumberSuite[T, R <: AtomicNumber[T]]
     val f = Future.sequence(futures)
     Await.result(f, 1.second)
     assert(r.get == ev.fromInt(100))
+  }
+
+  test("should waitForCompareAndSet") {
+    val r = Atomic(ev.one)
+    val start = new CountDownLatch(1)
+    val done = new CountDownLatch(1)
+    Future { start.countDown(); r.waitForCompareAndSet(ev.zero, ev.one); done.countDown() }
+
+    start.await(1, TimeUnit.SECONDS)
+    assert(done.getCount == 1)
+    r.set(ev.zero)
+    done.await(1, TimeUnit.SECONDS)
   }
 }
 

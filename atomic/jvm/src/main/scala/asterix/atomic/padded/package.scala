@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014-2015 by its authors. Some rights reserved.
- * See the project's home at: https://github.com/monifu/asterix
+ * Copyright (c) 2014-2016 by its authors. Some rights reserved.
+ * See the project homepage at: https://github.com/monifu/asterix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ package object padded {
   type AtomicFloat = atomic.AtomicFloat
   type AtomicNumber[T] = atomic.AtomicNumber[T]
   type AtomicNumberAny[T] = atomic.AtomicNumberAny[T]
+  type BlockableAtomic[T] = atomic.BlockableAtomic[T]
 
   /**
    * Constructs an `Atomic[T]` reference. Based on the `initialValue`, it will return the best, most specific

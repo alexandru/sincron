@@ -24,7 +24,6 @@ import sbtrelease.ReleasePlugin.autoImport._
 import sbtunidoc.Plugin._
 import sbtunidoc.Plugin.UnidocKeys._
 import scoverage.ScoverageSbtPlugin.ScoverageKeys._
-import scoverage.ScoverageSbtPlugin
 
 object Build extends SbtBuild {
   val doNotPublishArtifact = Seq(

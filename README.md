@@ -2,7 +2,8 @@
 
 <img src="https://raw.githubusercontent.com/monifu/asterix/8cf94d21a26e6a42d85c23dcfbc5f38b7f2d4454/logo.png" align="right" width="200" />
 
-Low level primitives and building blocks for Scala and Scala.js
+Low level concurrency primitives for Scala, with equivalents or 
+shims for Scala.js for source-level compatibility, where possible.
 
 > "Ils sont fous ces Romains!" -- Asterix the Gaul
 

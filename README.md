@@ -18,8 +18,7 @@ The name `scalax` mirrors the `javax` package for Java and in
 
 ## Documentation
 
-- API Documentation: [current](https://scalax.org/api/current/) /   
-  [0.3](https://scalax.org/api/0.3/)
+- API Documentation: [current](https://scalax.org/api/current/) ([0.3](https://scalax.org/api/0.3/))
 - [Atomic References](https://github.com/monifu/scalax/wiki/Atomic-References) (wiki document)
 - [Cancelable](https://github.com/monifu/scalax/wiki/Cancelable) (wiki document)
 - [Scheduler](https://github.com/monifu/scalax/wiki/Scheduler) (wiki document)

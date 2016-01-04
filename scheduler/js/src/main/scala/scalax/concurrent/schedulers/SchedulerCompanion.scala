@@ -3,7 +3,7 @@ package scalax.concurrent.schedulers
 import scalax.concurrent.{Scheduler, UncaughtExceptionReporter}
 import scalax.concurrent.UncaughtExceptionReporter.LogExceptionsToStandardErr
 
-private[schedulers] abstract class SchedulerCompanion {
+private[concurrent] abstract class SchedulerCompanion {
   /**
     * [[Scheduler]] builder.
     *

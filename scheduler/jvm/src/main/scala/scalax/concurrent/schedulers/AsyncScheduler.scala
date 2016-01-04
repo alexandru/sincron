@@ -46,7 +46,7 @@ private[schedulers] final class AsyncScheduler private
     r.reportFailure(t)
 }
 
-object AsyncScheduler {
+private[schedulers] object AsyncScheduler {
   def apply(schedulerService: ScheduledExecutorService,
     ec: ExecutionContext, reporter: UncaughtExceptionReporter): AsyncScheduler =
     new AsyncScheduler(schedulerService, ec, reporter)

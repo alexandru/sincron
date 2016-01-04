@@ -9,7 +9,7 @@ import scalax.concurrent.{Cancelable, UncaughtExceptionReporter}
   * the given `ScheduledExecutorService` and the tasks themselves are
   * executed on the given `ExecutionContext`.
   */
-final class AsyncScheduler private (reporter: UncaughtExceptionReporter)
+private[schedulers] final class AsyncScheduler private (reporter: UncaughtExceptionReporter)
   extends ReferenceScheduler {
 
   override def scheduleOnce(r: Runnable): Cancelable = {
@@ -35,7 +35,7 @@ final class AsyncScheduler private (reporter: UncaughtExceptionReporter)
     reporter.reportFailure(t)
 }
 
-object AsyncScheduler {
+private[schedulers] object AsyncScheduler {
   def apply(reporter: UncaughtExceptionReporter): AsyncScheduler =
     new AsyncScheduler(reporter)
 }

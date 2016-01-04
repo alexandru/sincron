@@ -58,7 +58,7 @@ libraryDependencies += "org.monifu" %%% "scalax-cancelable" % "0.3"
 
 ### Scheduler (scalax-scheduler)
 
-See [Scheduler](https://github.com/monifu/monix/wiki/Scheduler)
+See [Scheduler](https://github.com/monifu/scalax/wiki/Scheduler)
 in the Wiki.
 
 Dependency for the JVM:

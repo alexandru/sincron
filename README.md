@@ -41,6 +41,9 @@ libraryDependencies += "org.monifu" %%% "scalax-atomic" % "0.3"
 
 ### Cancelable (scalax-cancelable)
 
+See [Cancelable](https://github.com/monifu/monix/wiki/Cancelable)
+in the Wiki.
+
 Dependency for the JVM:
 
 ```scala
@@ -54,6 +57,9 @@ libraryDependencies += "org.monifu" %%% "scalax-cancelable" % "0.3"
 ```
 
 ### Scheduler (scalax-scheduler)
+
+See [Scheduler](https://github.com/monifu/monix/wiki/Scheduler)
+in the Wiki.
 
 Dependency for the JVM:
 

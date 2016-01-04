@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Scalax : The missing Scala standard library">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Scalax</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/monifu/scalax">View on GitHub</a>
+
+          <h1 id="project_title">Scalax</h1>
+          <h2 id="project_tagline">The missing Scala standard library</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/monifu/scalax/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/monifu/scalax/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="scalax" class="anchor" href="#scalax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scalax</h1>
+
+<p>The missing Scala standard library. The purpose of Scalax is to
+build missing interfaces and functionalities that should be standard
+and to (hopefully) push these as <a href="https://github.com/scala/slip">SLIPs</a>.</p>
+
+<p>The name <code>scalax</code> mirrors the <code>javax</code> package for Java and in
+<code>javax</code> that's where extensions to an existing JRE go.</p>
+
+<p><a href="https://travis-ci.org/monifu/scalax"><img src="https://travis-ci.org/monifu/scalax.svg?branch=master" alt="Build Status"></a>
+<a href="https://codecov.io/github/monifu/scalax?branch=master"><img src="https://codecov.io/github/monifu/scalax/coverage.svg?branch=master" alt="Coverage Status"></a>
+<a href="https://opensource.org/licenses/BSD-3-Clause"><img src="https://img.shields.io/badge/license-BSD%203--Clause-blue.svg" alt="License"></a>
+<a href="https://maven-badges.herokuapp.com/maven-central/org.monifu/scalax_2.11"><img src="https://maven-badges.herokuapp.com/maven-central/org.monifu/scalax_2.11/badge.svg" alt="Maven Central"></a></p>
+
+<p><a href="https://gitter.im/monifu/monix?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter"></a></p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Scalax is being split in small and reusable packages. Some will provide
+a Scala.js / Javascript compatible implementation (within reason) for
+helping with cross compiled code.</p>
+
+<h3>
+<a id="atomic-references-scalax-atomic" class="anchor" href="#atomic-references-scalax-atomic" aria-hidden="true"><span class="octicon octicon-link"></span></a>Atomic References (scalax-atomic)</h3>
+
+<p>See <a href="https://github.com/monifu/scalax/wiki/Atomic-References">Atomic References</a>
+in the Wiki.</p>
+
+<p>Dependency for the JVM:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-atomic<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-atomic<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<h3>
+<a id="cancelable-scalax-cancelable" class="anchor" href="#cancelable-scalax-cancelable" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cancelable (scalax-cancelable)</h3>
+
+<p>See <a href="https://github.com/monifu/scalax/wiki/Cancelable">Cancelable</a>
+in the Wiki.</p>
+
+<p>Dependency for the JVM:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-cancelable<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-cancelable<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<h3>
+<a id="scheduler-scalax-scheduler" class="anchor" href="#scheduler-scalax-scheduler" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scheduler (scalax-scheduler)</h3>
+
+<p>See <a href="https://github.com/monifu/scalax/wiki/Scheduler">Scheduler</a>
+in the Wiki.</p>
+
+<p>Dependency for the JVM:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-cancelable<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-cancelable<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<h3>
+<a id="future-utils-scalax-future" class="anchor" href="#future-utils-scalax-future" aria-hidden="true"><span class="octicon octicon-link"></span></a>Future Utils (scalax-future)</h3>
+
+<p>Dependency for the JVM:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-future<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-future<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<h3>
+<a id="everything-scalax" class="anchor" href="#everything-scalax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Everything (scalax)</h3>
+
+<p>Dependency for the JVM:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
+
+<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+
+<h2>
+<a id="maintainers" class="anchor" href="#maintainers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maintainers</h2>
+
+<p>The current maintainers (people who can help you) are:</p>
+
+<ul>
+<li>Alexandru Nedelcu (<a href="https://github.com/alexandru">@alexandru</a>)</li>
+<li>Andrei Oprisan (<a href="https://github.com/aoprisan">@aoprisan</a>)</li>
+</ul>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>The Scalax project welcomes contributions from anybody wishing to
+participate.  All code or documentation that is provided must be
+licensed with the same license that Scalax is licensed with
+(see LICENSE.txt) and to sign Scala's Contributor License
+Agreement (see the <a href="CONTRIBUTING.md">contributor guide</a> for details).</p>
+
+<p>People are expected to follow the
+<a href="http://typelevel.org/conduct.html">Typelevel Code of Conduct</a> when
+discussing Scalax on the Github page, Gitter channel, or other venues.</p>
+
+<p>We hope that our community will be respectful, helpful, and kind. If
+you find yourself embroiled in a situation that becomes heated, or
+that fails to live up to our expectations, you should disengage and
+contact one of the project maintainers in private. We hope to avoid
+letting minor aggressions and misunderstandings escalate into larger
+problems.</p>
+
+<p>Feel free to open an issue if you notice a bug, have an idea for a
+feature, or have a question about the code. Pull requests are also
+gladly accepted. For more information, check out the
+<a href="CONTRIBUTING.md">contributor guide</a>.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>All code in this repository is licensed under the BSD 3-Clause license.
+See <a href="./LICENSE.txt">LICENCE.txt</a>.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Scalax maintained by <a href="https://github.com/monifu">monifu</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>

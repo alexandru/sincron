@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014-2015 by its authors. Some rights reserved.
- * See the project's home at: https://github.com/monifu/scalax
+ * Copyright (c) 2016 by its authors. Some rights reserved.
+ * See the project's homepage at: https://github.com/monifu/scalax
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -160,13 +160,16 @@ object Build extends SbtBuild {
   )
 
   lazy val scalax = project.in(file("."))
-    .aggregate(scalaxAtomicJVM, scalaxAtomicJS, scalaxJVM, scalaxJS)
+    .aggregate(
+      scalaxAtomicJVM, scalaxAtomicJS,
+      scalaxCancelableJVM, scalaxCancelableJS,
+      scalaxJVM, scalaxJS)
     .settings(unidocSettings: _*)
     .settings(sharedSettings: _*)
     .settings(doNotPublishArtifact: _*)
     .settings(
       unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject --
-        inProjects(scalaxAtomicJS, scalaxJS, scalaxJVM)
+        inProjects(scalaxAtomicJS, scalaxCancelableJS, scalaxJS, scalaxJVM)
     )
 
   lazy val scalaxAtomicJVM = project.in(file("atomic/jvm"))
@@ -181,16 +184,30 @@ object Build extends SbtBuild {
       scalaJSStage in Test := FastOptStage,
       coverageExcludedFiles := ".*")
 
+  lazy val scalaxCancelableJVM = project.in(file("cancelable/jvm"))
+    .dependsOn(scalaxAtomicJVM)
+    .settings(crossSettings: _*)
+    .settings(name := "scalax-cancelable")
+
+  lazy val scalaxCancelableJS = project.in(file("cancelable/js"))
+    .dependsOn(scalaxAtomicJS)
+    .settings(crossSettings: _*)
+    .enablePlugins(ScalaJSPlugin)
+    .settings(
+      name := "scalax-cancelable",
+      scalaJSStage in Test := FastOptStage,
+      coverageExcludedFiles := ".*")
+
   lazy val scalaxJVM = project.in(file("scalax/jvm"))
     .settings(crossSettings: _*)
-    .aggregate(scalaxAtomicJVM)
-    .dependsOn(scalaxAtomicJVM)
+    .aggregate(scalaxAtomicJVM, scalaxCancelableJVM)
+    .dependsOn(scalaxAtomicJVM, scalaxCancelableJVM)
     .settings(name := "scalax")
 
   lazy val scalaxJS = project.in(file("scalax/js"))
     .settings(crossSettings: _*)
     .enablePlugins(ScalaJSPlugin)
-    .aggregate(scalaxAtomicJS)
-    .dependsOn(scalaxAtomicJS)
+    .aggregate(scalaxAtomicJS, scalaxCancelableJS)
+    .dependsOn(scalaxAtomicJS, scalaxCancelableJS)
     .settings(name := "scalax")
 }

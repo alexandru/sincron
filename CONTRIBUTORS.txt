@@ -1,0 +1,18 @@
+Copyright Statement for Contributions to the Scalax Project
+===========================================================
+
+I hereby represent that all present, past and future contributions I
+make to the Scalax project are governed by the Apache License 2.0
+copyright statement and that for any of my contributions to the Scalax
+repository I have agreed and signed Scala's Individual Contributor
+License Agreement available at:
+https://www.typesafe.com/contribute/cla/scala
+
+I also represent that I have the authority to grant such rights with
+respect to the entirety of my contributions.
+
+Underwriting parties:
+
+GitHub name    | Real Name, Company
+---------------+-----------------------------------
+alexandru      | Alexandru Nedelcu, Eloquentix Inc.

@@ -67,6 +67,34 @@ For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled proj
 libraryDependencies += "org.monifu" %%% "scalax-cancelable" % "0.3"
 ```
 
+### Future Utils (scalax-future)
+
+Dependency for the JVM:
+
+```scala
+libraryDependencies += "org.monifu" %% "scalax-future" % "0.3"
+```
+
+For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
+
+```scala
+libraryDependencies += "org.monifu" %%% "scalax-future" % "0.3"
+```
+
+### Everything (scalax)
+
+Dependency for the JVM:
+
+```scala
+libraryDependencies += "org.monifu" %% "scalax" % "0.3"
+```
+
+For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
+
+```scala
+libraryDependencies += "org.monifu" %%% "scalax" % "0.3"
+```
+
 ## Maintainers
 
 The current maintainers (people who can help you) are:

@@ -42,7 +42,7 @@ libraryDependencies += "org.monifu" %% "scalax-cancelable" % "0.3"
 libraryDependencies += "org.monifu" %% "scalax-scheduler" % "0.3"
 
 // Future Utils
-libraryDependencies += "org.monifu" %% "scalax-Future" % "0.3"
+libraryDependencies += "org.monifu" %% "scalax-future" % "0.3"
 
 // Everything
 libraryDependencies += "org.monifu" %% "scalax" % "0.3"

@@ -16,89 +16,37 @@ The name `scalax` mirrors the `javax` package for Java and in
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/monifu/monix?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Documentation
+
+- API Documentation: [current](https://scalax.org/api/current/) /   
+  [0.3](https://scalax.org/api/0.3/)
+- [Atomic References](https://github.com/monifu/scalax/wiki/Atomic-References) (wiki document)
+- [Cancelable](https://github.com/monifu/scalax/wiki/Cancelable) (wiki document)
+- [Scheduler](https://github.com/monifu/scalax/wiki/Scheduler) (wiki document)
+
 ## Usage
 
-Scalax is being split in small and reusable packages. Some will provide
-a Scala.js / Javascript compatible implementation (within reason) for
-helping with cross compiled code.
+Scalax is being split in small and reusable packages. Supports
+[Scala.js](http://www.scala-js.org/) / Javascript engines (within reason)
+for cross compiled code. Supports both Scala 2.11.x and 2.10.x.
 
-### Atomic References (scalax-atomic)
-
-See [Atomic References](https://github.com/monifu/scalax/wiki/Atomic-References)
-in the Wiki.
-
-Dependency for the JVM:
+Specifying dependencies (replace `%%` with `%%%` for targeting Scala.js):
 
 ```scala
+// Atomic References
 libraryDependencies += "org.monifu" %% "scalax-atomic" % "0.3"
-```
 
-For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
-
-```scala
-libraryDependencies += "org.monifu" %%% "scalax-atomic" % "0.3"
-```
-
-### Cancelable (scalax-cancelable)
-
-See [Cancelable](https://github.com/monifu/scalax/wiki/Cancelable)
-in the Wiki.
-
-Dependency for the JVM:
-
-```scala
+// Cancelable
 libraryDependencies += "org.monifu" %% "scalax-cancelable" % "0.3"
-```
 
-For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
+// Scheduler
+libraryDependencies += "org.monifu" %% "scalax-scheduler" % "0.3"
 
-```scala
-libraryDependencies += "org.monifu" %%% "scalax-cancelable" % "0.3"
-```
+// Future Utils
+libraryDependencies += "org.monifu" %% "scalax-Future" % "0.3"
 
-### Scheduler (scalax-scheduler)
-
-See [Scheduler](https://github.com/monifu/scalax/wiki/Scheduler)
-in the Wiki.
-
-Dependency for the JVM:
-
-```scala
-libraryDependencies += "org.monifu" %% "scalax-cancelable" % "0.3"
-```
-
-For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
-
-```scala
-libraryDependencies += "org.monifu" %%% "scalax-cancelable" % "0.3"
-```
-
-### Future Utils (scalax-future)
-
-Dependency for the JVM:
-
-```scala
-libraryDependencies += "org.monifu" %% "scalax-future" % "0.3"
-```
-
-For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
-
-```scala
-libraryDependencies += "org.monifu" %%% "scalax-future" % "0.3"
-```
-
-### Everything (scalax)
-
-Dependency for the JVM:
-
-```scala
+// Everything
 libraryDependencies += "org.monifu" %% "scalax" % "0.3"
-```
-
-For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
-
-```scala
-libraryDependencies += "org.monifu" %%% "scalax" % "0.3"
 ```
 
 ## Maintainers

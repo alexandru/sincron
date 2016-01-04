@@ -9,9 +9,6 @@ and to (hopefully) push these as [SLIPs](https://github.com/scala/slip).
 The name `scalax` mirrors the `javax` package for Java and in
 `javax` that's where extensions to an existing JRE go.
 
-The project is broken into multiple sub-projects, so you can use just the
-pieces that you want.
-
 [![Build Status](https://travis-ci.org/monifu/scalax.svg?branch=master)](https://travis-ci.org/monifu/scalax)
 [![Coverage Status](https://codecov.io/github/monifu/scalax/coverage.svg?branch=master)](https://codecov.io/github/monifu/scalax?branch=master)
 [![License](http://img.shields.io/:license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)

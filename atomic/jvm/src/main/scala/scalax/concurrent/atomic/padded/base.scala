@@ -68,7 +68,7 @@ private[padded] final class PaddedJavaAtomicReference[T](value: T)
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.Atomic Atomic]] references.
+ * [[scalax.concurrent.atomic.Atomic Atomic]] references.
  */
 object Atomic {
   /**
@@ -92,7 +92,7 @@ object Atomic {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicAny AtomicAny]] references.
+ * [[scalax.concurrent.atomic.AtomicAny AtomicAny]] references.
  */
 object AtomicAny {
   def apply[T](initialValue: T): AtomicAny[T] =
@@ -101,7 +101,7 @@ object AtomicAny {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicBoolean AtomicBoolean]] references.
+ * [[scalax.concurrent.atomic.AtomicBoolean AtomicBoolean]] references.
  */
 object AtomicBoolean {
   def apply(initialValue: Boolean): AtomicBoolean =
@@ -110,7 +110,7 @@ object AtomicBoolean {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicByte AtomicByte]] references.
+ * [[scalax.concurrent.atomic.AtomicByte AtomicByte]] references.
  */
 object AtomicByte {
   def apply(initialValue: Byte): AtomicByte =
@@ -119,7 +119,7 @@ object AtomicByte {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicChar AtomicChar]] references.
+ * [[scalax.concurrent.atomic.AtomicChar AtomicChar]] references.
  */
 object AtomicChar {
   def apply(initialValue: Char): AtomicChar =
@@ -128,7 +128,7 @@ object AtomicChar {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicDouble AtomicDouble]] references.
+ * [[scalax.concurrent.atomic.AtomicDouble AtomicDouble]] references.
  */
 object AtomicDouble {
   def apply(initialValue: Double): AtomicDouble =
@@ -137,7 +137,7 @@ object AtomicDouble {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicFloat AtomicFloat]] references.
+ * [[scalax.concurrent.atomic.AtomicFloat AtomicFloat]] references.
  */
 object AtomicFloat {
   def apply(initialValue: Float): AtomicFloat =
@@ -146,7 +146,7 @@ object AtomicFloat {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicInt AtomicInt]] references.
+ * [[scalax.concurrent.atomic.AtomicInt AtomicInt]] references.
  */
 object AtomicInt {
   def apply(initialValue: Int): AtomicInt =
@@ -155,7 +155,7 @@ object AtomicInt {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicLong AtomicLong]] references.
+ * [[scalax.concurrent.atomic.AtomicLong AtomicLong]] references.
  */
 object AtomicLong {
   def apply(initialValue: Long): AtomicLong =
@@ -164,7 +164,7 @@ object AtomicLong {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicNumberAny AtomicNumberAny]] references.
+ * [[scalax.concurrent.atomic.AtomicNumberAny AtomicNumberAny]] references.
  */
 object AtomicNumberAny {
   def apply[T : Numeric](initialValue: T): AtomicNumberAny[T] =
@@ -173,7 +173,7 @@ object AtomicNumberAny {
 
 /**
  * Provides a constructor for building cache-line padded
- * [[monifu.concurrent.atomic.AtomicShort AtomicShort]] references.
+ * [[scalax.concurrent.atomic.AtomicShort AtomicShort]] references.
  */
 object AtomicShort {
   def apply(initialValue: Short): AtomicShort =

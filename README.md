@@ -30,27 +30,41 @@ in the Wiki.
 Dependency for the JVM:
 
 ```scala
-libraryDependencies += "org.monifu" %% "scalax-atomic" % "0.2"
+libraryDependencies += "org.monifu" %% "scalax-atomic" % "0.3"
 ```
 
 For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
 
 ```scala
-libraryDependencies += "org.monifu" %%% "scalax-atomic" % "0.2"
+libraryDependencies += "org.monifu" %%% "scalax-atomic" % "0.3"
 ```
 
-### Cancelables (scalax-cancelable)
+### Cancelable (scalax-cancelable)
 
 Dependency for the JVM:
 
 ```scala
-libraryDependencies += "org.monifu" %% "scalax-cancelable" % "0.2"
+libraryDependencies += "org.monifu" %% "scalax-cancelable" % "0.3"
 ```
 
 For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
 
 ```scala
-libraryDependencies += "org.monifu" %%% "scalax-cancelable" % "0.2"
+libraryDependencies += "org.monifu" %%% "scalax-cancelable" % "0.3"
+```
+
+### Scheduler (scalax-scheduler)
+
+Dependency for the JVM:
+
+```scala
+libraryDependencies += "org.monifu" %% "scalax-cancelable" % "0.3"
+```
+
+For [Scala.js](http://www.scala-js.org/) / Javascript or for cross-compiled projects:
+
+```scala
+libraryDependencies += "org.monifu" %%% "scalax-cancelable" % "0.3"
 ```
 
 ## Maintainers

@@ -147,13 +147,15 @@ object Build extends SbtBuild {
       scalaxAtomicJVM, scalaxAtomicJS,
       scalaxCancelableJVM, scalaxCancelableJS,
       scalaxSchedulerJVM, scalaxSchedulerJS,
+      scalaxFutureJVM, scalaxFutureJS,
       scalaxJVM, scalaxJS)
     .settings(unidocSettings: _*)
     .settings(sharedSettings: _*)
     .settings(doNotPublishArtifact: _*)
     .settings(
       unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject --
-        inProjects(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS, scalaxJS, scalaxJVM)
+        inProjects(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS,
+          scalaxFutureJS, scalaxJS, scalaxJVM)
     )
 
   lazy val scalaxAtomicJVM = project.in(file("atomic/jvm"))
@@ -196,16 +198,30 @@ object Build extends SbtBuild {
       scalaJSStage in Test := FastOptStage,
       coverageExcludedFiles := ".*")
 
+  lazy val scalaxFutureJVM = project.in(file("future/jvm"))
+    .dependsOn(scalaxCancelableJVM, scalaxSchedulerJVM)
+    .settings(crossSettings: _*)
+    .settings(name := "scalax-future")
+
+  lazy val scalaxFutureJS = project.in(file("future/js"))
+    .dependsOn(scalaxCancelableJS, scalaxSchedulerJS)
+    .settings(crossSettings: _*)
+    .enablePlugins(ScalaJSPlugin)
+    .settings(
+      name := "scalax-future",
+      scalaJSStage in Test := FastOptStage,
+      coverageExcludedFiles := ".*")
+
   lazy val scalaxJVM = project.in(file("scalax/jvm"))
     .settings(crossSettings: _*)
-    .aggregate(scalaxAtomicJVM, scalaxCancelableJVM, scalaxSchedulerJVM)
-    .dependsOn(scalaxAtomicJVM, scalaxCancelableJVM, scalaxSchedulerJVM)
+    .aggregate(scalaxAtomicJVM, scalaxCancelableJVM, scalaxSchedulerJVM, scalaxFutureJVM)
+    .dependsOn(scalaxAtomicJVM, scalaxCancelableJVM, scalaxSchedulerJVM, scalaxFutureJVM)
     .settings(name := "scalax")
 
   lazy val scalaxJS = project.in(file("scalax/js"))
     .settings(crossSettings: _*)
     .enablePlugins(ScalaJSPlugin)
-    .aggregate(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS)
-    .dependsOn(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS)
+    .aggregate(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS, scalaxFutureJS)
+    .dependsOn(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS, scalaxFutureJS)
     .settings(name := "scalax")
 }

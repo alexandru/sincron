@@ -116,7 +116,7 @@ trait Scheduler extends ExecutionContext with UncaughtExceptionReporter {
     * to measure time, do not use `System.currentTimeMillis()`
     * directly, prefer this method instead, because then it can be
     * mocked for testing purposes (see for example
-    * [[scala.concurrent.schedulers.TestScheduler TestScheduler]])
+    * [[scalax.concurrent.schedulers.TestScheduler TestScheduler]])
     */
   def currentTimeMillis(): Long
 }

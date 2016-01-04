@@ -41,7 +41,7 @@ libraryDependencies += "org.monifu" %%% "scalax-atomic" % "0.3"
 
 ### Cancelable (scalax-cancelable)
 
-See [Cancelable](https://github.com/monifu/monix/wiki/Cancelable)
+See [Cancelable](https://github.com/monifu/scalax/wiki/Cancelable)
 in the Wiki.
 
 Dependency for the JVM:

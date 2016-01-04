@@ -1,0 +1,934 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>AtomicBoolean - Scalax 0.4-SNAPSHOT - scalax.concurrent.atomic.AtomicBoolean</title>
+          <meta name="description" content="AtomicBoolean - Scalax 0.4 - SNAPSHOT - scalax.concurrent.atomic.AtomicBoolean" />
+          <meta name="keywords" content="AtomicBoolean Scalax 0.4 SNAPSHOT scalax.concurrent.atomic.AtomicBoolean" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'scalax.concurrent.atomic.AtomicBoolean';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <a href="AtomicBoolean$.html" title="See companion object"><img alt="Class/Object" src="../../../lib/class_to_object_big.png" /></a>
+        <p id="owner"><a href="../../package.html" class="extype" name="scalax">scalax</a>.<a href="../package.html" class="extype" name="scalax.concurrent">concurrent</a>.<a href="package.html" class="extype" name="scalax.concurrent.atomic">atomic</a></p>
+        <h1><a href="AtomicBoolean$.html" title="See companion object">AtomicBoolean</a></h1><h3><span class="morelinks"><div>
+            Related Docs:
+            <a href="AtomicBoolean$.html" title="See companion object">object AtomicBoolean</a>
+            | <a href="package.html" class="extype" name="scalax.concurrent.atomic">package atomic</a>
+          </div></span></h3><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">AtomicBoolean</span><span class="result"> extends <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>]</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/monifu/scalax/tree/v0.4-SNAPSHOT/atomic/jvm/src/main/scala/scalax/concurrent/atomic/AtomicBoolean.scala" target="_blank">AtomicBoolean.scala</a></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>], <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="scalax.concurrent.atomic.AtomicBoolean"><span>AtomicBoolean</span></li><li class="in" name="scalax.concurrent.atomic.BlockableAtomic"><span>BlockableAtomic</span></li><li class="in" name="scalax.concurrent.atomic.Atomic"><span>Atomic</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@##():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#:=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id=":=(value:Boolean):Unit"></a>
+      <a id=":=(Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $colon$eq" class="name">:=</span><span class="params">(<span name="value">value: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@:=(value:Boolean):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Alias for <code>set()</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Alias for <code>set()</code>. Updates the current value.</p></div><dl class="paramcmts block"><dt class="param">value</dt><dd class="cmt"><p>will be the new value returned by <code>get()</code></p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@==(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.Atomic#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply():T"></a>
+      <a id="apply():Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@apply():T" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the current value persisted by this Atomic, an alias for <code>get()</code></p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@clone():Object" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#compareAndSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="compareAndSet(expect:Boolean,update:Boolean):Boolean"></a>
+      <a id="compareAndSet(Boolean,Boolean):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">compareAndSet</span><span class="params">(<span name="expect">expect: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="update">update: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@compareAndSet(expect:Boolean,update:Boolean):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Does a compare-and-set operation on the current value.</p><div class="fullcomment"><div class="comment cmt"><p>Does a compare-and-set operation on the current value. For more info, checkout the related
+<a href="https://en.wikipedia.org/wiki/Compare-and-swap" target="_blank">Compare-and-swap Wikipedia page</a>.</p><p>It's an atomic, worry free operation.
+</p></div><dl class="paramcmts block"><dt class="param">expect</dt><dd class="cmt"><p>is the value you expect to be persisted when the operation happens</p></dd><dt class="param">update</dt><dd class="cmt"><p>will be the new value, should the check for <code>expect</code> succeeds</p></dd><dt>returns</dt><dd class="cmt"><p>either true in case the operation succeeded or false otherwise</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@finalize():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="get:Boolean"></a>
+      <a id="get:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">get</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@get:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the current value persisted by this Atomic</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#getAndSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getAndSet(update:Boolean):Boolean"></a>
+      <a id="getAndSet(Boolean):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getAndSet</span><span class="params">(<span name="update">update: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@getAndSet(update:Boolean):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Sets the persisted value to <code>update</code> and returns the old value that was in place.</p><div class="fullcomment"><div class="comment cmt"><p>Sets the persisted value to <code>update</code> and returns the old value that was in place.
+It's an atomic, worry free operation.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#getAndTransform" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getAndTransform(cb:Boolean=&gt;Boolean):Boolean"></a>
+      <a id="getAndTransform((Boolean)⇒Boolean):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getAndTransform</span><span class="params">(<span name="cb">cb: (<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@getAndTransform(cb:Boolean=&gt;Boolean):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Abstracts over <code>compareAndSet</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Abstracts over <code>compareAndSet</code>. You specify a transformation by specifying a callback to be
+executed, a callback that transforms the current value. This method will loop until it will
+succeed in replacing the current value with the one produced by the given callback.</p><p>Note that the callback will be executed on each iteration of the loop, so it can be called
+multiple times - don't do destructive I/O or operations that mutate global state in it.
+</p></div><dl class="paramcmts block"><dt class="param">cb</dt><dd class="cmt"><p>is a callback that receives the current value as input and returns the <code>update</code> which is the
+          new value that should be persisted</p></dd><dt>returns</dt><dd class="cmt"><p>the old value, just prior to when the successful update happened</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#lazySet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="lazySet(update:Boolean):Unit"></a>
+      <a id="lazySet(Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">lazySet</span><span class="params">(<span name="update">update: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@lazySet(update:Boolean):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Eventually sets to the given value.</p><div class="fullcomment"><div class="comment cmt"><p>Eventually sets to the given value. Has weaker visibility guarantees than the normal <code>set()</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@notify():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@notifyAll():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#set" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="set(update:Boolean):Unit"></a>
+      <a id="set(Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">set</span><span class="params">(<span name="update">update: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@set(update:Boolean):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Updates the current value.</p><div class="fullcomment"><div class="comment cmt"><p>Updates the current value.</p></div><dl class="paramcmts block"><dt class="param">update</dt><dd class="cmt"><p>will be the new value returned by <code>get()</code></p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@toString():String" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → AnyRef → Any</dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#transform" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="transform(cb:Boolean=&gt;Boolean):Unit"></a>
+      <a id="transform((Boolean)⇒Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">transform</span><span class="params">(<span name="cb">cb: (<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@transform(cb:Boolean=&gt;Boolean):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Abstracts over <code>compareAndSet</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Abstracts over <code>compareAndSet</code>. You specify a transformation by specifying a callback to be
+executed, a callback that transforms the current value. This method will loop until it will
+succeed in replacing the current value with the one produced by the given callback.</p><p>Note that the callback will be executed on each iteration of the loop, so it can be called
+multiple times - don't do destructive I/O or operations that mutate global state in it.
+</p></div><dl class="paramcmts block"><dt class="param">cb</dt><dd class="cmt"><p>is a callback that receives the current value as input and returns the <code>update</code> which is the
+          new value that should be persisted</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#transformAndExtract" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="transformAndExtract[U](cb:Boolean=&gt;(U,Boolean)):U"></a>
+      <a id="transformAndExtract[U]((Boolean)⇒(U,Boolean)):U"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">transformAndExtract</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="cb">cb: (<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>) ⇒ (<span class="extype" name="scalax.concurrent.atomic.AtomicBoolean.transformAndExtract.U">U</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>)</span>)</span><span class="result">: <span class="extype" name="scalax.concurrent.atomic.AtomicBoolean.transformAndExtract.U">U</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@transformAndExtract[U](cb:Boolean=&gt;(U,Boolean)):U" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Abstracts over <code>compareAndSet</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Abstracts over <code>compareAndSet</code>. You specify a transformation by specifying a callback to be
+executed, a callback that transforms the current value. This method will loop until it will
+succeed in replacing the current value with the one produced by your callback.</p><p>Note that the callback will be executed on each iteration of the loop, so it can be called
+multiple times - don't do destructive I/O or operations that mutate global state in it.
+</p></div><dl class="paramcmts block"><dt class="param">cb</dt><dd class="cmt"><p>is a callback that receives the current value as input and returns a tuple that specifies
+          the update + what should this method return when the operation succeeds.</p></dd><dt>returns</dt><dd class="cmt"><p>whatever was specified by your callback, once the operation succeeds</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#transformAndGet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="transformAndGet(cb:Boolean=&gt;Boolean):Boolean"></a>
+      <a id="transformAndGet((Boolean)⇒Boolean):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">transformAndGet</span><span class="params">(<span name="cb">cb: (<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@transformAndGet(cb:Boolean=&gt;Boolean):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Abstracts over <code>compareAndSet</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Abstracts over <code>compareAndSet</code>. You specify a transformation by specifying a callback to be
+executed, a callback that transforms the current value. This method will loop until it will
+succeed in replacing the current value with the one produced by the given callback.</p><p>Note that the callback will be executed on each iteration of the loop, so it can be called
+multiple times - don't do destructive I/O or operations that mutate global state in it.
+</p></div><dl class="paramcmts block"><dt class="param">cb</dt><dd class="cmt"><p>is a callback that receives the current value as input and returns the <code>update</code> which is the
+          new value that should be persisted</p></dd><dt>returns</dt><dd class="cmt"><p>whatever the update is, after the operation succeeds</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#update" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="update(value:Boolean):Unit"></a>
+      <a id="update(Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">update</span><span class="params">(<span name="value">value: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@update(value:Boolean):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Alias for <code>set()</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Alias for <code>set()</code>. Updates the current value.</p></div><dl class="paramcmts block"><dt class="param">value</dt><dd class="cmt"><p>will be the new value returned by <code>get()</code></p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a></dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@wait():Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@wait(x$1:Long):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#waitForCompareAndSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="waitForCompareAndSet(expect:Boolean,update:Boolean,waitAtMost:scala.concurrent.duration.FiniteDuration):Unit"></a>
+      <a id="waitForCompareAndSet(Boolean,Boolean,FiniteDuration):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">waitForCompareAndSet</span><span class="params">(<span name="expect">expect: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="update">update: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="waitAtMost">waitAtMost: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.concurrent.duration.FiniteDuration" class="extype" target="_top">FiniteDuration</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@waitForCompareAndSet(expect:Boolean,update:Boolean,waitAtMost:scala.concurrent.duration.FiniteDuration):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Waits until the <code>compareAndSet</code> operation succeeds, e.g...</p><div class="fullcomment"><div class="comment cmt"><p>Waits until the <code>compareAndSet</code> operation succeeds, e.g...
+1. until the old value == expected and the operation succeeds, or
+2. until the current thread is interrupted, or
+3. the specified timeout is due</p><p>So this can throw an exception on timeout, useful for when you want to insure
+that you don't block the current thread ad infinitum
+</p></div><dl class="paramcmts block"><dt class="param">waitAtMost</dt><dd class="cmt"><p>specifies the timeout, after which this method throws a TimeoutException</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[InterruptedException]</span>
+    </span>)</span>
+              
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[TimeoutException]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#waitForCompareAndSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="waitForCompareAndSet(expect:Boolean,update:Boolean,maxRetries:Int):Boolean"></a>
+      <a id="waitForCompareAndSet(Boolean,Boolean,Int):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">waitForCompareAndSet</span><span class="params">(<span name="expect">expect: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="update">update: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="maxRetries">maxRetries: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@waitForCompareAndSet(expect:Boolean,update:Boolean,maxRetries:Int):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Waits until the <code>compareAndSet</code> operation succeeds, e.g...</p><div class="fullcomment"><div class="comment cmt"><p>Waits until the <code>compareAndSet</code> operation succeeds, e.g...</p><p>1. until the old value == expected and the operation succeeds, or
+2. until the current thread is interrupted
+3. until the the spin lock retried for a maximum of <code>maxRetries</code>
+</p></div><dl class="paramcmts block"><dt class="param">expect</dt><dd class="cmt"><p>the expected current value</p></dd><dt class="param">update</dt><dd class="cmt"><p>the value to replace the current value</p></dd><dt class="param">maxRetries</dt><dd class="cmt"><p>the maximum number of times to retry in case of failure</p></dd><dt>returns</dt><dd class="cmt"><p>true if the operation succeeded or false in case it failed after
+        it retried for <code>maxRetries</code> times</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[InterruptedException]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#waitForCompareAndSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="waitForCompareAndSet(expect:Boolean,update:Boolean):Unit"></a>
+      <a id="waitForCompareAndSet(Boolean,Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">waitForCompareAndSet</span><span class="params">(<span name="expect">expect: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="update">update: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@waitForCompareAndSet(expect:Boolean,update:Boolean):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Waits until the <code>compareAndSet</code> operation succeeds, e.g...</p><div class="fullcomment"><div class="comment cmt"><p>Waits until the <code>compareAndSet</code> operation succeeds, e.g...
+1. until the old value == expected and the operation succeeds, or
+2. until the current thread is interrupted
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[InterruptedException]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#waitForCondition" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="waitForCondition(waitAtMost:scala.concurrent.duration.FiniteDuration,p:Boolean=&gt;Boolean):Unit"></a>
+      <a id="waitForCondition(FiniteDuration,(Boolean)⇒Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">waitForCondition</span><span class="params">(<span name="waitAtMost">waitAtMost: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.concurrent.duration.FiniteDuration" class="extype" target="_top">FiniteDuration</a></span>, <span name="p">p: (<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@waitForCondition(waitAtMost:scala.concurrent.duration.FiniteDuration,p:Boolean=&gt;Boolean):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Waits until the specified callback, that receives the current value, returns <code>true</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Waits until the specified callback, that receives the current value, returns <code>true</code>.
+Throws a <code>TimeoutException</code> in case the specified <code>waitAtMost</code> timeout is due.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[InterruptedException]</span>
+    </span>)</span>
+              
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[TimeoutException]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#waitForCondition" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="waitForCondition(p:Boolean=&gt;Boolean):Unit"></a>
+      <a id="waitForCondition((Boolean)⇒Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">waitForCondition</span><span class="params">(<span name="p">p: (<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@waitForCondition(p:Boolean=&gt;Boolean):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Waits until the specified callback, that receives the current value, returns <code>true</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Waits until the specified callback, that receives the current value, returns <code>true</code>.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[InterruptedException]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#waitForValue" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="waitForValue(expect:Boolean,waitAtMost:scala.concurrent.duration.FiniteDuration):Unit"></a>
+      <a id="waitForValue(Boolean,FiniteDuration):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">waitForValue</span><span class="params">(<span name="expect">expect: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="waitAtMost">waitAtMost: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.concurrent.duration.FiniteDuration" class="extype" target="_top">FiniteDuration</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@waitForValue(expect:Boolean,waitAtMost:scala.concurrent.duration.FiniteDuration):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Waits until the specified <code>expect</code> value == the value stored by this Atomic reference
+or until the current thread gets interrupted.</p><div class="fullcomment"><div class="comment cmt"><p>Waits until the specified <code>expect</code> value == the value stored by this Atomic reference
+or until the current thread gets interrupted.</p><p>This can throw an exception on timeout, useful for when you want to insure
+that you don't block the current thread ad infinitum
+</p></div><dl class="paramcmts block"><dt class="param">waitAtMost</dt><dd class="cmt"><p>specifies the timeout, after which this method throws a TimeoutException</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[InterruptedException]</span>
+    </span>)</span>
+              
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[TimeoutException]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean#waitForValue" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="waitForValue(expect:Boolean):Unit"></a>
+      <a id="waitForValue(Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">waitForValue</span><span class="params">(<span name="expect">expect: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.AtomicBoolean@waitForValue(expect:Boolean):Unit" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Waits until the specified <code>expect</code> value == the value stored by this Atomic reference
+or until the current thread gets interrupted.</p><div class="fullcomment"><div class="comment cmt"><p>Waits until the specified <code>expect</code> value == the value stored by this Atomic reference
+or until the current thread gets interrupted.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="scalax.concurrent.atomic.AtomicBoolean">AtomicBoolean</a> → <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a></dd><dt>Annotations</dt><dd>
+                <span class="name">@tailrec</span><span class="args">()</span>
+              
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[InterruptedException]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scalax.concurrent.atomic.BlockableAtomic">
+              <h3>Inherited from <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>]</h3>
+            </div><div class="parent" name="scalax.concurrent.atomic.Atomic">
+              <h3>Inherited from <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

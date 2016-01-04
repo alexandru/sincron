@@ -1,0 +1,415 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>cancelables - Scalax 0.4-SNAPSHOT - scalax.concurrent.cancelables</title>
+          <meta name="description" content="cancelables - Scalax 0.4 - SNAPSHOT - scalax.concurrent.cancelables" />
+          <meta name="keywords" content="cancelables Scalax 0.4 SNAPSHOT scalax.concurrent.cancelables" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'scalax.concurrent.cancelables.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="scalax">scalax</a>.<a href="../package.html" class="extype" name="scalax.concurrent">concurrent</a></p>
+        <h1>cancelables</h1><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cancelables</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Cancelables represent asynchronous units of work or other things scheduled for
+execution and whose execution can be canceled.</p><p>One use-case is the scheduling done by <a href="../Scheduler.html" class="extype" name="scalax.concurrent.Scheduler">scalax.concurrent.Scheduler</a>, in which
+the scheduling methods return a <code>Cancelable</code>, allowing the canceling of the
+scheduling.</p><p>Example:</p><pre><span class="kw">val</span> s = ConcurrentScheduler()
+<span class="kw">val</span> task = s.scheduleRepeated(<span class="num">10.</span>seconds, <span class="num">50.</span>seconds, {
+  println(<span class="lit">"Hello"</span>)
+})
+
+<span class="cmt">// later, cancels the scheduling ...</span>
+task.cancel()</pre></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/monifu/scalax/tree/v0.4-SNAPSHOT/cancelable/shared/src/main/scala/scalax/concurrent/cancelables/package.scala" target="_blank">package.scala</a></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="scalax.concurrent.cancelables"><span>cancelables</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="scalax.concurrent.cancelables.AssignableCancelable" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="AssignableCancelableextendsBooleanCancelable"></a>
+      <a id="AssignableCancelable:AssignableCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="AssignableCancelable.html"><span class="name">AssignableCancelable</span></a><span class="result"> extends <a href="BooleanCancelable.html" class="extype" name="scalax.concurrent.cancelables.BooleanCancelable">BooleanCancelable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@AssignableCancelableextendsBooleanCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a class of cancelables that can hold
+an internal reference to another cancelable (and thus
+has to support the assignment operator).</p><div class="fullcomment"><div class="comment cmt"><p>Represents a class of cancelables that can hold
+an internal reference to another cancelable (and thus
+has to support the assignment operator).</p><p>Examples are the <a href="MultiAssignmentCancelable.html" class="extype" name="scalax.concurrent.cancelables.MultiAssignmentCancelable">MultiAssignmentCancelable</a> and the
+<a href="SingleAssignmentCancelable.html" class="extype" name="scalax.concurrent.cancelables.SingleAssignmentCancelable">SingleAssignmentCancelable</a>.</p><p>NOTE that on assignment, if this cancelable is already
+canceled, then no assignment should happen and the update
+reference should be canceled as well.
+</p></div></div>
+    </li><li name="scalax.concurrent.cancelables.BooleanCancelable" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="BooleanCancelableextendsCancelable"></a>
+      <a id="BooleanCancelable:BooleanCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BooleanCancelable.html"><span class="name">BooleanCancelable</span></a><span class="result"> extends <a href="../Cancelable.html" class="extype" name="scalax.concurrent.Cancelable">Cancelable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@BooleanCancelableextendsCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a Cancelable that can queried for the canceled status.</p>
+    </li><li name="scalax.concurrent.cancelables.CompositeCancelable" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="CompositeCancelableextendsBooleanCancelable"></a>
+      <a id="CompositeCancelable:CompositeCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CompositeCancelable.html"><span class="name">CompositeCancelable</span></a><span class="result"> extends <a href="BooleanCancelable.html" class="extype" name="scalax.concurrent.cancelables.BooleanCancelable">BooleanCancelable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@CompositeCancelableextendsBooleanCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a composite of multiple cancelables.</p><div class="fullcomment"><div class="comment cmt"><p>Represents a composite of multiple cancelables. In case it is canceled, all
+contained cancelables will be canceled too, e.g...</p><pre><span class="kw">val</span> s = CompositeCancelable()
+
+s += c1
+s += c2
+s += c3
+
+<span class="cmt">// c1, c2, c3 will also be canceled</span>
+s.cancel()</pre><p>Additionally, once canceled, on appending of new cancelable references, those
+references will automatically get canceled too:</p><pre><span class="kw">val</span> s = CompositeCancelable()
+s.cancel()
+
+<span class="cmt">// c1 gets canceled, because s is already canceled</span>
+s += c1
+<span class="cmt">// c2 gets canceled, because s is already canceled</span>
+s += c2</pre><p>Adding and removing references from this composite is thread-safe.
+</p></div></div>
+    </li><li name="scalax.concurrent.cancelables.MultiAssignmentCancelable" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="MultiAssignmentCancelableextendsAssignableCancelable"></a>
+      <a id="MultiAssignmentCancelable:MultiAssignmentCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="MultiAssignmentCancelable.html"><span class="name">MultiAssignmentCancelable</span></a><span class="result"> extends <a href="AssignableCancelable.html" class="extype" name="scalax.concurrent.cancelables.AssignableCancelable">AssignableCancelable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@MultiAssignmentCancelableextendsAssignableCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a <a href="../Cancelable.html" class="extype" name="scalax.concurrent.Cancelable">scalax.concurrent.Cancelable</a> whose underlying cancelable
+reference can be swapped for another.</p><div class="fullcomment"><div class="comment cmt"><p>Represents a <a href="../Cancelable.html" class="extype" name="scalax.concurrent.Cancelable">scalax.concurrent.Cancelable</a> whose underlying cancelable
+reference can be swapped for another.</p><p>Example:</p><pre><span class="kw">val</span> s = MultiAssignmentCancelable()
+s := c1 <span class="cmt">// sets the underlying cancelable to c1</span>
+s := c2 <span class="cmt">// swaps the underlying cancelable to c2</span>
+
+s.cancel() <span class="cmt">// also cancels c2</span>
+
+s := c3 <span class="cmt">// also cancels c3, because s is already canceled</span></pre><p>Also see <a href="SerialCancelable.html" class="extype" name="scalax.concurrent.cancelables.SerialCancelable">SerialCancelable</a>, which is similar, except that it cancels the
+old cancelable upon assigning a new cancelable.
+</p></div></div>
+    </li><li name="scalax.concurrent.cancelables.RefCountCancelable" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="RefCountCancelableextendsBooleanCancelable"></a>
+      <a id="RefCountCancelable:RefCountCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="RefCountCancelable.html"><span class="name">RefCountCancelable</span></a><span class="result"> extends <a href="BooleanCancelable.html" class="extype" name="scalax.concurrent.cancelables.BooleanCancelable">BooleanCancelable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@RefCountCancelableextendsBooleanCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a <code>Cancelable</code> that only executes the canceling logic when all
+dependent cancelable objects have been canceled.</p><div class="fullcomment"><div class="comment cmt"><p>Represents a <code>Cancelable</code> that only executes the canceling logic when all
+dependent cancelable objects have been canceled.</p><p>After all dependent cancelables have been canceled, <code>onCancel</code> gets called.
+</p></div></div>
+    </li><li name="scalax.concurrent.cancelables.SerialCancelable" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SerialCancelableextendsBooleanCancelable"></a>
+      <a id="SerialCancelable:SerialCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SerialCancelable.html"><span class="name">SerialCancelable</span></a><span class="result"> extends <a href="BooleanCancelable.html" class="extype" name="scalax.concurrent.cancelables.BooleanCancelable">BooleanCancelable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@SerialCancelableextendsBooleanCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a <a href="../Cancelable.html" class="extype" name="scalax.concurrent.Cancelable">scalax.concurrent.Cancelable</a> whose underlying cancelable
+can be swapped for another cancelable which causes the previous underlying
+cancelable to be canceled.</p><div class="fullcomment"><div class="comment cmt"><p>Represents a <a href="../Cancelable.html" class="extype" name="scalax.concurrent.Cancelable">scalax.concurrent.Cancelable</a> whose underlying cancelable
+can be swapped for another cancelable which causes the previous underlying
+cancelable to be canceled.</p><p>Example:</p><pre><span class="kw">val</span> s = SerialCancelable()
+s := c1 <span class="cmt">// sets the underlying cancelable to c1</span>
+s := c2 <span class="cmt">// cancels c1 and swaps the underlying cancelable to c2</span>
+
+s.cancel() <span class="cmt">// also cancels c2</span>
+
+s() = c3 <span class="cmt">// also cancels c3, because s is already canceled</span></pre><p>Also see <a href="MultiAssignmentCancelable.html" class="extype" name="scalax.concurrent.cancelables.MultiAssignmentCancelable">MultiAssignmentCancelable</a>, which is similar, but doesn't cancel
+the old cancelable upon assignment.
+</p></div></div>
+    </li><li name="scalax.concurrent.cancelables.SingleAssignmentCancelable" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SingleAssignmentCancelableextendsAssignableCancelable"></a>
+      <a id="SingleAssignmentCancelable:SingleAssignmentCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SingleAssignmentCancelable.html"><span class="name">SingleAssignmentCancelable</span></a><span class="result"> extends <a href="AssignableCancelable.html" class="extype" name="scalax.concurrent.cancelables.AssignableCancelable">AssignableCancelable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@SingleAssignmentCancelableextendsAssignableCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a <a href="../Cancelable.html" class="extype" name="scalax.concurrent.Cancelable">scalax.concurrent.Cancelable</a> that can be assigned only
+once to another cancelable reference.</p><div class="fullcomment"><div class="comment cmt"><p>Represents a <a href="../Cancelable.html" class="extype" name="scalax.concurrent.Cancelable">scalax.concurrent.Cancelable</a> that can be assigned only
+once to another cancelable reference.</p><p>Similar to <a href="MultiAssignmentCancelable.html" class="extype" name="scalax.concurrent.cancelables.MultiAssignmentCancelable">scalax.concurrent.cancelables.MultiAssignmentCancelable</a>,
+except that in case of multi-assignment, it throws a
+<code>java.lang.IllegalStateException</code>.</p><p>If the assignment happens after this cancelable has been canceled, then on
+assignment the reference will get canceled too.</p><p>Useful in case you need a forward reference.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scalax.concurrent.cancelables.BooleanCancelable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BooleanCancelable"></a>
+      <a id="BooleanCancelable:BooleanCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="BooleanCancelable$.html"><span class="name">BooleanCancelable</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@BooleanCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.cancelables.CompositeCancelable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CompositeCancelable"></a>
+      <a id="CompositeCancelable:CompositeCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CompositeCancelable$.html"><span class="name">CompositeCancelable</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@CompositeCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.cancelables.MultiAssignmentCancelable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MultiAssignmentCancelable"></a>
+      <a id="MultiAssignmentCancelable:MultiAssignmentCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MultiAssignmentCancelable$.html"><span class="name">MultiAssignmentCancelable</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@MultiAssignmentCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.cancelables.RefCountCancelable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RefCountCancelable"></a>
+      <a id="RefCountCancelable:RefCountCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RefCountCancelable$.html"><span class="name">RefCountCancelable</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@RefCountCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.cancelables.SerialCancelable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SerialCancelable"></a>
+      <a id="SerialCancelable:SerialCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SerialCancelable$.html"><span class="name">SerialCancelable</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@SerialCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.cancelables.SingleAssignmentCancelable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SingleAssignmentCancelable"></a>
+      <a id="SingleAssignmentCancelable:SingleAssignmentCancelable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SingleAssignmentCancelable$.html"><span class="name">SingleAssignmentCancelable</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.cancelables.package@SingleAssignmentCancelable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

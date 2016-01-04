@@ -1,0 +1,629 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>atomic - Scalax 0.4-SNAPSHOT - scalax.concurrent.atomic</title>
+          <meta name="description" content="atomic - Scalax 0.4 - SNAPSHOT - scalax.concurrent.atomic" />
+          <meta name="keywords" content="atomic Scalax 0.4 SNAPSHOT scalax.concurrent.atomic" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'scalax.concurrent.atomic.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="scalax">scalax</a>.<a href="../package.html" class="extype" name="scalax.concurrent">concurrent</a></p>
+        <h1>atomic</h1><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">atomic</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A small toolkit of classes that support compare-and-swap semantics for safe mutation of variables.</p><p>On top of the JVM, this means dealing with lock-free thread-safe programming. Also works on top of Javascript,
+with Scala.js (for good reasons, as Atomic references are still useful in non-multi-threaded environments).</p><p>The backbone of Atomic references is this method:</p><pre><span class="kw">def</span> compareAndSet(expect: T, update: T): <span class="std">Boolean</span></pre><p>This method atomically sets a variable to the <code>update</code> value if it currently holds
+the <code>expect</code> value, reporting <code>true</code> on success or <code>false</code> on failure. The classes in this package
+also contain methods to get and unconditionally set values. They also support weak operations,
+defined in <code>WeakAtomic[T]</code>, such as (e.g. <code>weakCompareAndSet</code>, <code>lazySet</code>) or operations that
+block the current thread through <i>spin-locking</i>, until a condition happens (e.g. <code>waitForCompareAndSet</code>),
+methods exposed by <code>BlockingAtomic[T]</code>.</p><p>Building a reference is easy with the provided constructor, which will automatically return the
+most specific type needed (in the following sample, that's an <code>AtomicDouble</code>, inheriting from <code>AtomicNumber[T]</code>):</p><pre><span class="kw">val</span> atomicNumber = Atomic(<span class="num">12.2</span>)
+
+atomicNumber.incrementAndGet()
+<span class="cmt">// => 13.2</span></pre><p>In comparison with <code>java.util.concurrent.AtomicReference</code>, these references implement common interfaces
+that you can use generically (i.e. <code>Atomic[T]</code>, <code>AtomicNumber[T]</code>, <code>BlockableAtomic[T]</code>, <code>WeakAtomic[T]</code>).
+And also provide useful helpers for atomically mutating of values
+(i.e. <code>transform</code>, <code>transformAndGet</code>, <code>getAndTransform</code>, etc...) or of numbers of any kind
+(<code>incrementAndGet</code>, <code>getAndAdd</code>, etc...).</p><p>A high-level documentation describing the rationale for these can be found here:
+<a href="https://github.com/alexandru/monifu/blob/master/docs/atomic.md" target="_blank">Atomic Reference</a>
+</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/monifu/scalax/tree/v0.4-SNAPSHOT/atomic/jvm/src/main/scala/scalax/concurrent/atomic/package.scala" target="_blank">package.scala</a></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="scalax.concurrent.atomic"><span>atomic</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="scalax.concurrent.atomic.Atomic" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Atomic[T]extendsAny"></a>
+      <a id="Atomic[T]:Atomic[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Atomic.html"><span class="name">Atomic</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.Any">Any</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@Atomic[T]extendsAny" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Base trait of all atomic references, no matter the type.</p>
+    </li><li name="scalax.concurrent.atomic.AtomicAny" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicAny[T]extendsBlockableAtomic[T]"></a>
+      <a id="AtomicAny[T]:AtomicAny[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicAny.html"><span class="name">AtomicAny</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<span class="extype" name="scalax.concurrent.atomic.AtomicAny.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicAny[T]extendsBlockableAtomic[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicBooleanextendsBlockableAtomic[Boolean]"></a>
+      <a id="AtomicBoolean:AtomicBoolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicBoolean.html"><span class="name">AtomicBoolean</span></a><span class="result"> extends <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicBooleanextendsBlockableAtomic[Boolean]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicBuilder" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="AtomicBuilder[T,R&lt;:scalax.concurrent.atomic.Atomic[T]]extendsAnyRef"></a>
+      <a id="AtomicBuilder[T,R&lt;:Atomic[T]]:AtomicBuilder[T,R]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicBuilder.html"><span class="name">AtomicBuilder</span></a><span class="tparams">[<span name="T">T</span>, <span name="R">R &lt;: <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a>[<span class="extype" name="scalax.concurrent.atomic.AtomicBuilder.T">T</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicBuilder[T,R&lt;:scalax.concurrent.atomic.Atomic[T]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicByte" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicByteextendsAtomicNumber[Byte]withBlockableAtomic[Byte]"></a>
+      <a id="AtomicByte:AtomicByte"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicByte.html"><span class="name">AtomicByte</span></a><span class="result"> extends <a href="AtomicNumber.html" class="extype" name="scalax.concurrent.atomic.AtomicNumber">AtomicNumber</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Byte" class="extype" target="_top">Byte</a>] with <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Byte" class="extype" target="_top">Byte</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicByteextendsAtomicNumber[Byte]withBlockableAtomic[Byte]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicChar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicCharextendsAtomicNumber[Char]withBlockableAtomic[Char]"></a>
+      <a id="AtomicChar:AtomicChar"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicChar.html"><span class="name">AtomicChar</span></a><span class="result"> extends <a href="AtomicNumber.html" class="extype" name="scalax.concurrent.atomic.AtomicNumber">AtomicNumber</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a>] with <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicCharextendsAtomicNumber[Char]withBlockableAtomic[Char]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicDouble" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicDoubleextendsAtomicNumber[Double]withBlockableAtomic[Double]"></a>
+      <a id="AtomicDouble:AtomicDouble"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicDouble.html"><span class="name">AtomicDouble</span></a><span class="result"> extends <a href="AtomicNumber.html" class="extype" name="scalax.concurrent.atomic.AtomicNumber">AtomicNumber</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Double" class="extype" target="_top">Double</a>] with <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Double" class="extype" target="_top">Double</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicDoubleextendsAtomicNumber[Double]withBlockableAtomic[Double]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicFloat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicFloatextendsAtomicNumber[Float]withBlockableAtomic[Float]"></a>
+      <a id="AtomicFloat:AtomicFloat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicFloat.html"><span class="name">AtomicFloat</span></a><span class="result"> extends <a href="AtomicNumber.html" class="extype" name="scalax.concurrent.atomic.AtomicNumber">AtomicNumber</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Float" class="extype" target="_top">Float</a>] with <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Float" class="extype" target="_top">Float</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicFloatextendsAtomicNumber[Float]withBlockableAtomic[Float]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicInt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicIntextendsAtomicNumber[Int]withBlockableAtomic[Int]"></a>
+      <a id="AtomicInt:AtomicInt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicInt.html"><span class="name">AtomicInt</span></a><span class="result"> extends <a href="AtomicNumber.html" class="extype" name="scalax.concurrent.atomic.AtomicNumber">AtomicNumber</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>] with <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicIntextendsAtomicNumber[Int]withBlockableAtomic[Int]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicLong" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicLongextendsAtomicNumber[Long]withBlockableAtomic[Long]"></a>
+      <a id="AtomicLong:AtomicLong"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicLong.html"><span class="name">AtomicLong</span></a><span class="result"> extends <a href="AtomicNumber.html" class="extype" name="scalax.concurrent.atomic.AtomicNumber">AtomicNumber</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a>] with <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicLongextendsAtomicNumber[Long]withBlockableAtomic[Long]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicNumber" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="AtomicNumber[T]extendsAtomic[T]"></a>
+      <a id="AtomicNumber[T]:AtomicNumber[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicNumber.html"><span class="name">AtomicNumber</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a>[<span class="extype" name="scalax.concurrent.atomic.AtomicNumber.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicNumber[T]extendsAtomic[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents an Atomic reference holding a number, providing helpers for easily incrementing and decrementing it.</p><div class="fullcomment"><div class="comment cmt"><p>Represents an Atomic reference holding a number, providing helpers for easily incrementing and decrementing it.
+</p></div><dl class="paramcmts block"><dt class="tparam">T</dt><dd class="cmt"><p>should be something that's Numeric</p></dd></dl></div>
+    </li><li name="scalax.concurrent.atomic.AtomicNumberAny" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicNumberAny[T]extendsAtomicNumber[T]withBlockableAtomic[T]"></a>
+      <a id="AtomicNumberAny[T]:AtomicNumberAny[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicNumberAny.html"><span class="name">AtomicNumberAny</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="AtomicNumber.html" class="extype" name="scalax.concurrent.atomic.AtomicNumber">AtomicNumber</a>[<span class="extype" name="scalax.concurrent.atomic.AtomicNumberAny.T">T</span>] with <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<span class="extype" name="scalax.concurrent.atomic.AtomicNumberAny.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicNumberAny[T]extendsAtomicNumber[T]withBlockableAtomic[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicShort" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicShortextendsAtomicNumber[Short]withBlockableAtomic[Short]"></a>
+      <a id="AtomicShort:AtomicShort"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicShort.html"><span class="name">AtomicShort</span></a><span class="result"> extends <a href="AtomicNumber.html" class="extype" name="scalax.concurrent.atomic.AtomicNumber">AtomicNumber</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Short" class="extype" target="_top">Short</a>] with <a href="BlockableAtomic.html" class="extype" name="scalax.concurrent.atomic.BlockableAtomic">BlockableAtomic</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Short" class="extype" target="_top">Short</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicShortextendsAtomicNumber[Short]withBlockableAtomic[Short]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.BlockableAtomic" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="BlockableAtomic[T]extendsAtomic[T]"></a>
+      <a id="BlockableAtomic[T]:BlockableAtomic[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BlockableAtomic.html"><span class="name">BlockableAtomic</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <a href="Atomic.html" class="extype" name="scalax.concurrent.atomic.Atomic">Atomic</a>[<span class="extype" name="scalax.concurrent.atomic.BlockableAtomic.T">T</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@BlockableAtomic[T]extendsAtomic[T]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents Atomic references that can block the thread (with spin-locking)
+in wait of a successful condition (is not supported on top of Scala.js).</p><div class="fullcomment"><div class="comment cmt"><p>Represents Atomic references that can block the thread (with spin-locking)
+in wait of a successful condition (is not supported on top of Scala.js).</p><p>Useful when using an Atomic reference as a locking mechanism.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scalax.concurrent.atomic.Atomic" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Atomic"></a>
+      <a id="Atomic:Atomic"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Atomic$.html"><span class="name">Atomic</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@Atomic" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicAny" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicAny"></a>
+      <a id="AtomicAny:AtomicAny"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicAny$.html"><span class="name">AtomicAny</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicAny" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicBoolean" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicBoolean"></a>
+      <a id="AtomicBoolean:AtomicBoolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicBoolean$.html"><span class="name">AtomicBoolean</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicBoolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicBuilder" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicBuilder"></a>
+      <a id="AtomicBuilder:AtomicBuilder"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicBuilder$.html"><span class="name">AtomicBuilder</span></a><span class="result"> extends <span class="extype" name="scalax.concurrent.atomic.Implicits.Level3">Level3</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicBuilder" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicByte" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicByte"></a>
+      <a id="AtomicByte:AtomicByte"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicByte$.html"><span class="name">AtomicByte</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicByte" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicChar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicChar"></a>
+      <a id="AtomicChar:AtomicChar"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicChar$.html"><span class="name">AtomicChar</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicChar" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicDouble" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicDouble"></a>
+      <a id="AtomicDouble:AtomicDouble"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicDouble$.html"><span class="name">AtomicDouble</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicDouble" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicFloat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicFloat"></a>
+      <a id="AtomicFloat:AtomicFloat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicFloat$.html"><span class="name">AtomicFloat</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicFloat" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicInt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicInt"></a>
+      <a id="AtomicInt:AtomicInt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicInt$.html"><span class="name">AtomicInt</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicInt" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicLong" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicLong"></a>
+      <a id="AtomicLong:AtomicLong"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicLong$.html"><span class="name">AtomicLong</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicLong" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicNumber" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicNumber"></a>
+      <a id="AtomicNumber:AtomicNumber"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicNumber$.html"><span class="name">AtomicNumber</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicNumber" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicNumberAny" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicNumberAny"></a>
+      <a id="AtomicNumberAny:AtomicNumberAny"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicNumberAny$.html"><span class="name">AtomicNumberAny</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicNumberAny" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.AtomicShort" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AtomicShort"></a>
+      <a id="AtomicShort:AtomicShort"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicShort$.html"><span class="name">AtomicShort</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@AtomicShort" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="scalax.concurrent.atomic.padded" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="padded"></a>
+      <a id="padded:padded"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="padded/package.html"><span class="name">padded</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#scalax.concurrent.atomic.package@padded" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Atomic classes that are cache-padded for reducing cache contention,
+until JEP 142 and <code>@Contended</code> happens.</p><div class="fullcomment"><div class="comment cmt"><p>Atomic classes that are cache-padded for reducing cache contention,
+until JEP 142 and <code>@Contended</code> happens. See:</p><p>http://mail.openjdk.java.net/pipermail/hotspot-dev/2012-November/007309.html
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

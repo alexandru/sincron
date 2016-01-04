@@ -22,6 +22,7 @@ The name `scalax` mirrors the `javax` package for Java and in
 - [Atomic References](https://github.com/monifu/scalax/wiki/Atomic-References) (wiki document)
 - [Cancelable](https://github.com/monifu/scalax/wiki/Cancelable) (wiki document)
 - [Scheduler](https://github.com/monifu/scalax/wiki/Scheduler) (wiki document)
+- [Future Utils](https://github.com/monifu/scalax/wiki/Future-Utils) (wiki document)
 
 ## Usage
 

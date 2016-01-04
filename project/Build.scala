@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014-2015 by its authors. Some rights reserved.
- * See the project's home at: https://github.com/monifu/asterix
+ * See the project's home at: https://github.com/monifu/scalax
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,9 +87,9 @@ object Build extends SbtBuild {
     scalacOptions in (ScalaUnidoc, unidoc) +=
       "-Ymacro-expand:none",
     scalacOptions in (ScalaUnidoc, unidoc) ++=
-      Opts.doc.title(s"Asterix"),
+      Opts.doc.title(s"Scalax"),
     scalacOptions in (ScalaUnidoc, unidoc) ++=
-      Opts.doc.sourceUrl(s"https://github.com/monifu/asterix/tree/v${version.value}€{FILE_PATH}.scala"),
+      Opts.doc.sourceUrl(s"https://github.com/monifu/scalax/tree/v${version.value}€{FILE_PATH}.scala"),
     scalacOptions in (ScalaUnidoc, unidoc) ++=
       Seq("-doc-root-content", file("./rootdoc.txt").getAbsolutePath),
     scalacOptions in (ScalaUnidoc, unidoc) ++=
@@ -133,7 +133,7 @@ object Build extends SbtBuild {
     pomIncludeRepository := { _ => false }, // removes optional dependencies
 
     pomExtra :=
-      <url>https://github.com/monifu/asterix/</url>
+      <url>https://github.com/monifu/scalax/</url>
         <licenses>
           <license>
             <name>Apache License, Version 2.0</name>
@@ -142,8 +142,8 @@ object Build extends SbtBuild {
           </license>
         </licenses>
         <scm>
-          <url>git@github.com:monifu/asterix.git</url>
-          <connection>scm:git:git@github.com:monifu/asterix.git</connection>
+          <url>git@github.com:monifu/scalax.git</url>
+          <connection>scm:git:git@github.com:monifu/scalax.git</connection>
         </scm>
         <developers>
           <developer>
@@ -159,38 +159,38 @@ object Build extends SbtBuild {
     unmanagedSourceDirectories in Test <+= baseDirectory(_.getParentFile / "shared" / "src" / "test" / "scala")
   )
 
-  lazy val asterix = project.in(file("."))
-    .aggregate(asterixAtomicJVM, asterixAtomicJS, asterixJVM, asterixJS)
+  lazy val scalax = project.in(file("."))
+    .aggregate(scalaxAtomicJVM, scalaxAtomicJS, scalaxJVM, scalaxJS)
     .settings(unidocSettings: _*)
     .settings(sharedSettings: _*)
     .settings(doNotPublishArtifact: _*)
     .settings(
       unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject --
-        inProjects(asterixAtomicJS, asterixJS, asterixJVM)
+        inProjects(scalaxAtomicJS, scalaxJS, scalaxJVM)
     )
 
-  lazy val asterixAtomicJVM = project.in(file("atomic/jvm"))
+  lazy val scalaxAtomicJVM = project.in(file("atomic/jvm"))
     .settings(crossSettings: _*)
-    .settings(name := "asterix-atomic")
+    .settings(name := "scalax-atomic")
 
-  lazy val asterixAtomicJS = project.in(file("atomic/js"))
+  lazy val scalaxAtomicJS = project.in(file("atomic/js"))
     .settings(crossSettings: _*)
     .enablePlugins(ScalaJSPlugin)
     .settings(
-      name := "asterix-atomic",
+      name := "scalax-atomic",
       scalaJSStage in Test := FastOptStage,
       coverageExcludedFiles := ".*")
 
-  lazy val asterixJVM = project.in(file("asterix/jvm"))
+  lazy val scalaxJVM = project.in(file("scalax/jvm"))
     .settings(crossSettings: _*)
-    .aggregate(asterixAtomicJVM)
-    .dependsOn(asterixAtomicJVM)
-    .settings(name := "asterix")
+    .aggregate(scalaxAtomicJVM)
+    .dependsOn(scalaxAtomicJVM)
+    .settings(name := "scalax")
 
-  lazy val asterixJS = project.in(file("asterix/js"))
+  lazy val scalaxJS = project.in(file("scalax/js"))
     .settings(crossSettings: _*)
     .enablePlugins(ScalaJSPlugin)
-    .aggregate(asterixAtomicJS)
-    .dependsOn(asterixAtomicJS)
-    .settings(name := "asterix")
+    .aggregate(scalaxAtomicJS)
+    .dependsOn(scalaxAtomicJS)
+    .settings(name := "scalax")
 }

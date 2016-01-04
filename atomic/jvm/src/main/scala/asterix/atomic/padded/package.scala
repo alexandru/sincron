@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014-2016 by its authors. Some rights reserved.
- * See the project homepage at: https://github.com/monifu/asterix
+ * See the project homepage at: https://github.com/monifu/scalax
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
  
-package asterix.atomic
+package scalax.concurrent.atomic
 
 /**
  * Atomic classes that are cache-padded for reducing cache contention,
@@ -24,7 +24,7 @@ package asterix.atomic
  * http://mail.openjdk.java.net/pipermail/hotspot-dev/2012-November/007309.html
  */
 package object padded {
-  import asterix.atomic
+  import scalax.concurrent.atomic
 
   // defining useful type-aliases
   type Atomic[T] = atomic.Atomic[T]

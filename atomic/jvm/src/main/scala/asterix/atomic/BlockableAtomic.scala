@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014-2016 by its authors. Some rights reserved.
- * See the project homepage at: https://github.com/monifu/asterix
+ * See the project homepage at: https://github.com/monifu/scalax
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package asterix.atomic
+package scalax.concurrent.atomic
 
 import scala.concurrent._
 import scala.concurrent.duration.FiniteDuration
@@ -72,7 +72,7 @@ trait BlockableAtomic[T] extends Atomic[T] {
    */
   @throws(classOf[InterruptedException])
   @throws(classOf[TimeoutException])
-  private[asterix] def waitForCompareAndSet(expect: T, update: T, waitUntil: Long): Unit
+  private[scalax] def waitForCompareAndSet(expect: T, update: T, waitUntil: Long): Unit
 
   /**
    * Waits until the specified `expect` value == the value stored by this Atomic reference
@@ -99,7 +99,7 @@ trait BlockableAtomic[T] extends Atomic[T] {
    */
   @throws(classOf[InterruptedException])
   @throws(classOf[TimeoutException])
-  private[asterix] def waitForValue(expect: T, waitUntil: Long): Unit
+  private[scalax] def waitForValue(expect: T, waitUntil: Long): Unit
 
   /**
    * Waits until the specified callback, that receives the current value, returns `true`.
@@ -120,5 +120,5 @@ trait BlockableAtomic[T] extends Atomic[T] {
    */
   @throws(classOf[InterruptedException])
   @throws(classOf[TimeoutException])
-  private[asterix] def waitForCondition(waitUntil: Long, p: T => Boolean): Unit
+  private[scalax] def waitForCondition(waitUntil: Long, p: T => Boolean): Unit
 }

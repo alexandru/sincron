@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014-2016 by its authors. Some rights reserved.
- * See the project homepage at: https://github.com/monifu/asterix
+ * See the project homepage at: https://github.com/monifu/scalax
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  * limitations under the License.
  */
  
-package asterix.atomic.padded
+package scalax.concurrent.atomic.padded
 
-import asterix.atomic.ConcurrentAtomicNumberSuite
+import scalax.concurrent.atomic.ConcurrentAtomicNumberSuite
 
 object ConcurrentAtomicNumberDoubleSuite extends ConcurrentAtomicNumberSuite[Double, AtomicDouble](
   "AtomicDouble", Atomic.builderFor(0.0), 17.23, Some(Double.NaN), Double.MaxValue, Double.MinValue)

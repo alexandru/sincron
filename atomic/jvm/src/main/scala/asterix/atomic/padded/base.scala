@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014-2016 by its authors. Some rights reserved.
- * See the project homepage at: https://github.com/monifu/asterix
+ * See the project homepage at: https://github.com/monifu/scalax
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package asterix.atomic.padded
+package scalax.concurrent.atomic.padded
 
 import java.lang.Double._
 import java.lang.Float._
@@ -24,8 +24,8 @@ import java.util.concurrent.atomic.{AtomicInteger => JavaAtomicInteger}
 import java.util.concurrent.atomic.{AtomicBoolean => JavaAtomicBoolean}
 import java.util.concurrent.atomic.{AtomicReference => JavaAtomicReference}
 
-import asterix.atomic
-import asterix.atomic.{AtomicBuilder => BaseAtomicBuilder}
+import scalax.concurrent.atomic
+import scalax.concurrent.atomic.{AtomicBuilder => BaseAtomicBuilder}
 
 /**
  * Adds 128 bytes of cache-line padding to Java's AtomicLong.

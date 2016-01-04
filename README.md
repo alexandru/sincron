@@ -1,39 +1,46 @@
-# Asterix
+# Scalax
 
-<img src="https://raw.githubusercontent.com/monifu/asterix/8cf94d21a26e6a42d85c23dcfbc5f38b7f2d4454/logo.png" align="right" width="200" />
+<img src="https://raw.githubusercontent.com/monifu/scalax/8cf94d21a26e6a42d85c23dcfbc5f38b7f2d4454/logo.png" align="right" width="200" />
 
-Low level concurrency primitives for Scala, with equivalents or
-shims for Scala.js for source-level compatibility, where possible.
+The missing Scala standard library. The purpose of Scalax is to
+build missing interfaces and functionalities that should be standard
+and to (hopefully) push these as [SLIPs](https://github.com/scala/slip).
 
-[![Build Status](https://travis-ci.org/monifu/asterix.svg?branch=master)](https://travis-ci.org/monifu/asterix)
-[![Coverage Status](https://codecov.io/github/monifu/asterix/coverage.svg?branch=master)](https://codecov.io/github/monifu/asterix?branch=master)
+The name `scalax` mirrors the `javax` package for Java and in
+`javax` that's where extensions to an existing JRE go.
+
+The project is broken into multiple sub-projects, so you can use just the
+pieces that you want.
+
+[![Build Status](https://travis-ci.org/monifu/scalax.svg?branch=master)](https://travis-ci.org/monifu/scalax)
+[![Coverage Status](https://codecov.io/github/monifu/scalax/coverage.svg?branch=master)](https://codecov.io/github/monifu/scalax?branch=master)
 [![License](http://img.shields.io/:license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.monifu/asterix_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.monifu/scalax_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.monifu/scalax_2.11)
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/monifu/asterix?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/monifu/scalax?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Usage
 
-Asterix is being split in small and reusable packages. Some will provide
+Scalax is being split in small and reusable packages. Some will provide
 a Scala.js / Javascript compatible implementation (within reason) for
 helping with cross compiled code.
 
-### Atomic References (asterix-atomic)
+### Atomic References (scalax-atomic)
 
-See [Atomic References](https://github.com/monifu/asterix/wiki/Atomic-References)
+See [Atomic References](https://github.com/monifu/scalax/wiki/Atomic-References)
 in the Wiki.
 
 Dependency for the JVM:
 
 ```scala
-libraryDependencies += "org.monifu" %% "asterix-atomic" % "0.1"
+libraryDependencies += "org.monifu" %% "scalax-atomic" % "0.2"
 ```
 
-For [Scala.js](https://github.com/monifu/asterix/wiki/Atomic-References)
+For [Scala.js](https://github.com/monifu/scalax/wiki/Atomic-References)
 / Javascript or for cross-compiled projects:
 
 ```scala
-libraryDependencies += "org.monifu" %%% "asterix-atomic" % "0.1"
+libraryDependencies += "org.monifu" %%% "scalax-atomic" % "0.2"
 ```
 
 ## Maintainers
@@ -45,12 +52,12 @@ The current maintainers (people who can help you) are:
 
 ## Contributing
 
-The Asterix project welcomes contributions from anybody wishing to participate.
+The Scalax project welcomes contributions from anybody wishing to participate.
 All code or documentation that is provided must be licensed with the same
-license that Asterix is licensed with (Apache 2.0, see LICENSE.txt).
+license that Scalax is licensed with (Apache 2.0, see LICENSE.txt).
 
 People are expected to follow the [Typelevel Code of Conduct](http://typelevel.org/conduct.html)
-when discussing Asterix on the Github page, Gitter channel, or other venues.
+when discussing Scalax on the Github page, Gitter channel, or other venues.
 
 We hope that our community will be respectful, helpful, and kind. If you find
 yourself embroiled in a situation that becomes heated, or that fails to live up

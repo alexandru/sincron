@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2014-2016 by its authors. Some rights reserved.
- * See the project homepage at: https://github.com/monifu/asterix
+ * See the project homepage at: https://github.com/monifu/scalax
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
  
-package asterix.atomic
+package scalax.concurrent.atomic
 
 import scala.annotation.tailrec
 import scala.concurrent.TimeoutException
@@ -115,7 +115,7 @@ final class AtomicBoolean private (ref: JavaAtomicBoolean) extends BlockableAtom
   @tailrec
   @throws(classOf[InterruptedException])
   @throws(classOf[TimeoutException])
-  private[asterix] def waitForCompareAndSet(expect: Boolean, update: Boolean, waitUntil: Long): Unit =
+  private[scalax] def waitForCompareAndSet(expect: Boolean, update: Boolean, waitUntil: Long): Unit =
     if (!compareAndSet(expect, update)) {
       interruptedCheck()
       timeoutCheck(waitUntil)
@@ -140,7 +140,7 @@ final class AtomicBoolean private (ref: JavaAtomicBoolean) extends BlockableAtom
   @tailrec
   @throws(classOf[InterruptedException])
   @throws(classOf[TimeoutException])
-  private[asterix] def waitForValue(expect: Boolean, waitUntil: Long): Unit =
+  private[scalax] def waitForValue(expect: Boolean, waitUntil: Long): Unit =
     if (get != expect) {
       interruptedCheck()
       timeoutCheck(waitUntil)
@@ -165,7 +165,7 @@ final class AtomicBoolean private (ref: JavaAtomicBoolean) extends BlockableAtom
   @tailrec
   @throws(classOf[InterruptedException])
   @throws(classOf[TimeoutException])
-  private[asterix] def waitForCondition(waitUntil: Long, p: Boolean => Boolean): Unit =
+  private[scalax] def waitForCondition(waitUntil: Long, p: Boolean => Boolean): Unit =
     if (!p(get)) {
       interruptedCheck()
       timeoutCheck(waitUntil)

@@ -11,7 +11,7 @@ The name `scalax` mirrors the `javax` package for Java and in
 
 [![Build Status](https://travis-ci.org/monifu/scalax.svg?branch=master)](https://travis-ci.org/monifu/scalax)
 [![Coverage Status](https://codecov.io/github/monifu/scalax/coverage.svg?branch=master)](https://codecov.io/github/monifu/scalax?branch=master)
-[![License](http://img.shields.io/:license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
+[![License](https://img.shields.io/github/license/monifu/scalax.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.monifu/scalax_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.monifu/scalax_2.11)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/monifu/monix?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -65,7 +65,7 @@ The current maintainers (people who can help you) are:
 The Scalax project welcomes contributions from anybody wishing to
 participate.  All code or documentation that is provided must be
 licensed with the same license that Scalax is licensed with
-(Apache 2.0, see LICENSE.txt) and to sign Scala's Contributor License
+(see LICENSE.txt) and to sign Scala's Contributor License
 Agreement (see the [contributor guide](CONTRIBUTING.md) for details).
 
 People are expected to follow the
@@ -86,5 +86,5 @@ gladly accepted. For more information, check out the
 
 ## License
 
-All code in this repository is licensed under the Apache License, Version 2.0.
+All code in this repository is licensed under the BSD 3-Clause license.
 See [LICENCE.txt](./LICENSE.txt).

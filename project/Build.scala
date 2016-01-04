@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2016 by its authors. Some rights reserved.
- * See the project's homepage at: https://github.com/monifu/scalax
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import com.typesafe.sbt.pgp.PgpKeys
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
@@ -136,8 +119,8 @@ object Build extends SbtBuild {
       <url>https://github.com/monifu/scalax/</url>
         <licenses>
           <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <name>BSD 3-Clause License</name>
+            <url>https://opensource.org/licenses/BSD-3-Clause</url>
             <distribution>repo</distribution>
           </license>
         </licenses>
@@ -163,13 +146,14 @@ object Build extends SbtBuild {
     .aggregate(
       scalaxAtomicJVM, scalaxAtomicJS,
       scalaxCancelableJVM, scalaxCancelableJS,
+      scalaxSchedulerJVM, scalaxSchedulerJS,
       scalaxJVM, scalaxJS)
     .settings(unidocSettings: _*)
     .settings(sharedSettings: _*)
     .settings(doNotPublishArtifact: _*)
     .settings(
       unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject --
-        inProjects(scalaxAtomicJS, scalaxCancelableJS, scalaxJS, scalaxJVM)
+        inProjects(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS, scalaxJS, scalaxJVM)
     )
 
   lazy val scalaxAtomicJVM = project.in(file("atomic/jvm"))
@@ -198,16 +182,30 @@ object Build extends SbtBuild {
       scalaJSStage in Test := FastOptStage,
       coverageExcludedFiles := ".*")
 
+  lazy val scalaxSchedulerJVM = project.in(file("scheduler/jvm"))
+    .dependsOn(scalaxAtomicJVM, scalaxCancelableJVM)
+    .settings(crossSettings: _*)
+    .settings(name := "scalax-scheduler")
+
+  lazy val scalaxSchedulerJS = project.in(file("scheduler/js"))
+    .dependsOn(scalaxAtomicJS, scalaxCancelableJS)
+    .settings(crossSettings: _*)
+    .enablePlugins(ScalaJSPlugin)
+    .settings(
+      name := "scalax-scheduler",
+      scalaJSStage in Test := FastOptStage,
+      coverageExcludedFiles := ".*")
+
   lazy val scalaxJVM = project.in(file("scalax/jvm"))
     .settings(crossSettings: _*)
-    .aggregate(scalaxAtomicJVM, scalaxCancelableJVM)
-    .dependsOn(scalaxAtomicJVM, scalaxCancelableJVM)
+    .aggregate(scalaxAtomicJVM, scalaxCancelableJVM, scalaxSchedulerJVM)
+    .dependsOn(scalaxAtomicJVM, scalaxCancelableJVM, scalaxSchedulerJVM)
     .settings(name := "scalax")
 
   lazy val scalaxJS = project.in(file("scalax/js"))
     .settings(crossSettings: _*)
     .enablePlugins(ScalaJSPlugin)
-    .aggregate(scalaxAtomicJS, scalaxCancelableJS)
-    .dependsOn(scalaxAtomicJS, scalaxCancelableJS)
+    .aggregate(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS)
+    .dependsOn(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS)
     .settings(name := "scalax")
 }

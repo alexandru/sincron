@@ -49,75 +49,41 @@ and to (hopefully) push these as <a href="https://github.com/scala/slip">SLIPs</
 <p><a href="https://gitter.im/monifu/monix?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter"></a></p>
 
 <h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<ul>
+<li>API Documentation: <a href="https://scalax.org/api/current/">current</a> (<a href="https://scalax.org/api/0.3/">0.3</a>)</li>
+<li>
+<a href="https://github.com/monifu/scalax/wiki/Atomic-References">Atomic References</a> (wiki document)</li>
+<li>
+<a href="https://github.com/monifu/scalax/wiki/Cancelable">Cancelable</a> (wiki document)</li>
+<li>
+<a href="https://github.com/monifu/scalax/wiki/Scheduler">Scheduler</a> (wiki document)</li>
+</ul>
+
+<h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>Scalax is being split in small and reusable packages. Some will provide
-a Scala.js / Javascript compatible implementation (within reason) for
-helping with cross compiled code.</p>
+<p>Scalax is being split in small and reusable packages. Supports
+<a href="http://www.scala-js.org/">Scala.js</a> / Javascript engines (within reason)
+for cross compiled code. Supports both Scala 2.11.x and 2.10.x.</p>
 
-<h3>
-<a id="atomic-references-scalax-atomic" class="anchor" href="#atomic-references-scalax-atomic" aria-hidden="true"><span class="octicon octicon-link"></span></a>Atomic References (scalax-atomic)</h3>
+<p>Specifying dependencies (replace <code>%%</code> with <code>%%%</code> for targeting Scala.js):</p>
 
-<p>See <a href="https://github.com/monifu/scalax/wiki/Atomic-References">Atomic References</a>
-in the Wiki.</p>
+<div class="highlight highlight-source-scala"><pre><span class="pl-c">// Atomic References</span>
+libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-atomic<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span>
 
-<p>Dependency for the JVM:</p>
+<span class="pl-c">// Cancelable</span>
+libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-cancelable<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span>
 
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-atomic<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+<span class="pl-c">// Scheduler</span>
+libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-scheduler<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span>
 
-<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
+<span class="pl-c">// Future Utils</span>
+libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-Future<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span>
 
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-atomic<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
-
-<h3>
-<a id="cancelable-scalax-cancelable" class="anchor" href="#cancelable-scalax-cancelable" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cancelable (scalax-cancelable)</h3>
-
-<p>See <a href="https://github.com/monifu/scalax/wiki/Cancelable">Cancelable</a>
-in the Wiki.</p>
-
-<p>Dependency for the JVM:</p>
-
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-cancelable<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
-
-<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
-
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-cancelable<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
-
-<h3>
-<a id="scheduler-scalax-scheduler" class="anchor" href="#scheduler-scalax-scheduler" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scheduler (scalax-scheduler)</h3>
-
-<p>See <a href="https://github.com/monifu/scalax/wiki/Scheduler">Scheduler</a>
-in the Wiki.</p>
-
-<p>Dependency for the JVM:</p>
-
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-cancelable<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
-
-<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
-
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-cancelable<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
-
-<h3>
-<a id="future-utils-scalax-future" class="anchor" href="#future-utils-scalax-future" aria-hidden="true"><span class="octicon octicon-link"></span></a>Future Utils (scalax-future)</h3>
-
-<p>Dependency for the JVM:</p>
-
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-future<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
-
-<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
-
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax-future<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
-
-<h3>
-<a id="everything-scalax" class="anchor" href="#everything-scalax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Everything (scalax)</h3>
-
-<p>Dependency for the JVM:</p>
-
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
-
-<p>For <a href="http://www.scala-js.org/">Scala.js</a> / Javascript or for cross-compiled projects:</p>
-
-<div class="highlight highlight-source-scala"><pre>libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
+<span class="pl-c">// Everything</span>
+libraryDependencies <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>org.monifu<span class="pl-pds">"</span></span> <span class="pl-k">%%</span> <span class="pl-s"><span class="pl-pds">"</span>scalax<span class="pl-pds">"</span></span> <span class="pl-k">%</span> <span class="pl-s"><span class="pl-pds">"</span>0.3<span class="pl-pds">"</span></span></pre></div>
 
 <h2>
 <a id="maintainers" class="anchor" href="#maintainers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maintainers</h2>

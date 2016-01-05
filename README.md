@@ -1,7 +1,5 @@
 # Scalax
 
-<img src="https://raw.githubusercontent.com/monifu/scalax/8cf94d21a26e6a42d85c23dcfbc5f38b7f2d4454/logo.png" align="right" width="200" />
-
 The missing Scala standard library. The purpose of Scalax is to
 build missing interfaces and functionalities that should be standard
 and to (hopefully) push these as [SLIPs](https://github.com/scala/slip).

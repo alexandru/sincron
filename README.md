@@ -7,7 +7,7 @@ along with useful and high-performance concurrent mutable data-structures.
 
 [![Build Status](https://travis-ci.org/monixio/sincron.svg?branch=master)](https://travis-ci.org/monixio/sincron)
 [![Coverage Status](https://codecov.io/github/monixio/sincron/coverage.svg?branch=master)](https://codecov.io/github/monixio/sincron?branch=master)
-[![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![License](http://img.shields.io/:license-Apache%202-red.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.sincron/sincron_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.sincron/sincron_2.11)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/monixio/monix?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

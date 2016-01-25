@@ -4,8 +4,6 @@ scala:
   - 2.10.6
   - 2.11.7
 jdk:
- - openjdk6
- - openjdk7
  - oraclejdk8
 
 notifications:

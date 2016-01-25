@@ -1,0 +1,2 @@
+Sincron is a library for high performance, low-level concurrency tools
+for Scala with equivalents for Scala.js.

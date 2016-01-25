@@ -1,23 +1,29 @@
+import com.typesafe.sbt.SbtSite._
 import com.typesafe.sbt.pgp.PgpKeys
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt.{Build => SbtBuild, _}
 import sbtrelease.ReleasePlugin.autoImport._
-import sbtunidoc.Plugin._
 import sbtunidoc.Plugin.UnidocKeys._
+import sbtunidoc.Plugin.{ScalaUnidoc, unidocSettings => baseUnidocSettings}
 import scoverage.ScoverageSbtPlugin.autoImport._
+import tut.Plugin._
+import com.typesafe.sbt.site.PreprocessSupport.preprocessVars
+import com.typesafe.sbt.SbtSite.SiteKeys._
+import java.text.SimpleDateFormat
+import java.util.Date
 
 object Build extends SbtBuild {
-  val doNotPublishArtifact = Seq(
+  lazy val doNotPublishArtifact = Seq(
     publishArtifact := false,
     publishArtifact in (Compile, packageDoc) := false,
     publishArtifact in (Compile, packageSrc) := false,
     publishArtifact in (Compile, packageBin) := false
   )
 
-  val sharedSettings = Seq(
-    organization := "org.monifu",
+  lazy val sharedSettings = Seq(
+    organization := "org.sincron",
     scalaVersion := "2.11.7",
     crossScalaVersions := Seq("2.10.6", "2.11.7"),
 
@@ -34,6 +40,13 @@ object Build extends SbtBuild {
       "-Ywarn-dead-code",
       "-Ywarn-inaccessible"
     ),
+
+    // Force building with Java 8
+    initialize := {
+      val required = "1.8"
+      val current  = sys.props("java.specification.version")
+      assert(current == required, s"Unsupported build JDK: java.specification.version $current != $required")
+    },
 
     // version specific compiler options
     scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
@@ -65,18 +78,6 @@ object Build extends SbtBuild {
 
     // ScalaDoc settings
     autoAPIMappings := true,
-    scalacOptions in (ScalaUnidoc, unidoc) +=
-      "-Xfatal-warnings",
-    scalacOptions in (ScalaUnidoc, unidoc) +=
-      "-Ymacro-expand:none",
-    scalacOptions in (ScalaUnidoc, unidoc) ++=
-      Opts.doc.title(s"Scalax"),
-    scalacOptions in (ScalaUnidoc, unidoc) ++=
-      Opts.doc.sourceUrl(s"https://github.com/monifu/scalax/tree/v${version.value}€{FILE_PATH}.scala"),
-    scalacOptions in (ScalaUnidoc, unidoc) ++=
-      Seq("-doc-root-content", file("./rootdoc.txt").getAbsolutePath),
-    scalacOptions in (ScalaUnidoc, unidoc) ++=
-      Opts.doc.version(s"${version.value}"),
     scalacOptions in ThisBuild ++= Seq(
       // Note, this is used by the doc-source-url feature to determine the
       // relative path of a given source file. If it's not a prefix of a the
@@ -95,7 +96,7 @@ object Build extends SbtBuild {
 
     // -- Testing
 
-    libraryDependencies += "org.monifu" %%% "minitest" % "0.14" % "test",
+    libraryDependencies += "io.monix" %%% "minitest" % "0.15" % "test",
     testFrameworks += new TestFramework("minitest.runner.Framework"),
 
     // -- Settings meant for deployment on oss.sonatype.org
@@ -116,7 +117,7 @@ object Build extends SbtBuild {
     pomIncludeRepository := { _ => false }, // removes optional dependencies
 
     pomExtra :=
-      <url>https://github.com/monifu/scalax/</url>
+      <url>https://github.com/monixio/sincron/</url>
         <licenses>
           <license>
             <name>BSD 3-Clause License</name>
@@ -125,8 +126,8 @@ object Build extends SbtBuild {
           </license>
         </licenses>
         <scm>
-          <url>git@github.com:monifu/scalax.git</url>
-          <connection>scm:git:git@github.com:monifu/scalax.git</connection>
+          <url>git@github.com:monixio/sincron.git</url>
+          <connection>scm:git:git@github.com:monixio/sincron.git</connection>
         </scm>
         <developers>
           <developer>
@@ -137,91 +138,97 @@ object Build extends SbtBuild {
         </developers>
   )
 
-  val crossSettings = sharedSettings ++ Seq(
+  lazy val unidocSettings = baseUnidocSettings ++ Seq(
+    autoAPIMappings := true,
+    unidocProjectFilter in (ScalaUnidoc, unidoc) :=
+      inProjects(atomicJVM),
+
+    scalacOptions in (ScalaUnidoc, unidoc) +=
+      "-Xfatal-warnings",
+    scalacOptions in (ScalaUnidoc, unidoc) +=
+      "-Ymacro-expand:none",
+    scalacOptions in (ScalaUnidoc, unidoc) ++=
+      Opts.doc.title(s"Monix"),
+    scalacOptions in (ScalaUnidoc, unidoc) ++=
+      Opts.doc.sourceUrl(s"https://github.com/monifu/monix/tree/v${version.value}€{FILE_PATH}.scala"),
+    scalacOptions in (ScalaUnidoc, unidoc) ++=
+      Seq("-doc-root-content", file("docs/rootdoc.txt").getAbsolutePath),
+    scalacOptions in (ScalaUnidoc, unidoc) ++=
+      Opts.doc.version(s"${version.value}")
+  )
+
+  lazy val docsSettings =
+    site.addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), "api") ++
+    site.addMappingsToSiteDir(tut, "_tut") ++
+    Seq(
+      (test in Test) <<= (test in Test).dependsOn(tut),
+      coverageExcludedFiles := ".*",
+      siteMappings += file("CONTRIBUTING.md") -> "contributing.md",
+      includeFilter in makeSite :=
+        "*.html" | "*.css" | "*.scss" | "*.png" | "*.jpg" | "*.jpeg" |
+        "*.gif" | "*.svg" | "*.js" | "*.swf" | "*.yml" | "*.md" | "*.xml",
+
+      preprocessVars := {
+        val now = new Date()
+        val dayFormat = new SimpleDateFormat("yyyy-MM-dd")
+        val timeFormat = new SimpleDateFormat("HH:mm:ss")
+
+        Map(
+          "VERSION" -> version.value,
+          "DATE" -> dayFormat.format(now),
+          "TIME" -> timeFormat.format(now)
+        )
+      }
+    )
+
+  lazy val crossSettings = sharedSettings ++ Seq(
     unmanagedSourceDirectories in Compile <+= baseDirectory(_.getParentFile / "shared" / "src" / "main" / "scala"),
     unmanagedSourceDirectories in Test <+= baseDirectory(_.getParentFile / "shared" / "src" / "test" / "scala")
   )
 
-  lazy val scalax = project.in(file("."))
+  lazy val sincron = project.in(file("."))
     .aggregate(
-      scalaxAtomicJVM, scalaxAtomicJS,
-      scalaxCancelableJVM, scalaxCancelableJS,
-      scalaxSchedulerJVM, scalaxSchedulerJS,
-      scalaxFutureJVM, scalaxFutureJS,
-      scalaxJVM, scalaxJS)
+      atomicJVM, atomicJS,
+      sincronJVM, sincronJS)
     .settings(unidocSettings: _*)
     .settings(sharedSettings: _*)
     .settings(doNotPublishArtifact: _*)
     .settings(
-      unidocProjectFilter in (ScalaUnidoc, unidoc) := inAnyProject --
-        inProjects(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS,
-          scalaxFutureJS, scalaxJS, scalaxJVM)
+      unidocProjectFilter in (ScalaUnidoc, unidoc) :=
+        inProjects(atomicJVM)
     )
 
-  lazy val scalaxAtomicJVM = project.in(file("atomic/jvm"))
+  lazy val atomicJVM = project.in(file("sincron-atomic/jvm"))
     .settings(crossSettings: _*)
-    .settings(name := "scalax-atomic")
+    .settings(name := "sincron-atomic")
 
-  lazy val scalaxAtomicJS = project.in(file("atomic/js"))
+  lazy val atomicJS = project.in(file("sincron-atomic/js"))
     .settings(crossSettings: _*)
     .enablePlugins(ScalaJSPlugin)
     .settings(
-      name := "scalax-atomic",
+      name := "sincron-atomic",
       scalaJSStage in Test := FastOptStage,
       coverageExcludedFiles := ".*")
 
-  lazy val scalaxCancelableJVM = project.in(file("cancelable/jvm"))
-    .dependsOn(scalaxAtomicJVM)
+  lazy val sincronJVM = project.in(file("sincron/jvm"))
     .settings(crossSettings: _*)
-    .settings(name := "scalax-cancelable")
+    .aggregate(atomicJVM)
+    .dependsOn(atomicJVM)
+    .settings(name := "sincron")
 
-  lazy val scalaxCancelableJS = project.in(file("cancelable/js"))
-    .dependsOn(scalaxAtomicJS)
+  lazy val sincronJS = project.in(file("sincron/js"))
     .settings(crossSettings: _*)
     .enablePlugins(ScalaJSPlugin)
-    .settings(
-      name := "scalax-cancelable",
-      scalaJSStage in Test := FastOptStage,
-      coverageExcludedFiles := ".*")
+    .aggregate(atomicJS)
+    .dependsOn(atomicJS)
+    .settings(name := "sincron")
 
-  lazy val scalaxSchedulerJVM = project.in(file("scheduler/jvm"))
-    .dependsOn(scalaxAtomicJVM, scalaxCancelableJVM)
-    .settings(crossSettings: _*)
-    .settings(name := "scalax-scheduler")
-
-  lazy val scalaxSchedulerJS = project.in(file("scheduler/js"))
-    .dependsOn(scalaxAtomicJS, scalaxCancelableJS)
-    .settings(crossSettings: _*)
-    .enablePlugins(ScalaJSPlugin)
-    .settings(
-      name := "scalax-scheduler",
-      scalaJSStage in Test := FastOptStage,
-      coverageExcludedFiles := ".*")
-
-  lazy val scalaxFutureJVM = project.in(file("future/jvm"))
-    .dependsOn(scalaxCancelableJVM, scalaxSchedulerJVM)
-    .settings(crossSettings: _*)
-    .settings(name := "scalax-future")
-
-  lazy val scalaxFutureJS = project.in(file("future/js"))
-    .dependsOn(scalaxCancelableJS, scalaxSchedulerJS)
-    .settings(crossSettings: _*)
-    .enablePlugins(ScalaJSPlugin)
-    .settings(
-      name := "scalax-future",
-      scalaJSStage in Test := FastOptStage,
-      coverageExcludedFiles := ".*")
-
-  lazy val scalaxJVM = project.in(file("scalax/jvm"))
-    .settings(crossSettings: _*)
-    .aggregate(scalaxAtomicJVM, scalaxCancelableJVM, scalaxSchedulerJVM, scalaxFutureJVM)
-    .dependsOn(scalaxAtomicJVM, scalaxCancelableJVM, scalaxSchedulerJVM, scalaxFutureJVM)
-    .settings(name := "scalax")
-
-  lazy val scalaxJS = project.in(file("scalax/js"))
-    .settings(crossSettings: _*)
-    .enablePlugins(ScalaJSPlugin)
-    .aggregate(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS, scalaxFutureJS)
-    .dependsOn(scalaxAtomicJS, scalaxCancelableJS, scalaxSchedulerJS, scalaxFutureJS)
-    .settings(name := "scalax")
+  lazy val docs = project.in(file("docs"))
+    .dependsOn(atomicJVM)
+    .settings(sharedSettings)
+    .settings(doNotPublishArtifact)
+    .settings(site.settings)
+    .settings(tutSettings)
+    .settings(unidocSettings)
+    .settings(docsSettings)
 }

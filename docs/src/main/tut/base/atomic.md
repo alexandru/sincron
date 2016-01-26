@@ -126,17 +126,6 @@ ref.incrementAndGet()
 ref.incrementAndGet()
 ```
 
-Even when boxing a number inside a generic `AtomicNumberAny` (that makes use of
-the `Numeric[T]` type-class from Scala's standard library, using a plain `j.u.c.a.AtomicReference[T]`
-internally), the above gotcha doesn't happen, as the implementation of `AtomicNumberAny` is built
-to encounter the auto-boxing effects:
-
-```tut:book
-val ref = AtomicNumberAny(0.0)
-
-ref.compareAndSet(0, 100)
-```
-
 ### Common Pattern: Loops for Transforming the Value
 
 `incrementAndGet` represents just one use-case of a simple and more
@@ -184,6 +173,9 @@ ref.transformAndExtract(_.dequeue)
 
 Voilà, you now have a concurrent, thread-safe and non-blocking Queue. You can do this
 for whatever persistent data-structure you want.
+
+NOTE: the transform methods are implemented using Scala macros, so 
+you get zero overhead by using them.
 
 ## Scala.js support for targeting Javascript
 
@@ -233,11 +225,22 @@ classes are provided. For reference on what that means, see:
 - http://mail.openjdk.java.net/pipermail/hotspot-dev/2012-November/007309.html
 - http://openjdk.java.net/jeps/142
 
-To use the cache-padded versions, you need to import stuff
-from the `padded` sub-package:
+To use the cache-padded versions, you need to override the default `PaddingStrategy`:
 
 ```tut:silent
-import org.sincron.atomic.padded.Atomic
-
+// Applies padding to the left of the value for a cache line of 64 bytes
+import org.sincron.atomic.PaddingStrategy.Implicits.Left64
 val ref = Atomic(1)
+
+// In case you want to avoid using implicits
+val ref = Atomic.withPadding(1, Left64)
 ```
+
+The strategies available are:
+
+- `NoPadding`: doesn't apply any padding, the default
+- `Left64`: applies padding to the left of the value, for a cache line of 64 bytes
+- `Right64`: applies padding to the right of the value, for a cache line of 64 bytes
+- `LeftRight64`: applies padding to both the left and the right, for a cache line of 128 bytes
+
+And now you can join the folks that have mechanical sympathy :-P

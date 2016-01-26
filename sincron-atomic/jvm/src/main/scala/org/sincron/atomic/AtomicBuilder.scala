@@ -18,64 +18,64 @@
 package org.sincron.atomic
 
 trait AtomicBuilder[T, R <: Atomic[T]] {
-  def buildInstance(initialValue: T): R
+  def buildInstance(initialValue: T, strategy: PaddingStrategy): R
 }
 
 private[atomic] object Implicits {
   abstract class Level1 {
-    implicit def AtomicRefBuilder[T] = new AtomicBuilder[T, AtomicAny[T]] {
-      def buildInstance(initialValue: T) =
-        AtomicAny(initialValue)
+    implicit def AtomicRefBuilder[T <: AnyRef] = new AtomicBuilder[T, AtomicAny[T]] {
+      def buildInstance(initialValue: T, strategy: PaddingStrategy) =
+        AtomicAny(initialValue)(strategy)
     }
   }
 
   abstract class Level2 extends Level1 {
-    implicit def AtomicNumberBuilder[T : Numeric] =
+    implicit def AtomicNumberBuilder[T <: AnyRef : Numeric] =
       new AtomicBuilder[T, AtomicNumberAny[T]] {
-        def buildInstance(initialValue: T) =
-          AtomicNumberAny(initialValue)
+        def buildInstance(initialValue: T, strategy: PaddingStrategy) =
+          AtomicNumberAny(initialValue)(implicitly[Numeric[T]], strategy)
       }
   }
 }
 
 object AtomicBuilder extends Implicits.Level2 {
   implicit object AtomicIntBuilder extends AtomicBuilder[Int, AtomicInt] {
-    def buildInstance(initialValue: Int): AtomicInt =
-      AtomicInt(initialValue)
+    def buildInstance(initialValue: Int, strategy: PaddingStrategy): AtomicInt =
+      AtomicInt(initialValue)(strategy)
   }
 
   implicit object AtomicLongBuilder extends AtomicBuilder[Long, AtomicLong] {
-    def buildInstance(initialValue: Long): AtomicLong =
-      AtomicLong(initialValue)
+    def buildInstance(initialValue: Long, strategy: PaddingStrategy): AtomicLong =
+      AtomicLong(initialValue)(strategy)
   }
 
   implicit object AtomicBooleanBuilder extends AtomicBuilder[Boolean, AtomicBoolean] {
-    def buildInstance(initialValue: Boolean) =
-      AtomicBoolean(initialValue)
+    def buildInstance(initialValue: Boolean, strategy: PaddingStrategy) =
+      AtomicBoolean(initialValue)(strategy)
   }
 
   implicit object AtomicByteBuilder extends AtomicBuilder[Byte, AtomicByte] {
-    def buildInstance(initialValue: Byte): AtomicByte =
-      AtomicByte(initialValue)
+    def buildInstance(initialValue: Byte, strategy: PaddingStrategy): AtomicByte =
+      AtomicByte(initialValue)(strategy)
   }
 
   implicit object AtomicCharBuilder extends AtomicBuilder[Char, AtomicChar] {
-    def buildInstance(initialValue: Char): AtomicChar =
-      AtomicChar(initialValue)
+    def buildInstance(initialValue: Char, strategy: PaddingStrategy): AtomicChar =
+      AtomicChar(initialValue)(strategy)
   }
 
   implicit object AtomicShortBuilder extends AtomicBuilder[Short, AtomicShort] {
-    def buildInstance(initialValue: Short): AtomicShort =
-      AtomicShort(initialValue)
+    def buildInstance(initialValue: Short, strategy: PaddingStrategy): AtomicShort =
+      AtomicShort(initialValue)(strategy)
   }
 
   implicit object AtomicFloatBuilder extends AtomicBuilder[Float, AtomicFloat] {
-    def buildInstance(initialValue: Float): AtomicFloat =
-      AtomicFloat(initialValue)
+    def buildInstance(initialValue: Float, strategy: PaddingStrategy): AtomicFloat =
+      AtomicFloat(initialValue)(strategy)
   }
 
   implicit object AtomicDoubleBuilder extends AtomicBuilder[Double, AtomicDouble] {
-    def buildInstance(initialValue: Double): AtomicDouble =
-      AtomicDouble(initialValue)
+    def buildInstance(initialValue: Double, strategy: PaddingStrategy): AtomicDouble =
+      AtomicDouble(initialValue)(strategy)
   }
 }

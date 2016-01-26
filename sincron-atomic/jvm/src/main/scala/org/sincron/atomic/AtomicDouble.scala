@@ -17,35 +17,29 @@
 
 package org.sincron.atomic
 
+import org.sincron.atomic.PaddingStrategy.NoPadding
+import org.sincron.atomic.boxes.{Factory, BoxedLong}
 import scala.annotation.tailrec
 import java.lang.Double.{longBitsToDouble, doubleToLongBits}
-import java.util.concurrent.atomic.{AtomicLong => JavaAtomicLong}
 
-final class AtomicDouble private (ref: JavaAtomicLong)
+final class AtomicDouble private (val ref: BoxedLong)
   extends AtomicNumber[Double] {
 
-  def get: Double =
-    longBitsToDouble(ref.get())
-
-  def set(update: Double) = {
-    ref.set(doubleToLongBits(update))
-  }
-
-  def lazySet(update: Double) = {
-    ref.lazySet(doubleToLongBits(update))
-  }
+  def get: Double = longBitsToDouble(ref.volatileGet())
+  def set(update: Double): Unit = ref.volatileSet(doubleToLongBits(update))
+  def update(value: Double): Unit = ref.volatileSet(doubleToLongBits(value))
+  def `:=`(value: Double): Unit = ref.volatileSet(doubleToLongBits(value))
+  def lazySet(update: Double): Unit = ref.lazySet(doubleToLongBits(update))
 
   def compareAndSet(expect: Double, update: Double): Boolean = {
-    val current = ref.get()
-    current == doubleToLongBits(expect) && ref.compareAndSet(current, doubleToLongBits(update))
+    val expectLong = doubleToLongBits(expect)
+    val updateLong = doubleToLongBits(update)
+    ref.compareAndSet(expectLong, updateLong)
   }
 
   def getAndSet(update: Double): Double = {
     longBitsToDouble(ref.getAndSet(doubleToLongBits(update)))
   }
-
-  def update(value: Double): Unit = set(value)
-  def `:=`(value: Double): Unit = set(value)
 
   @tailrec
   def increment(v: Int = 1): Unit = {
@@ -158,9 +152,8 @@ final class AtomicDouble private (ref: JavaAtomicLong)
 }
 
 object AtomicDouble {
-  def apply(initialValue: Double): AtomicDouble =
-    new AtomicDouble(new JavaAtomicLong(doubleToLongBits(initialValue)))
-
-  def wrap(ref: JavaAtomicLong): AtomicDouble =
-    new AtomicDouble(ref)
+  def apply(initialValue: Double)(implicit strategy: PaddingStrategy = NoPadding): AtomicDouble =
+    new AtomicDouble(Factory.newBoxedLong(
+      doubleToLongBits(initialValue),
+      boxStrategyToPaddingStrategy(strategy)))
 }

@@ -17,7 +17,7 @@
 
 package org.sincron.atomic.inline
 
-import org.sincron.atomic.{AtomicBuilder, Atomic}
+import org.sincron.atomic.{PaddingStrategy, AtomicBuilder, Atomic}
 import org.sincron.atomic.inline.compat._
 
 object AtomicMacros {
@@ -103,12 +103,26 @@ object AtomicMacros {
     new InlineUtil[c.type](c).inlineAndReset[A](tree)
   }
 
+
   def buildAnyMacro[T : c.WeakTypeTag, R <: Atomic[T] : c.WeakTypeTag](c: Context)
-    (initialValue: c.Expr[T])(builder: c.Expr[AtomicBuilder[T, R]]): c.Expr[R] = {
+    (initialValue: c.Expr[T])
+    (builder: c.Expr[AtomicBuilder[T, R]], padding: c.Expr[PaddingStrategy]): c.Expr[R] = {
 
     import c.universe._
     val expr = reify {
-      builder.splice.buildInstance(initialValue.splice)
+      builder.splice.buildInstance(initialValue.splice, padding.splice)
+    }
+
+    new InlineUtil[c.type](c).inlineAndReset[R](expr.tree)
+  }
+
+  def buildAnyWithPaddingMacro[T : c.WeakTypeTag, R <: Atomic[T] : c.WeakTypeTag](c: Context)
+    (initialValue: c.Expr[T], padding: c.Expr[PaddingStrategy])
+    (builder: c.Expr[AtomicBuilder[T, R]]): c.Expr[R] = {
+
+    import c.universe._
+    val expr = reify {
+      builder.splice.buildInstance(initialValue.splice, padding.splice)
     }
 
     new InlineUtil[c.type](c).inlineAndReset[R](expr.tree)

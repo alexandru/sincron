@@ -17,22 +17,17 @@
 
 package org.sincron.atomic
 
+import org.sincron.atomic.PaddingStrategy.NoPadding
+import org.sincron.atomic.boxes.{Factory, BoxedInt}
 import scala.annotation.tailrec
-import scala.concurrent.TimeoutException
-import scala.concurrent.duration.FiniteDuration
-import java.util.concurrent.atomic.{AtomicInteger => JavaAtomicInteger}
 
-final class AtomicInt private (ref: JavaAtomicInteger)
+final class AtomicInt private (private[this] val ref: BoxedInt)
   extends AtomicNumber[Int] {
 
-  def get: Int = ref.get()
-
-  def set(update: Int): Unit = {
-    ref.set(update)
-  }
-
-  def update(value: Int): Unit = set(value)
-  def `:=`(value: Int): Unit = set(value)
+  def get: Int = ref.volatileGet()
+  def set(update: Int): Unit = ref.volatileSet(update)
+  def update(value: Int): Unit = ref.volatileSet(value)
+  def `:=`(value: Int): Unit = ref.volatileSet(value)
 
   def compareAndSet(expect: Int, update: Int): Boolean = {
     ref.compareAndSet(expect, update)
@@ -48,16 +43,16 @@ final class AtomicInt private (ref: JavaAtomicInteger)
 
   @tailrec
   def increment(v: Int = 1): Unit = {
-    val current = ref.get()
-    if (!compareAndSet(current, current+v))
+    val current = ref.volatileGet()
+    if (!ref.compareAndSet(current, current+v))
       increment(v)
   }
 
   @tailrec
   def incrementAndGet(v: Int = 1): Int = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       incrementAndGet(v)
     else
       update
@@ -65,9 +60,9 @@ final class AtomicInt private (ref: JavaAtomicInteger)
 
   @tailrec
   def getAndIncrement(v: Int = 1): Int = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       getAndIncrement(v)
     else
       current
@@ -75,9 +70,9 @@ final class AtomicInt private (ref: JavaAtomicInteger)
 
   @tailrec
   def getAndAdd(v: Int): Int = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       getAndAdd(v)
     else
       current
@@ -85,9 +80,9 @@ final class AtomicInt private (ref: JavaAtomicInteger)
 
   @tailrec
   def addAndGet(v: Int): Int = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       addAndGet(v)
     else
       update
@@ -95,9 +90,9 @@ final class AtomicInt private (ref: JavaAtomicInteger)
 
   @tailrec
   def add(v: Int): Unit = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       add(v)
   }
 
@@ -116,7 +111,7 @@ final class AtomicInt private (ref: JavaAtomicInteger)
     if (current != 0) {
       val decrement = if (current >= v) v else current
       val update = current - decrement
-      if (!compareAndSet(current, update))
+      if (!ref.compareAndSet(current, update))
         countDownToZero(v)
       else
         decrement
@@ -131,13 +126,10 @@ final class AtomicInt private (ref: JavaAtomicInteger)
   def `+=`(v: Int): Unit = addAndGet(v)
   def `-=`(v: Int): Unit = subtractAndGet(v)
 
-  override def toString: String = s"AtomicInt(${ref.get()})"
+  override def toString: String = s"AtomicInt(${ref.volatileGet()})"
 }
 
 object AtomicInt {
-  def apply(initialValue: Int): AtomicInt =
-    new AtomicInt(new JavaAtomicInteger(initialValue))
-
-  def wrap(ref: JavaAtomicInteger): AtomicInt =
-    new AtomicInt(ref)
+  def apply(initialValue: Int)(implicit strategy: PaddingStrategy = NoPadding): AtomicInt =
+    new AtomicInt(Factory.newBoxedInt(initialValue, boxStrategyToPaddingStrategy(strategy)))
 }

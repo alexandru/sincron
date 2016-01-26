@@ -18,17 +18,17 @@
 package org.sincron.atomic
 
 import minitest.SimpleTestSuite
+import org.sincron.atomic.PaddingStrategy.{LeftRight128, Right64, Left64, NoPadding}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
 
 abstract class ConcurrentAtomicSuite[T, R <: Atomic[T]]
-  (name: String, builder: AtomicBuilder[T, R], valueFromInt: Int => T, valueToInt: T => Int)
+  (builder: AtomicBuilder[T, R], strategy: PaddingStrategy, valueFromInt: Int => T, valueToInt: T => Int)
   extends SimpleTestSuite {
 
-  def Atomic(initial: T): R = builder.buildInstance(initial)
-
+  def Atomic(initial: T): R = builder.buildInstance(initial, strategy)
   def zero = valueFromInt(0)
   def one = valueFromInt(1)
   def two = valueFromInt(2)
@@ -58,32 +58,128 @@ abstract class ConcurrentAtomicSuite[T, R <: Atomic[T]]
   }
 }
 
-object ConcurrentAtomicAnySuite extends ConcurrentAtomicSuite[String, AtomicAny[String]](
-  "AtomicAny", Atomic.builderFor(""), x => x.toString, x => x.toInt)
+object ConcurrentAtomicAnyNoPaddingSuite extends ConcurrentAtomicSuite[String, AtomicAny[String]](
+  Atomic.builderFor(""), NoPadding, x => x.toString, x => x.toInt)
 
-object ConcurrentAtomicBooleanSuite extends ConcurrentAtomicSuite[Boolean, AtomicBoolean](
-  "AtomicBoolean", Atomic.builderFor(true), x => if (x == 1) true else false, x => if (x) 1 else 0)
+object ConcurrentAtomicBooleanNoPaddingSuite extends ConcurrentAtomicSuite[Boolean, AtomicBoolean](
+  Atomic.builderFor(true), NoPadding, x => if (x == 1) true else false, x => if (x) 1 else 0)
 
-object ConcurrentAtomicNumberAnySuite extends ConcurrentAtomicSuite[BigInt, AtomicNumberAny[BigInt]](
-  "AtomicNumberAny", Atomic.builderFor(BigInt(0)), x => BigInt(x), x => x.toInt)
+object ConcurrentAtomicNumberAnyNoPaddingSuite extends ConcurrentAtomicSuite[BigInt, AtomicNumberAny[BigInt]](
+  Atomic.builderFor(BigInt(0)), NoPadding, x => BigInt(x), x => x.toInt)
 
-object ConcurrentAtomicFloatSuite extends ConcurrentAtomicSuite[Float, AtomicFloat](
-  "AtomicFloat", Atomic.builderFor(0.0f), x => x.toFloat, x => x.toInt)
+object ConcurrentAtomicFloatNoPaddingSuite extends ConcurrentAtomicSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), NoPadding, x => x.toFloat, x => x.toInt)
 
-object ConcurrentAtomicDoubleSuite extends ConcurrentAtomicSuite[Double, AtomicDouble](
-  "AtomicDouble", Atomic.builderFor(0.toDouble), x => x.toDouble, x => x.toInt)
+object ConcurrentAtomicDoubleNoPaddingSuite extends ConcurrentAtomicSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.toDouble), NoPadding, x => x.toDouble, x => x.toInt)
 
-object ConcurrentAtomicShortSuite extends ConcurrentAtomicSuite[Short, AtomicShort](
-  "AtomicShort", Atomic.builderFor(0.toShort), x => x.toShort, x => x.toInt)
+object ConcurrentAtomicShortNoPaddingSuite extends ConcurrentAtomicSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), NoPadding, x => x.toShort, x => x.toInt)
 
-object ConcurrentAtomicByteSuite extends ConcurrentAtomicSuite[Byte, AtomicByte](
-  "AtomicByte", Atomic.builderFor(0.toByte), x => x.toByte, x => x.toInt)
+object ConcurrentAtomicByteNoPaddingSuite extends ConcurrentAtomicSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), NoPadding, x => x.toByte, x => x.toInt)
 
-object ConcurrentAtomicCharSuite extends ConcurrentAtomicSuite[Char, AtomicChar](
-  "AtomicChar", Atomic.builderFor(0.toChar), x => x.toChar, x => x.toInt)
+object ConcurrentAtomicCharNoPaddingSuite extends ConcurrentAtomicSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), NoPadding, x => x.toChar, x => x.toInt)
 
-object ConcurrentAtomicIntSuite extends ConcurrentAtomicSuite[Int, AtomicInt](
-  "AtomicInt", Atomic.builderFor(0), x => x, x => x)
+object ConcurrentAtomicIntNoPaddingSuite extends ConcurrentAtomicSuite[Int, AtomicInt](
+  Atomic.builderFor(0), NoPadding, x => x, x => x)
 
-object ConcurrentAtomicLongSuite extends ConcurrentAtomicSuite[Long, AtomicLong](
-  "AtomicLong", Atomic.builderFor(0.toLong), x => x.toLong, x => x.toInt)
+object ConcurrentAtomicLongNoPaddingSuite extends ConcurrentAtomicSuite[Long, AtomicLong](
+  Atomic.builderFor(0.toLong), NoPadding, x => x.toLong, x => x.toInt)
+
+// -- Left64
+
+object ConcurrentAtomicAnyLeft64Suite extends ConcurrentAtomicSuite[String, AtomicAny[String]](
+  Atomic.builderFor(""), Left64, x => x.toString, x => x.toInt)
+
+object ConcurrentAtomicBooleanLeft64Suite extends ConcurrentAtomicSuite[Boolean, AtomicBoolean](
+  Atomic.builderFor(true), Left64, x => if (x == 1) true else false, x => if (x) 1 else 0)
+
+object ConcurrentAtomicNumberAnyLeft64Suite extends ConcurrentAtomicSuite[BigInt, AtomicNumberAny[BigInt]](
+  Atomic.builderFor(BigInt(0)), Left64, x => BigInt(x), x => x.toInt)
+
+object ConcurrentAtomicFloatLeft64Suite extends ConcurrentAtomicSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), Left64, x => x.toFloat, x => x.toInt)
+
+object ConcurrentAtomicDoubleLeft64Suite extends ConcurrentAtomicSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.toDouble), Left64, x => x.toDouble, x => x.toInt)
+
+object ConcurrentAtomicShortLeft64Suite extends ConcurrentAtomicSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Left64, x => x.toShort, x => x.toInt)
+
+object ConcurrentAtomicByteLeft64Suite extends ConcurrentAtomicSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Left64, x => x.toByte, x => x.toInt)
+
+object ConcurrentAtomicCharLeft64Suite extends ConcurrentAtomicSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Left64, x => x.toChar, x => x.toInt)
+
+object ConcurrentAtomicIntLeft64Suite extends ConcurrentAtomicSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Left64, x => x, x => x)
+
+object ConcurrentAtomicLongLeft64Suite extends ConcurrentAtomicSuite[Long, AtomicLong](
+  Atomic.builderFor(0.toLong), Left64, x => x.toLong, x => x.toInt)
+
+// -- Right64
+
+object ConcurrentAtomicAnyRight64Suite extends ConcurrentAtomicSuite[String, AtomicAny[String]](
+  Atomic.builderFor(""), Right64, x => x.toString, x => x.toInt)
+
+object ConcurrentAtomicBooleanRight64Suite extends ConcurrentAtomicSuite[Boolean, AtomicBoolean](
+  Atomic.builderFor(true), Right64, x => if (x == 1) true else false, x => if (x) 1 else 0)
+
+object ConcurrentAtomicNumberAnyRight64Suite extends ConcurrentAtomicSuite[BigInt, AtomicNumberAny[BigInt]](
+  Atomic.builderFor(BigInt(0)), Right64, x => BigInt(x), x => x.toInt)
+
+object ConcurrentAtomicFloatRight64Suite extends ConcurrentAtomicSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), Right64, x => x.toFloat, x => x.toInt)
+
+object ConcurrentAtomicDoubleRight64Suite extends ConcurrentAtomicSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.toDouble), Right64, x => x.toDouble, x => x.toInt)
+
+object ConcurrentAtomicShortRight64Suite extends ConcurrentAtomicSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Right64, x => x.toShort, x => x.toInt)
+
+object ConcurrentAtomicByteRight64Suite extends ConcurrentAtomicSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Right64, x => x.toByte, x => x.toInt)
+
+object ConcurrentAtomicCharRight64Suite extends ConcurrentAtomicSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Right64, x => x.toChar, x => x.toInt)
+
+object ConcurrentAtomicIntRight64Suite extends ConcurrentAtomicSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Right64, x => x, x => x)
+
+object ConcurrentAtomicLongRight64Suite extends ConcurrentAtomicSuite[Long, AtomicLong](
+  Atomic.builderFor(0.toLong), Right64, x => x.toLong, x => x.toInt)
+
+// -- LeftRight128
+
+object ConcurrentAtomicAnyLeftRight128Suite extends ConcurrentAtomicSuite[String, AtomicAny[String]](
+  Atomic.builderFor(""), LeftRight128, x => x.toString, x => x.toInt)
+
+object ConcurrentAtomicBooleanLeftRight128Suite extends ConcurrentAtomicSuite[Boolean, AtomicBoolean](
+  Atomic.builderFor(true), LeftRight128, x => if (x == 1) true else false, x => if (x) 1 else 0)
+
+object ConcurrentAtomicNumberAnyLeftRight128Suite extends ConcurrentAtomicSuite[BigInt, AtomicNumberAny[BigInt]](
+  Atomic.builderFor(BigInt(0)), LeftRight128, x => BigInt(x), x => x.toInt)
+
+object ConcurrentAtomicFloatLeftRight128Suite extends ConcurrentAtomicSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), LeftRight128, x => x.toFloat, x => x.toInt)
+
+object ConcurrentAtomicDoubleLeftRight128Suite extends ConcurrentAtomicSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.toDouble), LeftRight128, x => x.toDouble, x => x.toInt)
+
+object ConcurrentAtomicShortLeftRight128Suite extends ConcurrentAtomicSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), LeftRight128, x => x.toShort, x => x.toInt)
+
+object ConcurrentAtomicByteLeftRight128Suite extends ConcurrentAtomicSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), LeftRight128, x => x.toByte, x => x.toInt)
+
+object ConcurrentAtomicCharLeftRight128Suite extends ConcurrentAtomicSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), LeftRight128, x => x.toChar, x => x.toInt)
+
+object ConcurrentAtomicIntLeftRight128Suite extends ConcurrentAtomicSuite[Int, AtomicInt](
+  Atomic.builderFor(0), LeftRight128, x => x, x => x)
+
+object ConcurrentAtomicLongLeftRight128Suite extends ConcurrentAtomicSuite[Long, AtomicLong](
+  Atomic.builderFor(0.toLong), LeftRight128, x => x.toLong, x => x.toInt)

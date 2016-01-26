@@ -17,30 +17,26 @@
 
 package org.sincron.atomic
 
+import org.sincron.atomic.PaddingStrategy.NoPadding
+import org.sincron.atomic.boxes.{Factory, BoxedObject}
 import scala.annotation.tailrec
-import java.util.concurrent.atomic.{AtomicReference => JavaAtomicReference}
 
-final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
+final class AtomicNumberAny[T <: AnyRef : Numeric] private (private[this] val ref: BoxedObject)
   extends AtomicNumber[T] {
   
   private[this] val ev = implicitly[Numeric[T]]
 
-  def get: T = ref.get()
-
-  def set(update: T): Unit = {
-    ref.set(update)
-  }
-
-  def update(value: T): Unit = set(value)
-  def `:=`(value: T): Unit = set(value)
+  def get: T = ref.volatileGet().asInstanceOf[T]
+  def set(update: T): Unit = ref.volatileSet(update)
+  def update(value: T): Unit = ref.volatileSet(value)
+  def `:=`(value: T): Unit = ref.volatileSet(value)
 
   def compareAndSet(expect: T, update: T): Boolean = {
-    val current = ref.get()
-    current == expect && ref.compareAndSet(current, update)
+    ref.compareAndSet(expect, update)
   }
 
   def getAndSet(update: T): T = {
-    ref.getAndSet(update)
+    ref.getAndSet(update).asInstanceOf[T]
   }
 
   def lazySet(update: T): Unit = {
@@ -49,14 +45,14 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
 
   @tailrec
   def increment(v: Int = 1): Unit = {
-    val current = ref.get()
+    val current = get
     if (!compareAndSet(current, ev.plus(current, ev.fromInt(v))))
       increment(v)
   }
 
   @tailrec
   def incrementAndGet(v: Int = 1): T = {
-    val current = ref.get()
+    val current = get
     val update = ev.plus(current, ev.fromInt(v))
     if (!compareAndSet(current, update))
       incrementAndGet(v)
@@ -66,7 +62,7 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
 
   @tailrec
   def getAndIncrement(v: Int = 1): T = {
-    val current = ref.get()
+    val current = get
     val update = ev.plus(current, ev.fromInt(v))
     if (!compareAndSet(current, update))
       getAndIncrement(v)
@@ -76,7 +72,7 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
 
   @tailrec
   def getAndAdd(v: T): T = {
-    val current = ref.get()
+    val current = get
     val update = ev.plus(current, v)
     if (!compareAndSet(current, update))
       getAndAdd(v)
@@ -86,7 +82,7 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
 
   @tailrec
   def addAndGet(v: T): T = {
-    val current = ref.get()
+    val current = get
     val update = ev.plus(current, v)
     if (!compareAndSet(current, update))
       addAndGet(v)
@@ -96,7 +92,7 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
 
   @tailrec
   def add(v: T): Unit = {
-    val current = ref.get()
+    val current = get
     val update = ev.plus(current, v)
     if (!compareAndSet(current, update))
       add(v)
@@ -104,7 +100,7 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
 
   @tailrec
   def subtract(v: T): Unit = {
-    val current = ref.get()
+    val current = get
     val update = ev.minus(current, v)
     if (!compareAndSet(current, update))
       subtract(v)
@@ -112,7 +108,7 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
 
   @tailrec
   def getAndSubtract(v: T): T = {
-    val current = ref.get()
+    val current = get
     val update = ev.minus(current, v)
     if (!compareAndSet(current, update))
       getAndSubtract(v)
@@ -122,7 +118,7 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
 
   @tailrec
   def subtractAndGet(v: T): T = {
-    val current = ref.get()
+    val current = get
     val update = ev.minus(current, v)
     if (!compareAndSet(current, update))
       subtractAndGet(v)
@@ -153,9 +149,7 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
 }
 
 object AtomicNumberAny {
-  def apply[T : Numeric](initialValue: T): AtomicNumberAny[T] =
-    new AtomicNumberAny(new JavaAtomicReference[T](initialValue))
-
-  def wrap[T : Numeric](ref: JavaAtomicReference[T]): AtomicNumberAny[T] =
-    new AtomicNumberAny[T](ref)
+  def apply[T <: AnyRef : Numeric](initialValue: T)
+    (implicit strategy: PaddingStrategy = NoPadding): AtomicNumberAny[T] =
+    new AtomicNumberAny(Factory.newBoxedObject(initialValue, boxStrategyToPaddingStrategy(strategy)))
 }

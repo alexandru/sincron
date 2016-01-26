@@ -18,14 +18,16 @@
 package org.sincron.atomic
 
 import minitest.SimpleTestSuite
+import org.sincron.atomic.PaddingStrategy._
 
 abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
-  (name: String, builder: AtomicBuilder[T, R],
+  (builder: AtomicBuilder[T, R], strategy: PaddingStrategy,
   value: T, maxValue: T, minValue: T)(implicit ev: Numeric[T])
   extends SimpleTestSuite {
 
-  def Atomic(initial: T): R = builder.buildInstance(initial)
-
+  def Atomic(initial: T): R = builder.buildInstance(initial, strategy)
+  val zero = ev.zero
+  val one = ev.one
   val two = ev.plus(ev.one, ev.one)
 
   test("should get()") {
@@ -35,7 +37,7 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
   }
 
   test("should set()") {
-    val r = Atomic(ev.zero)
+    val r = Atomic(zero)
     r.set(value)
     assert(r.get == value)
     r.set(minValue)
@@ -45,17 +47,16 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
   }
 
   test("should compareAndSet()") {
-    val r = Atomic(ev.zero)
-    assert(r.compareAndSet(ev.zero, ev.one))
-    assert(!r.compareAndSet(ev.zero, ev.one))
-
-    assert(r.get == ev.one)
+    val r = Atomic(zero)
+    assert(r.compareAndSet(zero, one))
+    assert(!r.compareAndSet(zero, one))
+    assert(r.get == one)
   }
 
   test("should getAndSet()") {
-    val r = Atomic(ev.zero)
-    assert(r.getAndSet(ev.one) == ev.zero)
-    assert(r.getAndSet(value) == ev.one)
+    val r = Atomic(zero)
+    assert(r.getAndSet(one) == zero)
+    assert(r.getAndSet(value) == one)
     assert(r.getAndSet(minValue) == value)
     assert(r.getAndSet(maxValue) == minValue)
     assert(r.get == maxValue)
@@ -64,9 +65,9 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
   test("should increment()") {
     val r = Atomic(value)
     r.increment()
-    assert(r.get == ev.plus(value, ev.one))
+    assert(r.get == ev.plus(value, one))
     r.increment()
-    assert(r.get == ev.plus(value, ev.plus(ev.one, ev.one)))
+    assert(r.get == ev.plus(value, ev.plus(one, one)))
   }
 
   test("should increment(value)") {
@@ -78,9 +79,9 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
   test("should decrement()") {
     val r = Atomic(value)
     r.decrement()
-    assert(r.get == ev.minus(value, ev.one))
+    assert(r.get == ev.minus(value, one))
     r.decrement()
-    assert(r.get == ev.minus(value, ev.plus(ev.one, ev.one)))
+    assert(r.get == ev.minus(value, ev.plus(one, one)))
   }
 
   test("should decrement(value)") {
@@ -91,8 +92,8 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
 
   test("should incrementAndGet()") {
     val r = Atomic(value)
-    assert(r.incrementAndGet() == ev.plus(value, ev.one))
-    assert(r.incrementAndGet() == ev.plus(value, ev.plus(ev.one, ev.one)))
+    assert(r.incrementAndGet() == ev.plus(value, one))
+    assert(r.incrementAndGet() == ev.plus(value, ev.plus(one, one)))
   }
 
   test("should incrementAndGet(value)") {
@@ -102,8 +103,8 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
 
   test("should decrementAndGet()") {
     val r = Atomic(value)
-    assert(r.decrementAndGet() == ev.minus(value, ev.one))
-    assert(r.decrementAndGet() == ev.minus(value, ev.plus(ev.one, ev.one)))
+    assert(r.decrementAndGet() == ev.minus(value, one))
+    assert(r.decrementAndGet() == ev.minus(value, ev.plus(one, one)))
   }
 
   test("should decrementAndGet(value)") {
@@ -114,7 +115,7 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
   test("should getAndIncrement()") {
     val r = Atomic(value)
     assert(r.getAndIncrement() == value)
-    assert(r.getAndIncrement() == ev.plus(value, ev.one))
+    assert(r.getAndIncrement() == ev.plus(value, one))
     assert(r.get == ev.plus(value, two))
   }
 
@@ -128,7 +129,7 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
   test("should getAndDecrement()") {
     val r = Atomic(value)
     assert(r.getAndDecrement() == value)
-    assert(r.getAndDecrement() == ev.minus(value, ev.one))
+    assert(r.getAndDecrement() == ev.minus(value, one))
     assert(r.get == ev.minus(value, two))
   }
 
@@ -160,7 +161,7 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
   test("should getAndSubtract(value)") {
     val r = Atomic(value)
     assert(r.getAndSubtract(value) == value)
-    assert(r.get == ev.zero)
+    assert(r.get == zero)
   }
 
   test("should transform(inline #1)") {
@@ -171,8 +172,8 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
 
   test("should transform(inline #2)") {
     val r = Atomic(value)
-    r.transform(ev.plus(ev.one, _))
-    assert(r.get == ev.plus(ev.one, value))
+    r.transform(ev.plus(one, _))
+    assert(r.get == ev.plus(one, value))
   }
 
   test("should transform(function)") {
@@ -189,7 +190,7 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
 
   test("should transformAndGet(inline #2)") {
     val r = Atomic(value)
-    assert(r.transformAndGet(ev.plus(ev.one, _)) == ev.plus(ev.one, value))
+    assert(r.transformAndGet(ev.plus(one, _)) == ev.plus(one, value))
   }
 
   test("should transformAndGet(function)") {
@@ -206,8 +207,8 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
 
   test("should getAndTransform(inline #2)") {
     val r = Atomic(value)
-    assert(r.getAndTransform(ev.plus(ev.one, _)) == value)
-    assert(r.get == ev.plus(ev.one, value))
+    assert(r.getAndTransform(ev.plus(one, _)) == value)
+    assert(r.get == ev.plus(one, value))
   }
 
   test("should getAndTransform(function)") {
@@ -219,31 +220,31 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
 
   test("should transformAndExtract()") {
     val r = Atomic(value)
-    assert(r.transformAndExtract(x => (ev.plus(value, ev.one), ev.plus(x, x))) == ev.plus(value, ev.one))
+    assert(r.transformAndExtract(x => (ev.plus(value, one), ev.plus(x, x))) == ev.plus(value, one))
     assert(r.get == ev.plus(value, value))
   }
 
   test("should transformAndExtract()") {
     val r = Atomic(value)
-    assert(r.transformAndExtract(x => (ev.plus(value, ev.one), ev.plus(x, x))) == ev.plus(value, ev.one))
+    assert(r.transformAndExtract(x => (ev.plus(value, one), ev.plus(x, x))) == ev.plus(value, one))
     assert(r.get == ev.plus(value, value))
   }
 
   test("should maybe overflow on max") {
     val r = Atomic(maxValue)
     r.increment()
-    assert(r.get == ev.plus(maxValue, ev.one))
+    assert(r.get == ev.plus(maxValue, one))
   }
 
   test("should maybe overflow on min") {
     val r = Atomic(minValue)
     r.decrement()
-    assert(r.get == ev.minus(minValue, ev.one))
+    assert(r.get == ev.minus(minValue, one))
   }
 }
 
-object AtomicDoubleSuite extends AtomicNumberSuite[Double, AtomicDouble](
-  "AtomicDouble", Atomic.builderFor(0.0), 17.23, Double.MaxValue, Double.MinValue) {
+abstract class AtomicDoubleSuite(strategy: PaddingStrategy) extends AtomicNumberSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.0), strategy, 17.23, Double.MaxValue, Double.MinValue) {
 
   test("should store MinPositiveValue, NaN, NegativeInfinity, PositiveInfinity") {
     assert(Atomic(Double.MinPositiveValue).get == Double.MinPositiveValue)
@@ -253,8 +254,8 @@ object AtomicDoubleSuite extends AtomicNumberSuite[Double, AtomicDouble](
   }
 }
 
-object AtomicFloatSuite extends AtomicNumberSuite[Float, AtomicFloat](
-  "AtomicFloat", Atomic.builderFor(0.0f), 17.23f, Float.MaxValue, Float.MinValue) {
+abstract class AtomicFloatSuite(strategy: PaddingStrategy) extends AtomicNumberSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), strategy, 17.23f, Float.MaxValue, Float.MinValue) {
 
   test("should store MinPositiveValue, NaN, NegativeInfinity, PositiveInfinity") {
     assert(Atomic(Float.MinPositiveValue).get == Float.MinPositiveValue)
@@ -264,20 +265,95 @@ object AtomicFloatSuite extends AtomicNumberSuite[Float, AtomicFloat](
   }
 }
 
-object AtomicLongSuite extends AtomicNumberSuite[Long, AtomicLong](
-  "AtomicLong", Atomic.builderFor(0L), -782L, Long.MaxValue, Long.MinValue)
+// -- NoPadding
 
-object AtomicIntSuite extends AtomicNumberSuite[Int, AtomicInt](
-  "AtomicInt", Atomic.builderFor(0), 782, Int.MaxValue, Int.MinValue)
+object AtomicDoubleNoPaddingSuite extends AtomicDoubleSuite(NoPadding)
+object AtomicFloatNoPaddingSuite extends AtomicFloatSuite(NoPadding)
 
-object AtomicShortSuite extends AtomicNumberSuite[Short, AtomicShort](
-  "AtomicShort", Atomic.builderFor(0.toShort), 782.toShort, Short.MaxValue, Short.MinValue)
+object AtomicLongNoPaddingSuite extends AtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), NoPadding, -782L, Long.MaxValue, Long.MinValue)
 
-object AtomicByteSuite extends AtomicNumberSuite[Byte, AtomicByte](
-  "AtomicByte", Atomic.builderFor(0.toByte), 782.toByte, Byte.MaxValue, Byte.MinValue)
+object AtomicIntNoPaddingSuite extends AtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), NoPadding, 782, Int.MaxValue, Int.MinValue)
 
-object AtomicCharSuite extends AtomicNumberSuite[Char, AtomicChar](
-  "AtomicChar", Atomic.builderFor(0.toChar), 782.toChar, Char.MaxValue, Char.MinValue)
+object AtomicShortNoPaddingSuite extends AtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), NoPadding, 782.toShort, Short.MaxValue, Short.MinValue)
 
-object AtomicNumberAnySuite extends AtomicNumberSuite[Long, AtomicNumberAny[Long]](
-  "AtomicNumberAny", AtomicBuilder.AtomicNumberBuilder[Long], 782, Long.MaxValue, Long.MinValue)
+object AtomicByteNoPaddingSuite extends AtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), NoPadding, 782.toByte, Byte.MaxValue, Byte.MinValue)
+
+object AtomicCharNoPaddingSuite extends AtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), NoPadding, 782.toChar, Char.MaxValue, Char.MinValue)
+
+object AtomicNumberAnyNoPaddingSuite extends AtomicNumberSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], NoPadding, BoxedLong(782), BoxedLong.MaxValue, BoxedLong.MinValue)
+
+// -- Left64
+
+object AtomicDoubleLeft64Suite extends AtomicDoubleSuite(Left64)
+object AtomicFloatLeft64Suite extends AtomicFloatSuite(Left64)
+
+object AtomicLongLeft64Suite extends AtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), Left64, -782L, Long.MaxValue, Long.MinValue)
+
+object AtomicIntLeft64Suite extends AtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Left64, 782, Int.MaxValue, Int.MinValue)
+
+object AtomicShortLeft64Suite extends AtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Left64, 782.toShort, Short.MaxValue, Short.MinValue)
+
+object AtomicByteLeft64Suite extends AtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Left64, 782.toByte, Byte.MaxValue, Byte.MinValue)
+
+object AtomicCharLeft64Suite extends AtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Left64, 782.toChar, Char.MaxValue, Char.MinValue)
+
+object AtomicNumberAnyLeft64Suite extends AtomicNumberSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], Left64, BoxedLong(782), BoxedLong.MaxValue, BoxedLong.MinValue)
+
+// -- Right64
+
+object AtomicDoubleRight64Suite extends AtomicDoubleSuite(Right64)
+object AtomicFloatRight64Suite extends AtomicFloatSuite(Right64)
+
+object AtomicLongRight64Suite extends AtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), Right64, -782L, Long.MaxValue, Long.MinValue)
+
+object AtomicIntRight64Suite extends AtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Right64, 782, Int.MaxValue, Int.MinValue)
+
+object AtomicShortRight64Suite extends AtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Right64, 782.toShort, Short.MaxValue, Short.MinValue)
+
+object AtomicByteRight64Suite extends AtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Right64, 782.toByte, Byte.MaxValue, Byte.MinValue)
+
+object AtomicCharRight64Suite extends AtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Right64, 782.toChar, Char.MaxValue, Char.MinValue)
+
+object AtomicNumberAnyRight64Suite extends AtomicNumberSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], Right64, BoxedLong(782), BoxedLong.MaxValue, BoxedLong.MinValue)
+
+// -- LeftRight128
+
+object AtomicDoubleLeftRight128Suite extends AtomicDoubleSuite(LeftRight128)
+object AtomicFloatLeftRight128Suite extends AtomicFloatSuite(LeftRight128)
+
+object AtomicLongLeftRight128Suite extends AtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), LeftRight128, -782L, Long.MaxValue, Long.MinValue)
+
+object AtomicIntLeftRight128Suite extends AtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), LeftRight128, 782, Int.MaxValue, Int.MinValue)
+
+object AtomicShortLeftRight128Suite extends AtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), LeftRight128, 782.toShort, Short.MaxValue, Short.MinValue)
+
+object AtomicByteLeftRight128Suite extends AtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), LeftRight128, 782.toByte, Byte.MaxValue, Byte.MinValue)
+
+object AtomicCharLeftRight128Suite extends AtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), LeftRight128, 782.toChar, Char.MaxValue, Char.MinValue)
+
+object AtomicNumberAnyLeftRight128Suite extends AtomicNumberSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], LeftRight128, BoxedLong(782), BoxedLong.MaxValue, BoxedLong.MinValue)
+

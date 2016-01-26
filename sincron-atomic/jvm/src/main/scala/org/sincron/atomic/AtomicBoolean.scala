@@ -17,39 +17,39 @@
 
 package org.sincron.atomic
 
-import java.util.concurrent.atomic.{AtomicBoolean => JavaAtomicBoolean}
+import org.sincron.atomic.PaddingStrategy.NoPadding
+import org.sincron.atomic.boxes.{Factory, BoxedInt}
 
-final class AtomicBoolean private (ref: JavaAtomicBoolean) extends Atomic[Boolean] {
+final class AtomicBoolean private (private[this] val ref: BoxedInt) extends Atomic[Boolean] {
   def get: Boolean = {
-    ref.get()
+    ref.volatileGet() == 1
   }
 
-  def set(update: Boolean): Unit = {
-    ref.set(update)
-  }
-
-  def update(value: Boolean): Unit = set(value)
-  def `:=`(value: Boolean): Unit = set(value)
+  def set(update: Boolean): Unit =
+    ref.volatileSet(if (update) 1 else 0)
+  def update(value: Boolean): Unit =
+    ref.volatileSet(if (value) 1 else 0)
+  def `:=`(value: Boolean): Unit =
+    ref.volatileSet(if (value) 1 else 0)
 
   def compareAndSet(expect: Boolean, update: Boolean): Boolean = {
-    ref.compareAndSet(expect, update)
+    ref.compareAndSet(if (expect) 1 else 0, if (update) 1 else 0)
   }
 
   def getAndSet(update: Boolean): Boolean = {
-    ref.getAndSet(update)
+    ref.getAndSet(if (update) 1 else 0) == 1
   }
 
   def lazySet(update: Boolean): Unit = {
-    ref.lazySet(update)
+    ref.lazySet(if (update) 1 else 0)
   }
 
-  override def toString: String = s"AtomicBoolean(${ref.get})"
+  override def toString: String = s"AtomicBoolean($get)"
 }
 
 object AtomicBoolean {
-  def apply(initialValue: Boolean): AtomicBoolean =
-    new AtomicBoolean(new JavaAtomicBoolean(initialValue))
-
-  def wrap(ref: JavaAtomicBoolean): AtomicBoolean =
-    new AtomicBoolean(ref)
+  def apply(initialValue: Boolean)(implicit strategy: PaddingStrategy = NoPadding): AtomicBoolean =
+    new AtomicBoolean(Factory.newBoxedInt(
+      if (initialValue) 1 else 0,
+      boxStrategyToPaddingStrategy(strategy)))
 }

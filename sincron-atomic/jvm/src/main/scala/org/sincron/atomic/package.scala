@@ -17,6 +17,9 @@
 
 package org.sincron
 
+import org.sincron.atomic.PaddingStrategy._
+import org.sincron.atomic.boxes.BoxPaddingStrategy
+
 /** A small toolkit of classes that support compare-and-swap semantics for safe mutation of variables.
   *
   * On top of the JVM, this means dealing with lock-free thread-safe programming. Also works on top of Javascript,
@@ -49,4 +52,16 @@ package org.sincron
   * (i.e. `transform`, `transformAndGet`, `getAndTransform`, etc...) or of numbers of any kind
   * (`incrementAndGet`, `getAndAdd`, etc...).
   */
-package object atomic
+package object atomic {
+  private[sincron] def boxStrategyToPaddingStrategy(s: PaddingStrategy): BoxPaddingStrategy =
+    s match {
+      case NoPadding =>
+        BoxPaddingStrategy.NO_PADDING
+      case Left64 =>
+        BoxPaddingStrategy.LEFT_64
+      case Right64 =>
+        BoxPaddingStrategy.RIGHT_64
+      case LeftRight128 =>
+        BoxPaddingStrategy.LEFT_RIGHT_128
+    }
+}

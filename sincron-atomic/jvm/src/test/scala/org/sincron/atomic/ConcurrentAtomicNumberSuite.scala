@@ -18,16 +18,17 @@
 package org.sincron.atomic
 
 import minitest.SimpleTestSuite
+import org.sincron.atomic.PaddingStrategy.{LeftRight128, Right64, Left64, NoPadding}
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 abstract class ConcurrentAtomicNumberSuite[T, R <: AtomicNumber[T]]
-  (name: String, builder: AtomicBuilder[T, R],
+  (builder: AtomicBuilder[T, R], strategy: PaddingStrategy,
    value: T, nan1: Option[T], maxValue: T, minValue: T)(implicit ev: Numeric[T])
   extends SimpleTestSuite {
 
-  def Atomic(initial: T): R = builder.buildInstance(initial)
+  def Atomic(initial: T): R = builder.buildInstance(initial, strategy)
   val two = ev.plus(ev.one, ev.one)
 
   test("should perform concurrent compareAndSet") {
@@ -55,26 +56,106 @@ abstract class ConcurrentAtomicNumberSuite[T, R <: AtomicNumber[T]]
   }
 }
 
-object ConcurrentAtomicNumberDoubleSuite extends ConcurrentAtomicNumberSuite[Double, AtomicDouble](
-  "AtomicDouble", Atomic.builderFor(0.0), 17.23, Some(Double.NaN), Double.MaxValue, Double.MinValue)
+//-- NoPadding
 
-object ConcurrentAtomicNumberFloatSuite extends ConcurrentAtomicNumberSuite[Float, AtomicFloat](
-  "AtomicFloat", Atomic.builderFor(0.0f), 17.23f, Some(Float.NaN), Float.MaxValue, Float.MinValue)
+object ConcurrentAtomicNumberDoubleNoPaddingSuite extends ConcurrentAtomicNumberSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.0), NoPadding, 17.23, Some(Double.NaN), Double.MaxValue, Double.MinValue)
 
-object ConcurrentAtomicNumberLongSuite extends ConcurrentAtomicNumberSuite[Long, AtomicLong](
-  "AtomicLong", Atomic.builderFor(0L), -782L, None, Long.MaxValue, Long.MinValue)
+object ConcurrentAtomicNumberFloatNoPaddingSuite extends ConcurrentAtomicNumberSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), NoPadding, 17.23f, Some(Float.NaN), Float.MaxValue, Float.MinValue)
 
-object ConcurrentAtomicNumberIntSuite extends ConcurrentAtomicNumberSuite[Int, AtomicInt](
-  "AtomicInt", Atomic.builderFor(0), 782, None, Int.MaxValue, Int.MinValue)
+object ConcurrentAtomicNumberLongNoPaddingSuite extends ConcurrentAtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), NoPadding, -782L, None, Long.MaxValue, Long.MinValue)
 
-object ConcurrentAtomicNumberShortSuite extends ConcurrentAtomicNumberSuite[Short, AtomicShort](
-  "AtomicShort", Atomic.builderFor(0.toShort), 782.toShort, None, Short.MaxValue, Short.MinValue)
+object ConcurrentAtomicNumberIntNoPaddingSuite extends ConcurrentAtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), NoPadding, 782, None, Int.MaxValue, Int.MinValue)
 
-object ConcurrentAtomicNumberByteSuite extends ConcurrentAtomicNumberSuite[Byte, AtomicByte](
-  "AtomicByte", Atomic.builderFor(0.toByte), 782.toByte, None, Byte.MaxValue, Byte.MinValue)
+object ConcurrentAtomicNumberShortNoPaddingSuite extends ConcurrentAtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), NoPadding, 782.toShort, None, Short.MaxValue, Short.MinValue)
 
-object ConcurrentAtomicNumberCharSuite extends ConcurrentAtomicNumberSuite[Char, AtomicChar](
-  "AtomicChar", Atomic.builderFor(0.toChar), 782.toChar, None, Char.MaxValue, Char.MinValue)
+object ConcurrentAtomicNumberByteNoPaddingSuite extends ConcurrentAtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), NoPadding, 782.toByte, None, Byte.MaxValue, Byte.MinValue)
 
-object ConcurrentAtomicNumberNumberAnySuite extends ConcurrentAtomicNumberSuite[BigInt, AtomicNumberAny[BigInt]](
-  "AtomicNumberAny", Atomic.builderFor(BigInt(0)), BigInt(Int.MaxValue), None, BigInt(Long.MaxValue), BigInt(Long.MinValue))
+object ConcurrentAtomicNumberCharNoPaddingSuite extends ConcurrentAtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), NoPadding, 782.toChar, None, Char.MaxValue, Char.MinValue)
+
+object ConcurrentAtomicNumberNumberAnyNoPaddingSuite extends ConcurrentAtomicNumberSuite[BigInt, AtomicNumberAny[BigInt]](
+  Atomic.builderFor(BigInt(0)), NoPadding, BigInt(Int.MaxValue), None, BigInt(Long.MaxValue), BigInt(Long.MinValue))
+
+//--Left64
+
+object ConcurrentAtomicNumberDoubleLeft64Suite extends ConcurrentAtomicNumberSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.0), Left64, 17.23, Some(Double.NaN), Double.MaxValue, Double.MinValue)
+
+object ConcurrentAtomicNumberFloatLeft64Suite extends ConcurrentAtomicNumberSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), Left64, 17.23f, Some(Float.NaN), Float.MaxValue, Float.MinValue)
+
+object ConcurrentAtomicNumberLongLeft64Suite extends ConcurrentAtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), Left64, -782L, None, Long.MaxValue, Long.MinValue)
+
+object ConcurrentAtomicNumberIntLeft64Suite extends ConcurrentAtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Left64, 782, None, Int.MaxValue, Int.MinValue)
+
+object ConcurrentAtomicNumberShortLeft64Suite extends ConcurrentAtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Left64, 782.toShort, None, Short.MaxValue, Short.MinValue)
+
+object ConcurrentAtomicNumberByteLeft64Suite extends ConcurrentAtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Left64, 782.toByte, None, Byte.MaxValue, Byte.MinValue)
+
+object ConcurrentAtomicNumberCharLeft64Suite extends ConcurrentAtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Left64, 782.toChar, None, Char.MaxValue, Char.MinValue)
+
+object ConcurrentAtomicNumberNumberAnyLeft64Suite extends ConcurrentAtomicNumberSuite[BigInt, AtomicNumberAny[BigInt]](
+  Atomic.builderFor(BigInt(0)), Left64, BigInt(Int.MaxValue), None, BigInt(Long.MaxValue), BigInt(Long.MinValue))
+
+//-- Right64
+
+object ConcurrentAtomicNumberDoubleRight64Suite extends ConcurrentAtomicNumberSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.0), Right64, 17.23, Some(Double.NaN), Double.MaxValue, Double.MinValue)
+
+object ConcurrentAtomicNumberFloatRight64Suite extends ConcurrentAtomicNumberSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), Right64, 17.23f, Some(Float.NaN), Float.MaxValue, Float.MinValue)
+
+object ConcurrentAtomicNumberLongRight64Suite extends ConcurrentAtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), Right64, -782L, None, Long.MaxValue, Long.MinValue)
+
+object ConcurrentAtomicNumberIntRight64Suite extends ConcurrentAtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Right64, 782, None, Int.MaxValue, Int.MinValue)
+
+object ConcurrentAtomicNumberShortRight64Suite extends ConcurrentAtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Right64, 782.toShort, None, Short.MaxValue, Short.MinValue)
+
+object ConcurrentAtomicNumberByteRight64Suite extends ConcurrentAtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Right64, 782.toByte, None, Byte.MaxValue, Byte.MinValue)
+
+object ConcurrentAtomicNumberCharRight64Suite extends ConcurrentAtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Right64, 782.toChar, None, Char.MaxValue, Char.MinValue)
+
+object ConcurrentAtomicNumberNumberAnyRight64Suite extends ConcurrentAtomicNumberSuite[BigInt, AtomicNumberAny[BigInt]](
+  Atomic.builderFor(BigInt(0)), Right64, BigInt(Int.MaxValue), None, BigInt(Long.MaxValue), BigInt(Long.MinValue))
+
+//-- LeftRight128
+
+object ConcurrentAtomicNumberDoubleLeftRight128Suite extends ConcurrentAtomicNumberSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.0), LeftRight128, 17.23, Some(Double.NaN), Double.MaxValue, Double.MinValue)
+
+object ConcurrentAtomicNumberFloatLeftRight128Suite extends ConcurrentAtomicNumberSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), LeftRight128, 17.23f, Some(Float.NaN), Float.MaxValue, Float.MinValue)
+
+object ConcurrentAtomicNumberLongLeftRight128Suite extends ConcurrentAtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), LeftRight128, -782L, None, Long.MaxValue, Long.MinValue)
+
+object ConcurrentAtomicNumberIntLeftRight128Suite extends ConcurrentAtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), LeftRight128, 782, None, Int.MaxValue, Int.MinValue)
+
+object ConcurrentAtomicNumberShortLeftRight128Suite extends ConcurrentAtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), LeftRight128, 782.toShort, None, Short.MaxValue, Short.MinValue)
+
+object ConcurrentAtomicNumberByteLeftRight128Suite extends ConcurrentAtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), LeftRight128, 782.toByte, None, Byte.MaxValue, Byte.MinValue)
+
+object ConcurrentAtomicNumberCharLeftRight128Suite extends ConcurrentAtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), LeftRight128, 782.toChar, None, Char.MaxValue, Char.MinValue)
+
+object ConcurrentAtomicNumberNumberAnyLeftRight128Suite extends ConcurrentAtomicNumberSuite[BigInt, AtomicNumberAny[BigInt]](
+  Atomic.builderFor(BigInt(0)), LeftRight128, BigInt(Int.MaxValue), None, BigInt(Long.MaxValue), BigInt(Long.MinValue))

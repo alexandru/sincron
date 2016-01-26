@@ -17,20 +17,17 @@
 
 package org.sincron.atomic
 
-import java.util.concurrent.atomic.{AtomicLong => JavaAtomicLong}
+import org.sincron.atomic.PaddingStrategy.NoPadding
+import org.sincron.atomic.boxes.{Factory, BoxedLong}
 import scala.annotation.tailrec
 
-final class AtomicLong private (ref: JavaAtomicLong) 
+final class AtomicLong private (private[this] val ref: BoxedLong)
   extends AtomicNumber[Long] {
-  
-  def get: Long = ref.get()
 
-  def set(update: Long): Unit = {
-    ref.set(update)
-  }
-
-  def update(value: Long): Unit = set(value)
-  def `:=`(value: Long): Unit = set(value)
+  def get: Long = ref.volatileGet()
+  def set(update: Long): Unit = ref.volatileSet(update)
+  def update(value: Long): Unit = ref.volatileSet(value)
+  def `:=`(value: Long): Unit = ref.volatileSet(value)
 
   def compareAndSet(expect: Long, update: Long): Boolean = {
     ref.compareAndSet(expect, update)
@@ -46,16 +43,16 @@ final class AtomicLong private (ref: JavaAtomicLong)
 
   @tailrec
   def increment(v: Int = 1): Unit = {
-    val current = ref.get()
-    if (!compareAndSet(current, current+v))
+    val current = ref.volatileGet()
+    if (!ref.compareAndSet(current, current+v))
       increment(v)
   }
 
   @tailrec
   def incrementAndGet(v: Int = 1): Long = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       incrementAndGet(v)
     else
       update
@@ -63,9 +60,9 @@ final class AtomicLong private (ref: JavaAtomicLong)
 
   @tailrec
   def getAndIncrement(v: Int = 1): Long = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       getAndIncrement(v)
     else
       current
@@ -73,9 +70,9 @@ final class AtomicLong private (ref: JavaAtomicLong)
 
   @tailrec
   def getAndAdd(v: Long): Long = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       getAndAdd(v)
     else
       current
@@ -83,9 +80,9 @@ final class AtomicLong private (ref: JavaAtomicLong)
 
   @tailrec
   def addAndGet(v: Long): Long = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       addAndGet(v)
     else
       update
@@ -93,9 +90,9 @@ final class AtomicLong private (ref: JavaAtomicLong)
 
   @tailrec
   def add(v: Long): Unit = {
-    val current = ref.get()
+    val current = ref.volatileGet()
     val update = current + v
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       add(v)
   }
 
@@ -109,18 +106,18 @@ final class AtomicLong private (ref: JavaAtomicLong)
     addAndGet(-v)
 
   @tailrec
-  def countDownToZero(v: Long = 1L): Long = {
+  def countDownToZero(v: Long = 1): Long = {
     val current = get
-    if (current != 0L) {
+    if (current != 0) {
       val decrement = if (current >= v) v else current
       val update = current - decrement
-      if (!compareAndSet(current, update))
+      if (!ref.compareAndSet(current, update))
         countDownToZero(v)
       else
         decrement
     }
     else
-      0L
+      0
   }
 
   def decrement(v: Int = 1): Unit = increment(-v)
@@ -129,13 +126,10 @@ final class AtomicLong private (ref: JavaAtomicLong)
   def `+=`(v: Long): Unit = addAndGet(v)
   def `-=`(v: Long): Unit = subtractAndGet(v)
 
-  override def toString: String = s"AtomicLong(${ref.get()})"
+  override def toString: String = s"AtomicLong(${ref.volatileGet()})"
 }
 
 object AtomicLong {
-  def apply(initialValue: Long): AtomicLong =
-    new AtomicLong(new JavaAtomicLong(initialValue))
-
-  def wrap(ref: JavaAtomicLong): AtomicLong =
-    new AtomicLong(ref)
+  def apply(initialValue: Long)(implicit strategy: PaddingStrategy = NoPadding): AtomicLong =
+    new AtomicLong(Factory.newBoxedLong(initialValue, boxStrategyToPaddingStrategy(strategy)))
 }

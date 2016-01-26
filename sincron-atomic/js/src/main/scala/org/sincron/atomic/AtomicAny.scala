@@ -17,7 +17,7 @@
 
 package org.sincron.atomic
 
-final class AtomicAny[T] private[atomic] (initialValue: T) extends Atomic[T] {
+final class AtomicAny[T <: AnyRef] private[atomic] (initialValue: T) extends Atomic[T] {
   private[this] var ref = initialValue
 
   def getAndSet(update: T): T = {
@@ -52,6 +52,6 @@ final class AtomicAny[T] private[atomic] (initialValue: T) extends Atomic[T] {
 }
 
 object AtomicAny {
-  def apply[T](initialValue: T): AtomicAny[T] =
+  def apply[T <: AnyRef](initialValue: T): AtomicAny[T] =
     new AtomicAny(initialValue)
 }

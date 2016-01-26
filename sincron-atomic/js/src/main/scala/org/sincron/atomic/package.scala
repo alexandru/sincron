@@ -52,37 +52,5 @@ package org.sincron
  * In comparison with `java.util.concurrent.AtomicReference`, these references implement common interfaces
  * that you can use generically (i.e. `Atomic[T]`, `AtomicNumber[T]`). And also provide useful helpers for
  * atomically mutating of values (i.e. `transform`, `transformAndGet`, `getAndTransform`, etc...).
- *
- * Other differences with the JVM-variant - in Scala.js you do not have access to the methods meant to
- * block (spin-lock) the current thread (e.g. `waitForCompareAndSet`, `waitForCondition`, etc...), as
- * the semantics of those operations aren't possible on top of Scala.js
  */
-package object atomic {
-  type AtomicShort = AtomicNumberAny[Short]
-
-  object AtomicShort {
-    def apply(initial: Short): AtomicShort  =
-      AtomicNumberAny(initial)
-  }
-
-  type AtomicChar = AtomicNumberAny[Char]
-
-  object AtomicChar {
-    def apply(initial: Char): AtomicChar  =
-      AtomicNumberAny(initial)
-  }
-
-  type AtomicBoolean = AtomicAny[Boolean]
-
-  object AtomicBoolean {
-    def apply(initial: Boolean): AtomicBoolean  =
-      AtomicAny(initial)
-  }
-
-  type AtomicByte = AtomicNumberAny[Byte]
-
-  object AtomicByte {
-    def apply(initial: Byte): AtomicByte  =
-      AtomicNumberAny(initial)
-  }
-}
+package object atomic

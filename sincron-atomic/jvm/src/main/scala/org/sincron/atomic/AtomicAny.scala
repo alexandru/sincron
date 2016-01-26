@@ -17,25 +17,22 @@
 
 package org.sincron.atomic
 
-import java.util.concurrent.atomic.AtomicReference
+import org.sincron.atomic.PaddingStrategy.NoPadding
+import org.sincron.atomic.boxes.{Factory, BoxedObject}
 
-final class AtomicAny[T] private (ref: AtomicReference[T]) extends Atomic[T] {
-  def get: T = ref.get()
+final class AtomicAny[T <: AnyRef] private (private[this] val ref: BoxedObject) extends Atomic[T] {
+  def get: T = ref.volatileGet().asInstanceOf[T]
 
-  def set(update: T): Unit = {
-    ref.set(update)
-  }
-
-  def update(value: T): Unit = set(value)
-  def `:=`(value: T): Unit = set(value)
+  def set(update: T): Unit = ref.volatileSet(update)
+  def update(value: T): Unit = ref.volatileSet(value)
+  def `:=`(value: T): Unit = ref.volatileSet(value)
 
   def compareAndSet(expect: T, update: T): Boolean = {
-    val current = ref.get()
-    current == expect && ref.compareAndSet(current, update)
+    ref.compareAndSet(expect, update)
   }
 
   def getAndSet(update: T): T = {
-    ref.getAndSet(update)
+    ref.getAndSet(update).asInstanceOf[T]
   }
 
   def lazySet(update: T): Unit = {
@@ -44,9 +41,6 @@ final class AtomicAny[T] private (ref: AtomicReference[T]) extends Atomic[T] {
 }
 
 object AtomicAny {
-  def apply[T](initialValue: T): AtomicAny[T] =
-    new AtomicAny[T](new AtomicReference[T](initialValue))
-
-  def wrap[T](ref: AtomicReference[T]): AtomicAny[T] =
-    new AtomicAny[T](ref)
+  def apply[T <: AnyRef](initialValue: T)(implicit strategy: PaddingStrategy = NoPadding): AtomicAny[T] =
+    new AtomicAny[T](Factory.newBoxedObject(initialValue, boxStrategyToPaddingStrategy(strategy)))
 }

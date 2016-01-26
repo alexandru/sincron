@@ -17,20 +17,18 @@
 
 package org.sincron.atomic
 
+import org.sincron.atomic.PaddingStrategy.NoPadding
+import org.sincron.atomic.boxes.{BoxedInt, Factory}
 import scala.annotation.tailrec
-import java.util.concurrent.atomic.{AtomicInteger => JavaAtomicInteger}
 
-final class AtomicShort private (ref: JavaAtomicInteger)
+final class AtomicShort private (private[this] val ref: BoxedInt)
   extends AtomicNumber[Short] {
-
   private[this] val mask = 255 + 255 * 256
 
-  def get: Short =
-    (ref.get() & mask).toShort
-
-  def set(update: Short) = {
-    ref.set(update)
-  }
+  def get: Short = (ref.volatileGet() & mask).asInstanceOf[Short]
+  def set(update: Short): Unit = ref.volatileSet(update)
+  def update(value: Short): Unit = ref.volatileSet(value)
+  def `:=`(value: Short): Unit = ref.volatileSet(value)
 
   def lazySet(update: Short) = {
     ref.lazySet(update)
@@ -44,30 +42,28 @@ final class AtomicShort private (ref: JavaAtomicInteger)
     (ref.getAndSet(update) & mask).asInstanceOf[Short]
   }
 
-  def update(value: Short): Unit = set(value)
-  def `:=`(value: Short): Unit = set(value)
 
   @tailrec
   def increment(v: Int = 1): Unit = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     val update = incrOp(current, v)
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       increment(v)
   }
 
   @tailrec
   def add(v: Short): Unit = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     val update = plusOp(current, v)
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       add(v)
   }
 
   @tailrec
   def incrementAndGet(v: Int = 1): Short = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     val update = incrOp(current, v)
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       incrementAndGet(v)
     else
       update
@@ -75,9 +71,9 @@ final class AtomicShort private (ref: JavaAtomicInteger)
 
   @tailrec
   def addAndGet(v: Short): Short = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     val update = plusOp(current, v)
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       addAndGet(v)
     else
       update
@@ -85,9 +81,9 @@ final class AtomicShort private (ref: JavaAtomicInteger)
 
   @tailrec
   def getAndIncrement(v: Int = 1): Short = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     val update = incrOp(current, v)
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       getAndIncrement(v)
     else
       current
@@ -95,9 +91,9 @@ final class AtomicShort private (ref: JavaAtomicInteger)
 
   @tailrec
   def getAndAdd(v: Short): Short = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     val update = plusOp(current, v)
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       getAndAdd(v)
     else
       current
@@ -105,17 +101,17 @@ final class AtomicShort private (ref: JavaAtomicInteger)
 
   @tailrec
   def subtract(v: Short): Unit = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     val update = minusOp(current, v)
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       subtract(v)
   }
 
   @tailrec
   def subtractAndGet(v: Short): Short = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     val update = minusOp(current, v)
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       subtractAndGet(v)
     else
       update
@@ -123,9 +119,9 @@ final class AtomicShort private (ref: JavaAtomicInteger)
 
   @tailrec
   def getAndSubtract(v: Short): Short = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     val update = minusOp(current, v)
-    if (!compareAndSet(current, update))
+    if (!ref.compareAndSet(current, update))
       getAndSubtract(v)
     else
       current
@@ -133,11 +129,11 @@ final class AtomicShort private (ref: JavaAtomicInteger)
 
   @tailrec
   def countDownToZero(v: Short = 1): Short = {
-    val current = get
+    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
     if (current != 0) {
       val decrement = if (current >= v) v else current
       val update = minusOp(current, decrement)
-      if (!compareAndSet(current, update))
+      if (!ref.compareAndSet(current, update))
         countDownToZero(v)
       else
         decrement
@@ -152,15 +148,17 @@ final class AtomicShort private (ref: JavaAtomicInteger)
   def `+=`(v: Short): Unit = addAndGet(v)
   def `-=`(v: Short): Unit = subtractAndGet(v)
 
-  private[this] def plusOp(a: Short, b: Short): Short = ((a + b) & mask).asInstanceOf[Short]
-  private[this] def minusOp(a: Short, b: Short): Short = ((a - b) & mask).asInstanceOf[Short]
-  private[this] def incrOp(a: Short, b: Int): Short = ((a + b) & mask).asInstanceOf[Short]
+  private[this] def plusOp(a: Short, b: Short): Short =
+    ((a + b) & mask).asInstanceOf[Short]
+
+  private[this] def minusOp(a: Short, b: Short): Short =
+    ((a - b) & mask).asInstanceOf[Short]
+
+  private[this] def incrOp(a: Short, b: Int): Short =
+    ((a + b) & mask).asInstanceOf[Short]
 }
 
 object AtomicShort {
-  def apply(initialValue: Short): AtomicShort =
-    new AtomicShort(new JavaAtomicInteger(initialValue))
-
-  def wrap(ref: JavaAtomicInteger): AtomicShort =
-    new AtomicShort(ref)
+  def apply(initialValue: Short)(implicit strategy: PaddingStrategy = NoPadding): AtomicShort =
+    new AtomicShort(Factory.newBoxedInt(initialValue, boxStrategyToPaddingStrategy(strategy)))
 }

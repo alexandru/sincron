@@ -17,37 +17,29 @@
 
 package org.sincron.atomic
 
+import org.sincron.atomic.PaddingStrategy.NoPadding
+import org.sincron.atomic.boxes.{Factory, BoxedInt}
 import scala.annotation.tailrec
-import scala.concurrent._
-import scala.concurrent.duration.FiniteDuration
 import java.lang.Float.{intBitsToFloat, floatToIntBits}
-import java.util.concurrent.atomic.{AtomicInteger => JavaAtomicInteger}
 
-final class AtomicFloat private (ref: JavaAtomicInteger)
+final class AtomicFloat private (private[this] val ref: BoxedInt)
   extends AtomicNumber[Float] {
 
-  def get: Float =
-    intBitsToFloat(ref.get())
-
-  def set(update: Float) = {
-    ref.set(floatToIntBits(update))
-  }
-
-  def lazySet(update: Float) = {
-    ref.lazySet(floatToIntBits(update))
-  }
+  def get: Float = intBitsToFloat(ref.volatileGet())
+  def set(update: Float): Unit = ref.volatileSet(floatToIntBits(update))
+  def update(value: Float): Unit = ref.volatileSet(floatToIntBits(value))
+  def `:=`(value: Float): Unit = ref.volatileSet(floatToIntBits(value))
+  def lazySet(update: Float): Unit = ref.lazySet(floatToIntBits(update))
 
   def compareAndSet(expect: Float, update: Float): Boolean = {
-    val current = ref.get()
-    current == floatToIntBits(expect) && ref.compareAndSet(current, floatToIntBits(update))
+    val expectLong = floatToIntBits(expect)
+    val updateLong = floatToIntBits(update)
+    ref.compareAndSet(expectLong, updateLong)
   }
 
   def getAndSet(update: Float): Float = {
     intBitsToFloat(ref.getAndSet(floatToIntBits(update)))
   }
-
-  def update(value: Float): Unit = set(value)
-  def `:=`(value: Float): Unit = set(value)
 
   @tailrec
   def increment(v: Int = 1): Unit = {
@@ -136,7 +128,7 @@ final class AtomicFloat private (ref: JavaAtomicInteger)
   @tailrec
   def countDownToZero(v: Float = 1.0f): Float = {
     val current = get
-    if (current != 0.0f) {
+    if (current != 0.0) {
       val decrement = if (current >= v) v else current
       val update = current - decrement
       if (!compareAndSet(current, update))
@@ -160,9 +152,9 @@ final class AtomicFloat private (ref: JavaAtomicInteger)
 }
 
 object AtomicFloat {
-  def apply(initialValue: Float): AtomicFloat =
-    new AtomicFloat(new JavaAtomicInteger(floatToIntBits(initialValue)))
-
-  def wrap(ref: JavaAtomicInteger): AtomicFloat =
-    new AtomicFloat(ref)
+  def apply(initialValue: Float)(implicit strategy: PaddingStrategy = NoPadding): AtomicFloat =
+    new AtomicFloat(Factory.newBoxedInt(
+      floatToIntBits(initialValue),
+      boxStrategyToPaddingStrategy(strategy)))
 }
+

@@ -17,7 +17,9 @@
 
 package org.sincron.atomic
 
-final class AtomicNumberAny[T : Numeric] private[atomic] (initialValue: T) extends AtomicNumber[T] {
+final class AtomicNumberAny[T  <: AnyRef : Numeric] private[atomic] (initialValue: T)
+  extends AtomicNumber[T] {
+
   private[this] val ev = implicitly[Numeric[T]]
   private[this] var ref = initialValue
 
@@ -115,6 +117,6 @@ final class AtomicNumberAny[T : Numeric] private[atomic] (initialValue: T) exten
 }
 
 object AtomicNumberAny {
-  def apply[T : Numeric](initialValue: T): AtomicNumberAny[T] =
+  def apply[T <: AnyRef : Numeric](initialValue: T): AtomicNumberAny[T] =
     new AtomicNumberAny[T](initialValue)
 }

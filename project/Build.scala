@@ -230,7 +230,8 @@ object Build extends SbtBuild {
   lazy val sincron = project.in(file("."))
     .aggregate(
       atomicJVM, atomicJS,
-      sincronJVM, sincronJS)
+      sincronJVM, sincronJS,
+      docs)
     .settings(unidocSettings: _*)
     .settings(sharedSettings: _*)
     .settings(doNotPublishArtifact: _*)

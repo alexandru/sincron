@@ -137,8 +137,8 @@ object Build extends SbtBuild {
       <url>https://github.com/monixio/sincron/</url>
         <licenses>
           <license>
-            <name>BSD 3-Clause License</name>
-            <url>https://opensource.org/licenses/BSD-3-Clause</url>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
             <distribution>repo</distribution>
           </license>
         </licenses>

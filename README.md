@@ -41,20 +41,12 @@ The current maintainers (people who can help you) are:
 
 The Sincron project welcomes contributions from anybody wishing to
 participate.  All code or documentation that is provided must be
-licensed with the same license that Sincron is licensed with
-(see LICENSE.txt) and to sign Scala's Contributor License
-Agreement (see the [contributor guide](CONTRIBUTING.md) for details).
+licensed with the same license that Sincron is licensed with.
 
-People are expected to follow the
+The Sincron project supports the
 [Typelevel Code of Conduct](http://typelevel.org/conduct.html) when
 discussing Sincron on the Github page, Gitter channel, or other venues.
-
-We hope that our community will be respectful, helpful, and kind. If
-you find yourself embroiled in a situation that becomes heated, or
-that fails to live up to our expectations, you should disengage and
-contact one of the project maintainers in private. We hope to avoid
-letting minor aggressions and misunderstandings escalate into larger
-problems.
+We hope that our community will be respectful, helpful and kind.
 
 Feel free to open an issue if you notice a bug, have an idea for a
 feature, or have a question about the code. Pull requests are also

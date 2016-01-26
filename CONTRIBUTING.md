@@ -6,14 +6,10 @@ license that Sincron is licensed with (Apache 2.0, see LICENSE.txt).
 
 ## Code of Conduct
 
-People are expected to follow the [Typelevel Code of Conduct](http://typelevel.org/conduct.html)
+People are expected to follow the
+[Typelevel Code of Conduct](http://typelevel.org/conduct.html)
 when discussing Sincron on the Github page, Gitter channel, or other venues.
-
-We hope that our community will be respectful, helpful, and kind. If you find
-yourself embroiled in a situation that becomes heated, or that fails to live up
-to our expectations, you should disengage and contact one of the project maintainers
-in private. We hope to avoid letting minor aggressions and misunderstandings
-escalate into larger problems.
+We hope that our community will be respectful, helpful, and kind.
 
 ## General Workflow
 
@@ -36,7 +32,7 @@ escalate into larger problems.
 6. It is not allowed to force push to the branch on which the pull
    request is based.
 
-## General Guidelines
+## Hygiene Rules
 
 1. It is recommended that the work is accompanied by unit tests.
 
@@ -49,7 +45,7 @@ escalate into larger problems.
    indentation rules used.
 
 5. Your first commit request should be accompanied with a change to
-   the AUTHORS file, adding yourself to the authors list.
+   the CONTRIBUTORS file, adding yourself to the contributors list.
 
 ## License
 

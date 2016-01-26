@@ -33,44 +33,6 @@ final class AtomicNumberAny[T : Numeric] private (ref: JavaAtomicReference[T])
   }
 
   @tailrec
-  def transformAndExtract[U](cb: (T) => (U, T)): U = {
-    val current = get
-    val (extract, update) = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndExtract(cb)
-    else
-      extract
-  }
-
-  @tailrec
-  def transformAndGet(cb: (T) => T): T = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndGet(cb)
-    else
-      update
-  }
-
-  @tailrec
-  def getAndTransform(cb: (T) => T): T = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      getAndTransform(cb)
-    else
-      current
-  }
-
-  @tailrec
-  def transform(cb: (T) => T): Unit = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transform(cb)
-  }
-
-  @tailrec
   @throws(classOf[InterruptedException])
   def waitForCompareAndSet(expect: T, update: T): Unit =
     if (!compareAndSet(expect, update)) {

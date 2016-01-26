@@ -34,44 +34,6 @@ class AtomicChar private (ref: JavaAtomicInteger)
   final def `:=`(value: Char): Unit = set(value)
 
   @tailrec
-  final def transformAndExtract[U](cb: (Char) => (U, Char)): U = {
-    val current = get
-    val (extract, update) = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndExtract(cb)
-    else
-      extract
-  }
-
-  @tailrec
-  final def transformAndGet(cb: (Char) => Char): Char = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndGet(cb)
-    else
-      update
-  }
-
-  @tailrec
-  final def getAndTransform(cb: (Char) => Char): Char = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      getAndTransform(cb)
-    else
-      current
-  }
-
-  @tailrec
-  final def transform(cb: (Char) => Char): Unit = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transform(cb)
-  }
-
-  @tailrec
   @throws(classOf[InterruptedException])
   final def waitForCompareAndSet(expect: Char, update: Char): Unit =
     if (!compareAndSet(expect, update)) {

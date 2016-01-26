@@ -30,44 +30,6 @@ final class AtomicBoolean private (ref: JavaAtomicBoolean) extends BlockableAtom
   }
 
   @tailrec
-  def transformAndExtract[U](cb: (Boolean) => (U, Boolean)): U = {
-    val current = get
-    val (extract, update) = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndExtract(cb)
-    else
-      extract
-  }
-
-  @tailrec
-  def transformAndGet(cb: (Boolean) => Boolean): Boolean = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndGet(cb)
-    else
-      update
-  }
-
-  @tailrec
-  def getAndTransform(cb: (Boolean) => Boolean): Boolean = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      getAndTransform(cb)
-    else
-      current
-  }
-
-  @tailrec
-  def transform(cb: (Boolean) => Boolean): Unit = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transform(cb)
-  }
-
-  @tailrec
   @throws(classOf[InterruptedException])
   def waitForCompareAndSet(expect: Boolean, update: Boolean): Unit =
     if (!compareAndSet(expect, update)) {

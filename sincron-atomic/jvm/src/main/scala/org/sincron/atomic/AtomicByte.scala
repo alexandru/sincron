@@ -33,44 +33,6 @@ final class AtomicByte private (ref: JavaAtomicInteger)
   def `:=`(value: Byte): Unit = set(value)
 
   @tailrec
-  def transformAndExtract[U](cb: (Byte) => (U, Byte)): U = {
-    val current = get
-    val (extract, update) = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndExtract(cb)
-    else
-      extract
-  }
-
-  @tailrec
-  def transformAndGet(cb: (Byte) => Byte): Byte = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndGet(cb)
-    else
-      update
-  }
-
-  @tailrec
-  def getAndTransform(cb: (Byte) => Byte): Byte = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      getAndTransform(cb)
-    else
-      current
-  }
-
-  @tailrec
-  def transform(cb: (Byte) => Byte): Unit = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transform(cb)
-  }
-
-  @tailrec
   @throws(classOf[InterruptedException])
   def waitForCompareAndSet(expect: Byte, update: Byte): Unit =
     if (!compareAndSet(expect, update)) {

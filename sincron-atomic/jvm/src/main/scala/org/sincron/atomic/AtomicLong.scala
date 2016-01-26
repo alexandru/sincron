@@ -30,44 +30,6 @@ final class AtomicLong private (ref: JavaAtomicLong)
   }
 
   @tailrec
-  def transformAndExtract[U](cb: (Long) => (U, Long)): U = {
-    val current = get
-    val (extract, update) = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndExtract(cb)
-    else
-      extract
-  }
-
-  @tailrec
-  def transformAndGet(cb: (Long) => Long): Long = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndGet(cb)
-    else
-      update
-  }
-
-  @tailrec
-  def getAndTransform(cb: (Long) => Long): Long = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      getAndTransform(cb)
-    else
-      current
-  }
-
-  @tailrec
-  def transform(cb: (Long) => Long): Unit = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transform(cb)
-  }
-
-  @tailrec
   @throws(classOf[InterruptedException])
   def waitForCompareAndSet(expect: Long, update: Long): Unit =
     if (!compareAndSet(expect, update)) {

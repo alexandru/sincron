@@ -30,44 +30,6 @@ final class AtomicInt private (ref: JavaAtomicInteger)
   }
 
   @tailrec
-  def transformAndExtract[U](cb: (Int) => (U, Int)): U = {
-    val current = get
-    val (extract, update) = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndExtract(cb)
-    else
-      extract
-  }
-
-  @tailrec
-  def transformAndGet(cb: (Int) => Int): Int = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transformAndGet(cb)
-    else
-      update
-  }
-
-  @tailrec
-  def getAndTransform(cb: (Int) => Int): Int = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      getAndTransform(cb)
-    else
-      current
-  }
-
-  @tailrec
-  def transform(cb: (Int) => Int): Unit = {
-    val current = get
-    val update = cb(current)
-    if (!compareAndSet(current, update))
-      transform(cb)
-  }
-
-  @tailrec
   @throws(classOf[InterruptedException])
   def waitForCompareAndSet(expect: Int, update: Int): Unit =
     if (!compareAndSet(expect, update)) {

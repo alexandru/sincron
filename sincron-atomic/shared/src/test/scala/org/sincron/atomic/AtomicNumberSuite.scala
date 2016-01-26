@@ -146,20 +146,69 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
     assert(r.get == ev.zero)
   }
 
-  test("should transform()") {
+  test("should transform(inline #1)") {
     val r = Atomic(value)
     r.transform(x => ev.plus(x, x))
     assert(r.get == ev.plus(value, value))
   }
 
-  test("should transformAndGet()") {
+  test("should transform(inline #2)") {
+    val r = Atomic(value)
+    r.transform(ev.plus(ev.one, _))
+    assert(r.get == ev.plus(ev.one, value))
+  }
+
+  test("should transform(function)") {
+    val r = Atomic(value)
+    def fn(x: T): T = ev.plus(x, x)
+    r.transform(fn)
+    assert(r.get == ev.plus(value, value))
+  }
+
+  test("should transformAndGet(inline #1)") {
     val r = Atomic(value)
     assert(r.transformAndGet(x => ev.plus(x, x)) == ev.plus(value, value))
   }
 
-  test("should getAndTransform()") {
+  test("should transformAndGet(inline #2)") {
+    val r = Atomic(value)
+    assert(r.transformAndGet(ev.plus(ev.one, _)) == ev.plus(ev.one, value))
+  }
+
+  test("should transformAndGet(function)") {
+    val r = Atomic(value)
+    def fn(x: T) = ev.plus(x,x)
+    assert(r.transformAndGet(fn) == ev.plus(value, value))
+  }
+
+  test("should getAndTransform(inline #1)") {
     val r = Atomic(value)
     assert(r.getAndTransform(x => ev.plus(x, x)) == value)
+    assert(r.get == ev.plus(value, value))
+  }
+
+  test("should getAndTransform(inline #2)") {
+    val r = Atomic(value)
+    assert(r.getAndTransform(ev.plus(ev.one, _)) == value)
+    assert(r.get == ev.plus(ev.one, value))
+  }
+
+  test("should getAndTransform(function)") {
+    val r = Atomic(value)
+    def fn(x: T) = ev.plus(x,x)
+    assert(r.getAndTransform(fn) == value)
+    assert(r.get == ev.plus(value, value))
+  }
+
+  test("should transformAndExtract()") {
+    val r = Atomic(value)
+    assert(r.transformAndExtract(x => (ev.plus(value, ev.one), ev.plus(x, x))) == ev.plus(value, ev.one))
+    assert(r.get == ev.plus(value, value))
+  }
+
+  test("should transformAndExtract()") {
+    val r = Atomic(value)
+    assert(r.transformAndExtract(x => (ev.plus(value, ev.one), ev.plus(x, x))) == ev.plus(value, ev.one))
     assert(r.get == ev.plus(value, value))
   }
 

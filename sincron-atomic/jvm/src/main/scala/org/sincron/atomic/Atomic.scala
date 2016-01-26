@@ -1,5 +1,8 @@
 package org.sincron.atomic
 
+import scala.language.experimental.macros
+import org.sincron.atomic.inline.AtomicMacros
+
 /**
  * Base trait of all atomic references, no matter the type.
  */
@@ -16,19 +19,22 @@ trait Atomic[T] extends Any {
 
   /**
    * Updates the current value.
-   * @param update will be the new value returned by `get()`
+    *
+    * @param update will be the new value returned by `get()`
    */
   def set(update: T): Unit
 
   /**
    * Alias for `set()`. Updates the current value.
-   * @param value will be the new value returned by `get()`
+    *
+    * @param value will be the new value returned by `get()`
    */
   def update(value: T): Unit
 
   /**
    * Alias for `set()`. Updates the current value.
-   * @param value will be the new value returned by `get()`
+    *
+    * @param value will be the new value returned by `get()`
    */
   def `:=`(value: T): Unit
 
@@ -68,7 +74,8 @@ trait Atomic[T] extends Any {
    *           the update + what should this method return when the operation succeeds.
    * @return whatever was specified by your callback, once the operation succeeds
    */
-  def transformAndExtract[U](cb: (T) => (U, T)): U
+  final def transformAndExtract[U](cb: (T) => (U, T)): U =
+    macro AtomicMacros.transformAndExtractMacro[T, U]
 
   /**
    * Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
@@ -82,7 +89,8 @@ trait Atomic[T] extends Any {
    *           new value that should be persisted
    * @return whatever the update is, after the operation succeeds
    */
-  def transformAndGet(cb: (T) => T): T
+  final def transformAndGet(cb: (T) => T): T =
+    macro AtomicMacros.transformAndGetMacro[T]
 
   /**
    * Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
@@ -96,7 +104,8 @@ trait Atomic[T] extends Any {
    *           new value that should be persisted
    * @return the old value, just prior to when the successful update happened
    */
-  def getAndTransform(cb: (T) => T): T
+  final def getAndTransform(cb: (T) => T): T =
+    macro AtomicMacros.getAndTransformMacro[T]
 
   /**
    * Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
@@ -109,7 +118,8 @@ trait Atomic[T] extends Any {
    * @param cb is a callback that receives the current value as input and returns the `update` which is the
    *           new value that should be persisted
    */
-  def transform(cb: (T) => T): Unit
+  final def transform(cb: (T) => T): Unit =
+    macro AtomicMacros.transformMacro[T]
 }
 
 object Atomic {

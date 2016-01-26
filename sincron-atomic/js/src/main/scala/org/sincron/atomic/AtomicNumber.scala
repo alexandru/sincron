@@ -49,8 +49,3 @@ trait AtomicNumber[T] extends Atomic[T] {
   def `+=`(v: T): Unit
   def `-=`(v: T): Unit
 }
-
-object AtomicNumber {
-  def apply[T, R <: AtomicNumber[T]](initialValue: T)(implicit ev: Numeric[T], builder: AtomicBuilder[T, R]): R =
-    builder.buildInstance(initialValue)
-}

@@ -25,8 +25,12 @@ class InlineUtil[C <: Context with Singleton](val c: C) {
   import c.universe._
 
   def inlineAndReset[T](tree: Tree): c.Expr[T] = {
+    c.Expr[T](inlineAndResetTree(tree))
+  }
+
+  def inlineAndResetTree(tree: Tree): c.Tree = {
     val inlined = inlineApplyRecursive(tree)
-    c.Expr[T](resetLocalAttrs(c)(inlined))
+    resetLocalAttrs(c)(inlined)
   }
 
   def inlineApplyRecursive(tree: Tree): Tree = {

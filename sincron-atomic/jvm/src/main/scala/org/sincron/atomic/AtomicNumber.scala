@@ -17,6 +17,8 @@
 
 package org.sincron.atomic
 
+import scala.language.experimental.macros
+
 /**
  * Represents an Atomic reference holding a number, providing helpers for easily incrementing and decrementing it.
  *
@@ -48,9 +50,4 @@ trait AtomicNumber[T] extends Atomic[T] {
 
   def `+=`(v: T): Unit
   def `-=`(v: T): Unit
-}
-
-object AtomicNumber {
-  def apply[T, R <: AtomicNumber[T]](initialValue: T)(implicit ev: Numeric[T], builder: AtomicBuilder[T, R]): R =
-    builder.buildInstance(initialValue)
 }

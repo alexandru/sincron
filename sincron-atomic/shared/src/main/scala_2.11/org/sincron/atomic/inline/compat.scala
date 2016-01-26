@@ -29,7 +29,7 @@ object compat {
   def typeCheck[C <: Context](c: C)(t: c.Tree) =
     c.typecheck(t)
 
-  def resetLocalAttrs[C <: Context](c: C)(t: c.Tree) =
+  def resetLocalAttrs[C <: Context](c: C)(t: c.Tree): c.Tree =
     c.untypecheck(t)
 
   def setOrig[C <: Context](c: C)(tt: c.universe.TypeTree, t: c.Tree) =

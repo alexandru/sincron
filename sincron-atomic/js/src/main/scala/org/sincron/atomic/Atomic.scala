@@ -146,7 +146,7 @@ object Atomic {
    * @param builder is the builder that helps us to build the best reference possible, based on our `initialValue`
    */
   def apply[T, R <: Atomic[T]](initialValue: T)(implicit builder: AtomicBuilder[T, R]): R =
-    builder.buildInstance(initialValue)
+    macro AtomicMacros.buildAnyMacro[T,R]
 
   /**
    * Returns the builder that would be chosen to construct Atomic references

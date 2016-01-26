@@ -17,11 +17,13 @@
 
 package org.sincron.atomic.inline
 
-import org.sincron.atomic.Atomic
+import org.sincron.atomic.{AtomicBuilder, Atomic}
 import org.sincron.atomic.inline.compat._
 
 object AtomicMacros {
-  def transformMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })(cb: c.Expr[T => T]): c.Expr[Unit] = {
+  def transformMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })
+    (cb: c.Expr[T => T]): c.Expr[Unit] = {
+
     import c.universe._
     val util = SyntaxUtil[c.type](c)
     val selfExpr: c.Expr[Atomic[T]] = c.prefix
@@ -45,7 +47,9 @@ object AtomicMacros {
     new InlineUtil[c.type](c).inlineAndReset[Unit](tree)
   }
 
-  def transformAndGetMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })(cb: c.Expr[T => T]): c.Expr[T] = {
+  def transformAndGetMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })
+    (cb: c.Expr[T => T]): c.Expr[T] = {
+
     import c.universe._
     val util = SyntaxUtil[c.type](c)
     val selfExpr: c.Expr[Atomic[T]] = c.prefix
@@ -71,7 +75,9 @@ object AtomicMacros {
     new InlineUtil[c.type](c).inlineAndReset[T](tree)
   }
 
-  def getAndTransformMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })(cb: c.Expr[T => T]): c.Expr[T] = {
+  def getAndTransformMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })
+    (cb: c.Expr[T => T]): c.Expr[T] = {
+
     import c.universe._
     val util = SyntaxUtil[c.type](c)
     val selfExpr: c.Expr[Atomic[T]] = c.prefix
@@ -98,7 +104,7 @@ object AtomicMacros {
   }
 
   def transformAndExtractMacro[S : c.WeakTypeTag, A : c.WeakTypeTag]
-  (c: Context { type PrefixType = Atomic[S] })
+    (c: Context { type PrefixType = Atomic[S] })
     (cb: c.Expr[S => (A, S)]): c.Expr[A] = {
 
     import c.universe._
@@ -129,5 +135,16 @@ object AtomicMacros {
       """
 
     new InlineUtil[c.type](c).inlineAndReset[A](tree)
+  }
+
+  def buildAnyMacro[T : c.WeakTypeTag, R <: Atomic[T] : c.WeakTypeTag](c: Context)
+    (initialValue: c.Expr[T])(builder: c.Expr[AtomicBuilder[T, R]]): c.Expr[R] = {
+
+    import c.universe._
+    val expr = reify {
+      builder.splice.buildInstance(initialValue.splice)
+    }
+
+    new InlineUtil[c.type](c).inlineAndReset[R](expr.tree)
   }
 }

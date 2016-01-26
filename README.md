@@ -1,6 +1,6 @@
 # Sincron
 
-High-performance, low-level concurrency tools for Scala with equivalents for Scala.js.
+Low-level concurrency tools for Scala with equivalents for Scala.js.
 
 This projects aims to offer higher-level APIs for JVM's concurrency tools,
 along with useful and high-performance concurrent mutable data-structures.
@@ -22,11 +22,11 @@ added as they become available. Specifying dependencies
 // Atomic References
 libraryDependencies += "org.sincron" %% "sincron-atomic" % "0.1"
 
-// Everything
+// Everything :-)
 libraryDependencies += "org.sincron" %% "sincron" % "0.1"
 ```
 
-Tutorials:
+Available documentation:
 
 - [Atomic References](https://github.com/monixio/sincron/wiki/Atomic-References)
 

@@ -28,15 +28,10 @@ object AtomicMacros {
 
     val self = util.name("self")
     val tree =
-      if (util.isSymbol(selfExpr))
-        q"""
-          $selfExpr.set($cb($selfExpr.get))
-        """
-      else
-        q"""
-          val $self = $selfExpr
-          $self.set($cb($self.get))
-        """
+      q"""
+      val $self = $selfExpr
+      $self.set($cb($self.get))
+      """
 
     new InlineUtil[c.type](c).inlineAndReset[Unit](tree)
   }

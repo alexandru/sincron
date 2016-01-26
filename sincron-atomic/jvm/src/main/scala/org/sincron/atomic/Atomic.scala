@@ -136,8 +136,7 @@ trait Atomic[T] extends Any {
 }
 
 object Atomic {
-  /**
-    * Constructs an `Atomic[T]` reference. Based on the `initialValue`, it will return the best, most specific
+  /** Constructs an `Atomic[T]` reference. Based on the `initialValue`, it will return the best, most specific
     * type. E.g. you give it a number, it will return something inheriting from `AtomicNumber[T]`. That's why
     * it takes an `AtomicBuilder[T, R]` as an implicit parameter - but worry not about such details as it just works.
     *
@@ -147,8 +146,7 @@ object Atomic {
   def apply[T, R <: Atomic[T]](initialValue: T)(implicit builder: AtomicBuilder[T, R]): R =
     macro AtomicMacros.buildAnyMacro[T, R]
 
-  /**
-    * Returns the builder that would be chosen to construct Atomic references
+  /** Returns the builder that would be chosen to construct Atomic references
     * for the given `initialValue`.
     */
   def builderFor[T, R <: Atomic[T]](initialValue: T)(implicit builder: AtomicBuilder[T, R]): AtomicBuilder[T, R] =

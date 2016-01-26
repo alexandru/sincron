@@ -19,11 +19,11 @@ package org.sincron.atomic
 
 import scala.language.experimental.macros
 
-/**
- * Represents an Atomic reference holding a number, providing helpers for easily incrementing and decrementing it.
- *
- * @tparam T should be something that's Numeric
- */
+/** Represents an Atomic reference holding a number, providing helpers
+  * for easily incrementing and decrementing it.
+  *
+  * @tparam T should be something that's Numeric
+  */
 trait AtomicNumber[T] extends Atomic[T] {
   def increment(v: Int = 1): Unit
   def add(v: T): Unit

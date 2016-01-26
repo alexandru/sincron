@@ -113,7 +113,7 @@ object Build extends SbtBuild {
 
     // -- Testing
 
-    libraryDependencies += "io.monix" %%% "minitest" % "0.15" % "test",
+    libraryDependencies += "io.monix" %%% "minitest" % "0.16" % "test",
     testFrameworks += new TestFramework("minitest.runner.Framework"),
 
     // -- Settings meant for deployment on oss.sonatype.org

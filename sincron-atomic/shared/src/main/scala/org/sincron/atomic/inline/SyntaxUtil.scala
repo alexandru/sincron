@@ -20,10 +20,9 @@ package org.sincron.atomic.inline
 import org.sincron.atomic.inline.compat._
 
 case class SyntaxUtil[C <: Context with Singleton](val c: C) {
-  // import c.universe._
-  def name(s: String) = freshTermName(c)(s + "$")
+  import c.universe._
 
-  /*
+  def name(s: String) = freshTermName(c)(s + "$")
   def names(bs: String*) = bs.toList.map(name)
 
   def isClean(es: c.Expr[_]*): Boolean =
@@ -42,5 +41,4 @@ case class SyntaxUtil[C <: Context with Singleton](val c: C) {
         case _ => false
       }
     }
-    */
 }

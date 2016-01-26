@@ -17,8 +17,12 @@
 
 package org.sincron.atomic
 
+
+import org.sincron.atomic.inline.AtomicMacros
+import scala.language.experimental.macros
+
 /**
- * Base trait of all atomic references, no matter the type.
+  * Base trait of all atomic references, no matter the type.
  */
 trait Atomic[T] extends Any {
   /**
@@ -33,19 +37,22 @@ trait Atomic[T] extends Any {
 
   /**
    * Updates the current value.
-   * @param update will be the new value returned by `get()`
+    *
+    * @param update will be the new value returned by `get()`
    */
   def set(update: T): Unit
 
   /**
    * Alias for `set()`. Updates the current value.
-   * @param value will be the new value returned by `get()`
+    *
+    * @param value will be the new value returned by `get()`
    */
   def update(value: T): Unit
 
   /**
    * Alias for `set()`. Updates the current value.
-   * @param value will be the new value returned by `get()`
+    *
+    * @param value will be the new value returned by `get()`
    */
   def `:=`(value: T): Unit
 
@@ -73,60 +80,60 @@ trait Atomic[T] extends Any {
    */
   def lazySet(update: T): Unit
 
-  /**
-   * Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
-   * executed, a callback that transforms the current value. This method will loop until it will
-   * succeed in replacing the current value with the one produced by your callback.
-   *
-   * Note that the callback will be executed on each iteration of the loop, so it can be called
-   * multiple times - don't do destructive I/O or operations that mutate global state in it.
-   *
-   * @param cb is a callback that receives the current value as input and returns a tuple that specifies
-   *           the update + what should this method return when the operation succeeds.
-   * @return whatever was specified by your callback, once the operation succeeds
-   */
-  def transformAndExtract[U](cb: (T) => (U, T)): U
+  /** Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
+    * executed, a callback that transforms the current value. This method will loop until it will
+    * succeed in replacing the current value with the one produced by your callback.
+    *
+    * Note that the callback will be executed on each iteration of the loop, so it can be called
+    * multiple times - don't do destructive I/O or operations that mutate global state in it.
+    *
+    * @param cb is a callback that receives the current value as input and returns a tuple that specifies
+    *           the update + what should this method return when the operation succeeds.
+    * @return whatever was specified by your callback, once the operation succeeds
+    */
+  final def transformAndExtract[U](cb: (T) => (U, T)): U =
+    macro AtomicMacros.transformAndExtractMacro[T, U]
 
-  /**
-   * Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
-   * executed, a callback that transforms the current value. This method will loop until it will
-   * succeed in replacing the current value with the one produced by the given callback.
-   *
-   * Note that the callback will be executed on each iteration of the loop, so it can be called
-   * multiple times - don't do destructive I/O or operations that mutate global state in it.
-   *
-   * @param cb is a callback that receives the current value as input and returns the `update` which is the
-   *           new value that should be persisted
-   * @return whatever the update is, after the operation succeeds
-   */
-  def transformAndGet(cb: (T) => T): T
+  /** Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
+    * executed, a callback that transforms the current value. This method will loop until it will
+    * succeed in replacing the current value with the one produced by the given callback.
+    *
+    * Note that the callback will be executed on each iteration of the loop, so it can be called
+    * multiple times - don't do destructive I/O or operations that mutate global state in it.
+    *
+    * @param cb is a callback that receives the current value as input and returns the `update` which is the
+    *           new value that should be persisted
+    * @return whatever the update is, after the operation succeeds
+    */
+  final def transformAndGet(cb: (T) => T): T =
+    macro AtomicMacros.transformAndGetMacro[T]
 
-  /**
-   * Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
-   * executed, a callback that transforms the current value. This method will loop until it will
-   * succeed in replacing the current value with the one produced by the given callback.
-   *
-   * Note that the callback will be executed on each iteration of the loop, so it can be called
-   * multiple times - don't do destructive I/O or operations that mutate global state in it.
-   *
-   * @param cb is a callback that receives the current value as input and returns the `update` which is the
-   *           new value that should be persisted
-   * @return the old value, just prior to when the successful update happened
-   */
-  def getAndTransform(cb: (T) => T): T
+  /** Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
+    * executed, a callback that transforms the current value. This method will loop until it will
+    * succeed in replacing the current value with the one produced by the given callback.
+    *
+    * Note that the callback will be executed on each iteration of the loop, so it can be called
+    * multiple times - don't do destructive I/O or operations that mutate global state in it.
+    *
+    * @param cb is a callback that receives the current value as input and returns the `update` which is the
+    *           new value that should be persisted
+    * @return the old value, just prior to when the successful update happened
+    */
+  final def getAndTransform(cb: (T) => T): T =
+    macro AtomicMacros.getAndTransformMacro[T]
 
-  /**
-   * Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
-   * executed, a callback that transforms the current value. This method will loop until it will
-   * succeed in replacing the current value with the one produced by the given callback.
-   *
-   * Note that the callback will be executed on each iteration of the loop, so it can be called
-   * multiple times - don't do destructive I/O or operations that mutate global state in it.
-   *
-   * @param cb is a callback that receives the current value as input and returns the `update` which is the
-   *           new value that should be persisted
-   */
-  def transform(cb: (T) => T): Unit
+  /** Abstracts over `compareAndSet`. You specify a transformation by specifying a callback to be
+    * executed, a callback that transforms the current value. This method will loop until it will
+    * succeed in replacing the current value with the one produced by the given callback.
+    *
+    * Note that the callback will be executed on each iteration of the loop, so it can be called
+    * multiple times - don't do destructive I/O or operations that mutate global state in it.
+    *
+    * @param cb is a callback that receives the current value as input and returns the `update` which is the
+    *           new value that should be persisted
+    */
+  final def transform(cb: (T) => T): Unit =
+    macro AtomicMacros.transformMacro[T]
 }
 
 object Atomic {

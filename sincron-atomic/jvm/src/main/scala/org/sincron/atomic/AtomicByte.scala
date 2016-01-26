@@ -18,12 +18,10 @@
 package org.sincron.atomic
 
 import scala.annotation.tailrec
-import scala.concurrent._
-import scala.concurrent.duration.FiniteDuration
 import java.util.concurrent.atomic.{AtomicInteger => JavaAtomicInteger}
 
 final class AtomicByte private (ref: JavaAtomicInteger)
-  extends AtomicNumber[Byte] with BlockableAtomic[Byte] {
+  extends AtomicNumber[Byte] {
   private[this] val mask = 255
 
   def get: Byte =
@@ -46,96 +44,7 @@ final class AtomicByte private (ref: JavaAtomicInteger)
   }
 
   def update(value: Byte): Unit = set(value)
-
   def `:=`(value: Byte): Unit = set(value)
-
-  @tailrec
-  @throws(classOf[InterruptedException])
-  def waitForCompareAndSet(expect: Byte, update: Byte): Unit =
-    if (!compareAndSet(expect, update)) {
-      interruptedCheck()
-      waitForCompareAndSet(expect, update)
-    }
-
-  @tailrec
-  @throws(classOf[InterruptedException])
-  def waitForCompareAndSet(expect: Byte, update: Byte, maxRetries: Int): Boolean =
-    if (!compareAndSet(expect, update))
-      if (maxRetries > 0) {
-        interruptedCheck()
-        waitForCompareAndSet(expect, update, maxRetries - 1)
-      }
-      else
-        false
-    else
-      true
-
-  @throws(classOf[InterruptedException])
-  @throws(classOf[TimeoutException])
-  def waitForCompareAndSet(expect: Byte, update: Byte, waitAtMost: FiniteDuration): Unit = {
-    val waitUntil = System.nanoTime + waitAtMost.toNanos
-    waitForCompareAndSet(expect, update, waitUntil)
-  }
-
-  @tailrec
-  @throws(classOf[InterruptedException])
-  @throws(classOf[TimeoutException])
-  private[sincron] def waitForCompareAndSet(expect: Byte, update: Byte, waitUntil: Long): Unit =
-    if (!compareAndSet(expect, update)) {
-      interruptedCheck()
-      timeoutCheck(waitUntil)
-      waitForCompareAndSet(expect, update, waitUntil)
-    }
-
-  @tailrec
-  @throws(classOf[InterruptedException])
-  def waitForValue(expect: Byte): Unit =
-    if (get != expect) {
-      interruptedCheck()
-      waitForValue(expect)
-    }
-
-  @throws(classOf[InterruptedException])
-  @throws(classOf[TimeoutException])
-  def waitForValue(expect: Byte, waitAtMost: FiniteDuration): Unit = {
-    val waitUntil = System.nanoTime + waitAtMost.toNanos
-    waitForValue(expect, waitUntil)
-  }
-
-  @tailrec
-  @throws(classOf[InterruptedException])
-  @throws(classOf[TimeoutException])
-  private[sincron] def waitForValue(expect: Byte, waitUntil: Long): Unit =
-    if (get != expect) {
-      interruptedCheck()
-      timeoutCheck(waitUntil)
-      waitForValue(expect, waitUntil)
-    }
-
-  @tailrec
-  @throws(classOf[InterruptedException])
-  def waitForCondition(p: Byte => Boolean): Unit =
-    if (!p(get)) {
-      interruptedCheck()
-      waitForCondition(p)
-    }
-
-  @throws(classOf[InterruptedException])
-  @throws(classOf[TimeoutException])
-  def waitForCondition(waitAtMost: FiniteDuration, p: Byte => Boolean): Unit = {
-    val waitUntil = System.nanoTime + waitAtMost.toNanos
-    waitForCondition(waitUntil, p)
-  }
-
-  @tailrec
-  @throws(classOf[InterruptedException])
-  @throws(classOf[TimeoutException])
-  private[sincron] def waitForCondition(waitUntil: Long, p: Byte => Boolean): Unit =
-    if (!p(get)) {
-      interruptedCheck()
-      timeoutCheck(waitUntil)
-      waitForCondition(waitUntil, p)
-    }
 
   @tailrec
   def increment(v: Int = 1): Unit = {

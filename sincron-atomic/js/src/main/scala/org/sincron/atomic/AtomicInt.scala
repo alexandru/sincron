@@ -52,28 +52,6 @@ final class AtomicInt private[atomic]
   @inline
   def lazySet(update: Int): Unit = set(update)
 
-  def transformAndExtract[U](cb: (Int) => (U, Int)): U = {
-    val (r, update) = cb(ref)
-    ref = update
-    r
-  }
-
-  def transformAndGet(cb: (Int) => Int): Int = {
-    val update = cb(ref)
-    ref = update
-    update
-  }
-
-  def getAndTransform(cb: (Int) => Int): Int = {
-    val current = ref
-    ref = cb(ref)
-    current
-  }
-
-  def transform(cb: (Int) => Int): Unit = {
-    ref = cb(ref)
-  }
-
   def getAndSubtract(v: Int): Int = {
     val c = ref
     ref = ref - v

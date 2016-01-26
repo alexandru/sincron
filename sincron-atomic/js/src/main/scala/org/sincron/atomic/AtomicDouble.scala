@@ -52,28 +52,6 @@ final class AtomicDouble private[atomic]
   @inline
   def lazySet(update: Double): Unit = set(update)
 
-  def transformAndExtract[U](cb: (Double) => (U, Double)): U = {
-    val (r, update) = cb(ref)
-    ref = update
-    r
-  }
-
-  def transformAndGet(cb: (Double) => Double): Double = {
-    val update = cb(ref)
-    ref = update
-    update
-  }
-
-  def getAndTransform(cb: (Double) => Double): Double = {
-    val current = ref
-    ref = cb(ref)
-    current
-  }
-
-  def transform(cb: (Double) => Double): Unit = {
-    ref = cb(ref)
-  }
-
   def getAndSubtract(v: Double): Double = {
     val c = ref
     ref = ref - v

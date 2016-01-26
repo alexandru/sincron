@@ -166,57 +166,24 @@ can simply do this:
 
 ```tut:book
 val ref = Atomic(Queue.empty[String])
+
+// Transforms the value and returns the update
 ref.transformAndGet(_.enqueue("hello"))
-ref.transformAndGet(_.enqueue("world"))
+// Transforms the value and returns the current one
+ref.getAndTransform(_.enqueue("world"))
 
-ref.transformAndExtract(_.dequeue)
+// We can be specific about what we want extracted as a result
+ref.transformAndExtract { current =>
+  val (result, update) = current.dequeue
+  (result, update)
+}
 
+// Or the shortcut, because it looks so good
 ref.transformAndExtract(_.dequeue)
 ```
 
 Voilà, you now have a concurrent, thread-safe and non-blocking Queue. You can do this
 for whatever persistent data-structure you want.
-
-### Common-pattern: Block the thread until progress is possible
-
-This line of code blocks the thread until the `compareAndSet` operation succeeds.
-```tut:invisible
-import concurrent.duration._
-val ref = Atomic("")
-ref.set("hello")
-```
-```tut:book
-ref.waitForCompareAndSet("hello", "world")
-```
-
-You can also specify a timeout:
-```tut:fail
-ref.waitForCompareAndSet("hello", "world", 10.millis)
-```
-
-You can also block the thread waiting for a certain value:
-```tut:silent
-ref.waitForValue("world")
-```
-
-And of course you can specify a timeout:
-```tut:fail
-ref.waitForValue("hello", 10.millis)
-```
-
-You can block the thread waiting for a callback receiving the
-persisted value to become true:
-```tut:book
-ref.waitForCondition(_.contains("wor"))
-```
-
-And of course you can specify a timeout:
-```tut:fail
-ref.waitForCondition(10.millis, _.contains("hell"))
-```
-
-All these blocking calls are also interruptible, throwing
-an `InterruptedException` in case that happened.
 
 ## Scala.js support for targeting Javascript
 

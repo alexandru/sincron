@@ -27,20 +27,16 @@ object AtomicMacros {
     val selfExpr: c.Expr[Atomic[T]] = c.prefix
 
     val self = util.name("self")
-    val current = util.name("current")
-    val update = util.name("update")
-
     val tree =
-      q"""
-        val $self = $selfExpr
-        var $current = $self.get
-        var $update = $cb($current)
-
-        while (!$self.compareAndSet($current, $update)) {
-          $current = $self.get
-          $update = $cb($current)
-        }
-      """
+      if (util.isSymbol(selfExpr))
+        q"""
+          $selfExpr.set($cb($selfExpr.get))
+        """
+      else
+        q"""
+          val $self = $selfExpr
+          $self.set($cb($self.get))
+        """
 
     new InlineUtil[c.type](c).inlineAndReset[Unit](tree)
   }
@@ -56,16 +52,11 @@ object AtomicMacros {
 
     val tree =
       q"""
-        val $self = $selfExpr
-        var $current = $self.get
-        var $update = $cb($current)
-
-        while (!$self.compareAndSet($current, $update)) {
-          $current = $self.get
-          $update = $cb($current)
-        }
-
-        $update
+      val $self = $selfExpr
+      var $current = $self.get
+      var $update = $cb($current)
+      $self.set($update)
+      $update
       """
 
     new InlineUtil[c.type](c).inlineAndReset[T](tree)
@@ -82,16 +73,11 @@ object AtomicMacros {
 
     val tree =
       q"""
-        val $self = $selfExpr
-        var $current = $self.get
-        var $update = $cb($current)
-
-        while (!$self.compareAndSet($current, $update)) {
-          $current = $self.get
-          $update = $cb($current)
-        }
-
-        $current
+      val $self = $selfExpr
+      var $current = $self.get
+      var $update = $cb($current)
+      $self.set($update)
+      $current
       """
 
     new InlineUtil[c.type](c).inlineAndReset[T](tree)
@@ -107,25 +93,16 @@ object AtomicMacros {
 
     val self = util.name("self")
     val current = util.name("current")
-    val updateVar = util.name("updateVar")
-    val resultVar = util.name("resultVar")
-    val updateTmp = util.name("updateTmp")
-    val resultTmp = util.name("resultTmp")
+    val update = util.name("update")
+    val result = util.name("result")
 
     val tree =
       q"""
-        val $self = $selfExpr
-        var $current = $self.get
-        var ($resultVar, $updateVar) = $cb($current)
-
-        while (!$self.compareAndSet($current, $updateVar)) {
-          $current = $self.get
-          val ($resultTmp, $updateTmp) = $cb($current)
-          $updateVar = $updateTmp
-          $resultVar = $resultTmp
-        }
-
-        $resultVar
+      val $self = $selfExpr
+      var $current = $self.get
+      var ($result, $update) = $cb($current)
+      $self.set($update)
+      $result
       """
 
     new InlineUtil[c.type](c).inlineAndReset[A](tree)

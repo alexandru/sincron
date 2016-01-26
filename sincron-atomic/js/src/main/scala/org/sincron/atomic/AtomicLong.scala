@@ -52,28 +52,6 @@ final class AtomicLong private[atomic]
   @inline
   def lazySet(update: Long): Unit = set(update)
 
-  def transformAndExtract[U](cb: (Long) => (U, Long)): U = {
-    val (r, update) = cb(ref)
-    ref = update
-    r
-  }
-
-  def transformAndGet(cb: (Long) => Long): Long = {
-    val update = cb(ref)
-    ref = update
-    update
-  }
-
-  def getAndTransform(cb: (Long) => Long): Long = {
-    val current = ref
-    ref = cb(ref)
-    current
-  }
-
-  def transform(cb: (Long) => Long): Unit = {
-    ref = cb(ref)
-  }
-
   def getAndSubtract(v: Long): Long = {
     val c = ref
     ref = ref - v

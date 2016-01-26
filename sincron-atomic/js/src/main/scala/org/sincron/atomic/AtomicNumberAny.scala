@@ -51,28 +51,6 @@ final class AtomicNumberAny[T : Numeric] private[atomic] (initialValue: T) exten
   @inline
   def lazySet(update: T): Unit = set(update)
 
-  def transformAndExtract[U](cb: (T) => (U, T)): U = {
-    val (r, update) = cb(ref)
-    ref = update
-    r
-  }
-
-  def transformAndGet(cb: (T) => T): T = {
-    val update = cb(ref)
-    ref = update
-    update
-  }
-
-  def getAndTransform(cb: (T) => T): T = {
-    val current = ref
-    ref = cb(ref)
-    current
-  }
-
-  def transform(cb: (T) => T): Unit = {
-    ref = cb(ref)
-  }
-
   def getAndSubtract(v: T): T = {
     val c = ref
     ref = ev.minus(ref, v)

@@ -34,4 +34,12 @@ case class SyntaxUtil[C <: Context with Singleton](val c: C) {
         case _ => false
       }
     }
+
+  def isSymbol(es: c.Expr[_]*): Boolean =
+    es.forall {
+      _.tree match {
+        case t @ Ident(_: TermName) if t.symbol.asTerm.isStable => true
+        case _ => false
+      }
+    }
 }

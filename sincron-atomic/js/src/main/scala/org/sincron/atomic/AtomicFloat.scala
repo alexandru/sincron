@@ -52,28 +52,6 @@ final class AtomicFloat private[atomic]
   @inline
   def lazySet(update: Float): Unit = set(update)
 
-  def transformAndExtract[U](cb: (Float) => (U, Float)): U = {
-    val (r, update) = cb(ref)
-    ref = update
-    r
-  }
-
-  def transformAndGet(cb: (Float) => Float): Float = {
-    val update = cb(ref)
-    ref = update
-    update
-  }
-
-  def getAndTransform(cb: (Float) => Float): Float = {
-    val current = ref
-    ref = cb(ref)
-    current
-  }
-
-  def transform(cb: (Float) => Float): Unit = {
-    ref = cb(ref)
-  }
-
   def getAndSubtract(v: Float): Float = {
     val c = ref
     ref = ref - v

@@ -19,6 +19,7 @@ lazy val sharedSettings = Seq(
   scalaVersion := "2.11.7",
   crossScalaVersions := Seq("2.10.6", "2.11.7"),
 
+  javacOptions ++= Seq("-source", "1.6", "-target", "1.6"),
   scalacOptions ++= Seq(
     "-target:jvm-1.6", // generates code with the Java 6 class format
     "-optimise", // enables optimisations
@@ -68,7 +69,7 @@ lazy val sharedSettings = Seq(
   // Turning off fatal warnings for ScalaDoc, otherwise we can't release.
   scalacOptions in (Compile, doc) ~= (_ filterNot (_ == "-Xfatal-warnings")),
 
-  // ScalaDoc settings
+      // ScalaDoc settings
   autoAPIMappings := true,
   scalacOptions in ThisBuild ++= Seq(
     // Note, this is used by the doc-source-url feature to determine the
@@ -140,9 +141,9 @@ lazy val unidocSettings = baseUnidocSettings ++ Seq(
   scalacOptions in (ScalaUnidoc, unidoc) +=
     "-Ymacro-expand:none",
   scalacOptions in (ScalaUnidoc, unidoc) ++=
-    Opts.doc.title(s"Monix"),
+    Opts.doc.title(s"Sincron"),
   scalacOptions in (ScalaUnidoc, unidoc) ++=
-    Opts.doc.sourceUrl(s"https://github.com/monifu/monix/tree/v${version.value}€{FILE_PATH}.scala"),
+    Opts.doc.sourceUrl(s"https://github.com/monixio/sincron/tree/v${version.value}€{FILE_PATH}.scala"),
   scalacOptions in (ScalaUnidoc, unidoc) ++=
     Seq("-doc-root-content", file("docs/rootdoc.txt").getAbsolutePath),
   scalacOptions in (ScalaUnidoc, unidoc) ++=

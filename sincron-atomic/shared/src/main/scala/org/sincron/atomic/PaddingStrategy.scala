@@ -35,6 +35,14 @@ package org.sincron.atomic
   *
   *   val paddedAtomic = Atomic(10)
   * }}}
+  *
+  * @see [[PaddingStrategy.NoPadding]]
+  * @see [[PaddingStrategy.Left64]]
+  * @see [[PaddingStrategy.Right64]]
+  * @see [[PaddingStrategy.LeftRight128]]
+  * @see [[PaddingStrategy.Left128]]
+  * @see [[PaddingStrategy.Right128]]
+  * @see [[PaddingStrategy.LeftRight256]]
   */
 sealed trait PaddingStrategy
 

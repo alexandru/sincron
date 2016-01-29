@@ -1,5 +1,8 @@
 # Sincron
 
+<img src="https://raw.githubusercontent.com/monixio/sincron/c4430365650296dcf9d17e7d98e3ad9af8a7f018/docs/src/site/source/assets/logo/logo-400.png"
+    align="right" />
+
 Low-level concurrency tools for Scala with equivalents for Scala.js.
 
 This projects aims to offer higher-level APIs for JVM's concurrency tools,

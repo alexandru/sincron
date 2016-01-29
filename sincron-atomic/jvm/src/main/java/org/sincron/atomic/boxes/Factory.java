@@ -46,7 +46,25 @@ public final class Factory {
                     return new org.sincron.atomic.boxes.leftRight128Java8.BoxedObject(initial);
                 else
                     return new org.sincron.atomic.boxes.leftRight128Java7.BoxedObject(initial);
+
+            case LEFT_128:
+                if (UnsafeAccess.SUPPORTS_GET_AND_SET)
+                    return new org.sincron.atomic.boxes.left128Java8.BoxedObject(initial);
+                else
+                    return new org.sincron.atomic.boxes.left128Java7.BoxedObject(initial);
+
+            case RIGHT_128:
+                if (UnsafeAccess.SUPPORTS_GET_AND_SET)
+                    return new org.sincron.atomic.boxes.right128Java8.BoxedObject(initial);
+                else
+                    return new org.sincron.atomic.boxes.right128Java7.BoxedObject(initial);
                 
+            case LEFT_RIGHT_256:
+                if (UnsafeAccess.SUPPORTS_GET_AND_SET)
+                    return new org.sincron.atomic.boxes.leftRight256Java8.BoxedObject(initial);
+                else
+                    return new org.sincron.atomic.boxes.leftRight256Java7.BoxedObject(initial);
+
             default:
                 throw new MatchError(padding);
         }
@@ -77,7 +95,25 @@ public final class Factory {
                     return new org.sincron.atomic.boxes.leftRight128Java8.BoxedInt(initial);
                 else
                     return new org.sincron.atomic.boxes.leftRight128Java7.BoxedInt(initial);
-                
+
+            case LEFT_128:
+                if (UnsafeAccess.SUPPORTS_GET_AND_SET)
+                    return new org.sincron.atomic.boxes.left128Java8.BoxedInt(initial);
+                else
+                    return new org.sincron.atomic.boxes.left128Java7.BoxedInt(initial);
+
+            case RIGHT_128:
+                if (UnsafeAccess.SUPPORTS_GET_AND_SET)
+                    return new org.sincron.atomic.boxes.right128Java8.BoxedInt(initial);
+                else
+                    return new org.sincron.atomic.boxes.right128Java7.BoxedInt(initial);
+
+            case LEFT_RIGHT_256:
+                if (UnsafeAccess.SUPPORTS_GET_AND_SET)
+                    return new org.sincron.atomic.boxes.leftRight256Java8.BoxedInt(initial);
+                else
+                    return new org.sincron.atomic.boxes.leftRight256Java7.BoxedInt(initial);
+
             default:
                 throw new MatchError(padding);
         }
@@ -108,6 +144,24 @@ public final class Factory {
                     return new org.sincron.atomic.boxes.leftRight128Java8.BoxedLong(initial);
                 else
                     return new org.sincron.atomic.boxes.leftRight128Java7.BoxedLong(initial);
+
+            case LEFT_128:
+                if (UnsafeAccess.SUPPORTS_GET_AND_SET)
+                    return new org.sincron.atomic.boxes.left128Java8.BoxedLong(initial);
+                else
+                    return new org.sincron.atomic.boxes.left128Java7.BoxedLong(initial);
+
+            case RIGHT_128:
+                if (UnsafeAccess.SUPPORTS_GET_AND_SET)
+                    return new org.sincron.atomic.boxes.right128Java8.BoxedLong(initial);
+                else
+                    return new org.sincron.atomic.boxes.right128Java7.BoxedLong(initial);
+
+            case LEFT_RIGHT_256:
+                if (UnsafeAccess.SUPPORTS_GET_AND_SET)
+                    return new org.sincron.atomic.boxes.leftRight256Java8.BoxedLong(initial);
+                else
+                    return new org.sincron.atomic.boxes.leftRight256Java7.BoxedLong(initial);
 
             default:
                 throw new MatchError(padding);

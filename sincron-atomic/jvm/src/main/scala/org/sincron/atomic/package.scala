@@ -63,5 +63,11 @@ package object atomic {
         BoxPaddingStrategy.RIGHT_64
       case LeftRight128 =>
         BoxPaddingStrategy.LEFT_RIGHT_128
+      case Left128 =>
+        BoxPaddingStrategy.LEFT_128
+      case Right128 =>
+        BoxPaddingStrategy.RIGHT_128
+      case LeftRight256 =>
+        BoxPaddingStrategy.LEFT_RIGHT_256
     }
 }

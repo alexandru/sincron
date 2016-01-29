@@ -357,3 +357,71 @@ object AtomicCharLeftRight128Suite extends AtomicNumberSuite[Char, AtomicChar](
 object AtomicNumberAnyLeftRight128Suite extends AtomicNumberSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
   AtomicBuilder.AtomicNumberBuilder[BoxedLong], LeftRight128, BoxedLong(782), BoxedLong.MaxValue, BoxedLong.MinValue)
 
+// -- Left128
+
+object AtomicDoubleLeft128Suite extends AtomicDoubleSuite(Left128)
+object AtomicFloatLeft128Suite extends AtomicFloatSuite(Left128)
+
+object AtomicLongLeft128Suite extends AtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), Left128, -782L, Long.MaxValue, Long.MinValue)
+
+object AtomicIntLeft128Suite extends AtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Left128, 782, Int.MaxValue, Int.MinValue)
+
+object AtomicShortLeft128Suite extends AtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Left128, 782.toShort, Short.MaxValue, Short.MinValue)
+
+object AtomicByteLeft128Suite extends AtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Left128, 782.toByte, Byte.MaxValue, Byte.MinValue)
+
+object AtomicCharLeft128Suite extends AtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Left128, 782.toChar, Char.MaxValue, Char.MinValue)
+
+object AtomicNumberAnyLeft128Suite extends AtomicNumberSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], Left128, BoxedLong(782), BoxedLong.MaxValue, BoxedLong.MinValue)
+
+// -- Right128
+
+object AtomicDoubleRight128Suite extends AtomicDoubleSuite(Right128)
+object AtomicFloatRight128Suite extends AtomicFloatSuite(Right128)
+
+object AtomicLongRight128Suite extends AtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), Right128, -782L, Long.MaxValue, Long.MinValue)
+
+object AtomicIntRight128Suite extends AtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Right128, 782, Int.MaxValue, Int.MinValue)
+
+object AtomicShortRight128Suite extends AtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Right128, 782.toShort, Short.MaxValue, Short.MinValue)
+
+object AtomicByteRight128Suite extends AtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Right128, 782.toByte, Byte.MaxValue, Byte.MinValue)
+
+object AtomicCharRight128Suite extends AtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Right128, 782.toChar, Char.MaxValue, Char.MinValue)
+
+object AtomicNumberAnyRight128Suite extends AtomicNumberSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], Right128, BoxedLong(782), BoxedLong.MaxValue, BoxedLong.MinValue)
+
+// -- LeftRight256
+
+object AtomicDoubleLeftRight256Suite extends AtomicDoubleSuite(LeftRight256)
+object AtomicFloatLeftRight256Suite extends AtomicFloatSuite(LeftRight256)
+
+object AtomicLongLeftRight256Suite extends AtomicNumberSuite[Long, AtomicLong](
+  Atomic.builderFor(0L), LeftRight256, -782L, Long.MaxValue, Long.MinValue)
+
+object AtomicIntLeftRight256Suite extends AtomicNumberSuite[Int, AtomicInt](
+  Atomic.builderFor(0), LeftRight256, 782, Int.MaxValue, Int.MinValue)
+
+object AtomicShortLeftRight256Suite extends AtomicNumberSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), LeftRight256, 782.toShort, Short.MaxValue, Short.MinValue)
+
+object AtomicByteLeftRight256Suite extends AtomicNumberSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), LeftRight256, 782.toByte, Byte.MaxValue, Byte.MinValue)
+
+object AtomicCharLeftRight256Suite extends AtomicNumberSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), LeftRight256, 782.toChar, Char.MaxValue, Char.MinValue)
+
+object AtomicNumberAnyLeftRight256Suite extends AtomicNumberSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], LeftRight256, BoxedLong(782), BoxedLong.MaxValue, BoxedLong.MinValue)

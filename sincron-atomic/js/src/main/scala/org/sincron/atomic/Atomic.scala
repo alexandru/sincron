@@ -142,10 +142,9 @@ object Atomic {
     * it takes an `AtomicBuilder[T, R]` as an implicit parameter - but worry not about such details as it just works.
     *
     * @param initialValue is the initial value with which to initialize the Atomic reference
-    * @param padding is the [[PaddingStrategy]] to apply
     * @param builder is the builder that helps us to build the best reference possible, based on our `initialValue`
     */
-  def apply[T, R <: Atomic[T]](initialValue: T)(implicit builder: AtomicBuilder[T, R], padding: PaddingStrategy): R =
+  def apply[T, R <: Atomic[T]](initialValue: T)(implicit builder: AtomicBuilder[T, R]): R =
     macro AtomicMacros.buildAnyMacro[T, R]
 
   /** Constructs an `Atomic[T]` reference. Based on the `initialValue`, it will return the best, most specific

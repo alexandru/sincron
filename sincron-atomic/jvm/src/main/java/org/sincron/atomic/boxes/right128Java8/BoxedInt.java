@@ -15,15 +15,12 @@
  * limitations under the License.
  */
 
-package org.sincron.atomic.boxes.leftRight128Java8;
+package org.sincron.atomic.boxes.right128Java8;
 
-import org.sincron.atomic.boxes.common.LeftPadding56;
 import org.sincron.misc.UnsafeAccess;
 import java.lang.reflect.Field;
 
-abstract class BoxedIntImpl extends LeftPadding56
-        implements org.sincron.atomic.boxes.BoxedInt {
-
+abstract class BoxedIntImpl implements org.sincron.atomic.boxes.BoxedInt {
     public volatile int value;
     public static final long OFFSET;
 
@@ -62,10 +59,11 @@ abstract class BoxedIntImpl extends LeftPadding56
 }
 
 public final class BoxedInt extends BoxedIntImpl {
-    public volatile long r1, r2, r3, r4, r5, r6, r7 = 11;
-    @Override public long sum() {
-        return p1 + p2 + p3 + p4 + p5 + p6 + p7 +
-                r1 + r2 + r3 + r4 + r5 + r6 + r7;
+    public volatile long p1, p2, p3, p4, p5, p6, p7, p8 = 7;
+    public volatile long p9, p10, p11, p12, p13, p14 = 7;
+    public long sum() {
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 +
+                p9 + p10 + p11 + p12 + p13 + p14;
     }
 
     public BoxedInt(int initialValue) {

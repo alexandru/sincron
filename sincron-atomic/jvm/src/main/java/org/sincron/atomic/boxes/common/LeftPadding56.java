@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package org.sincron.atomic.boxes;
+package org.sincron.atomic.boxes.common;
 
-public enum BoxPaddingStrategy {
-    NO_PADDING, LEFT_64, RIGHT_64, LEFT_RIGHT_128,
-    LEFT_128, RIGHT_128, LEFT_RIGHT_256
+public abstract class LeftPadding56 {
+    public volatile long p1, p2, p3, p4, p5, p6, p7 = 7;
+    public long sum() { return p1 + p2 + p3 + p4 + p5 + p6 + p7; }
 }

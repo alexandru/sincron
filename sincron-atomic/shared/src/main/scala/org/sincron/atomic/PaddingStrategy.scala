@@ -71,15 +71,30 @@ object PaddingStrategy {
     */
   case object LeftRight128 extends PaddingStrategy
 
-  /** Implicits for overriding the default strategy in scope. */
-  object Implicits {
-    implicit def NoPadding = PaddingStrategy.NoPadding
-    implicit def Left64 = PaddingStrategy.Left64
-    implicit def Right64 = PaddingStrategy.Right64
-    implicit def LeftRight128 = PaddingStrategy.LeftRight128
-  }
+  /** A [[PaddingStrategy]] that applies padding to the left of our
+    * atomic value for a total cache line of 64 bytes (8 longs).
+    *
+    * Note the actual padding applied will be less, like 112 bytes,
+    * because we take into account the object's header and the
+    * the stored value.
+    */
+  case object Left128 extends PaddingStrategy
 
-  /** Implicit [[PaddingStrategy]] used by default if no strategy is in scope. */
-  implicit def default: PaddingStrategy =
-    NoPadding
+  /** A [[PaddingStrategy]] that applies padding to the right of our
+    * atomic value for a total cache line of 64 bytes (8 longs).
+    *
+    * Note the actual padding applied will be less, like 112 bytes,
+    * because we take into account the object's header and the
+    * the stored value.
+    */
+  case object Right128 extends PaddingStrategy
+
+  /** A [[PaddingStrategy]] that applies padding both to the left
+    * and to the right of our atomic value for a total cache
+    * line of 128 bytes (16 longs).
+    *
+    * Note the actual padding applied will be less, like 232/240 bytes,
+    * because we take into account the object's header and the stored value.
+    */
+  case object LeftRight256 extends PaddingStrategy
 }

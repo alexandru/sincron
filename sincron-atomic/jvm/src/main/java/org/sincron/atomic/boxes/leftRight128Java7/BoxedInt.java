@@ -17,11 +17,11 @@
 
 package org.sincron.atomic.boxes.leftRight128Java7;
 
-import org.sincron.atomic.boxes.common.LeftPadding52;
+import org.sincron.atomic.boxes.common.LeftPadding56;
 import org.sincron.misc.UnsafeAccess;
 import java.lang.reflect.Field;
 
-abstract class BoxedIntImpl extends LeftPadding52
+abstract class BoxedIntImpl extends LeftPadding56
     implements org.sincron.atomic.boxes.BoxedInt {
     
     public volatile int value;
@@ -65,10 +65,10 @@ abstract class BoxedIntImpl extends LeftPadding52
 }
 
 public final class BoxedInt extends BoxedIntImpl {
-    public volatile long p8, p9, p10, p11, p12, p13 = 11;
+    public volatile long r1, r2, r3, r4, r5, r6, r7 = 11;
     @Override public long sum() {
-        return p1 + p2 + p3 + p4 + p5 + p6 + p5 +
-                p6 + p7 + p8 + p9 + p10 + p11 + p12 + p13;
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7 +
+               r1 + r2 + r3 + r4 + r5 + r6 + r7;
     }
 
     public BoxedInt(int initialValue) {

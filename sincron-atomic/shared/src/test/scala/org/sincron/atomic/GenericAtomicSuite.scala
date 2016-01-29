@@ -221,3 +221,99 @@ object GenericAtomicIntLeftRight128 extends GenericAtomicSuite[Int, AtomicInt](
 
 object GenericAtomicLongLeftRight128 extends GenericAtomicSuite[Long, AtomicLong](
   Atomic.builderFor(0.toLong), LeftRight128, x => x.toLong, x => x.toInt)
+
+// -- Left128
+
+object GenericAtomicAnyLeft128 extends GenericAtomicSuite[String, AtomicAny[String]](
+  Atomic.builderFor(""), Left128, x => x.toString, x => x.toInt)
+
+object GenericAtomicBooleanLeft128 extends GenericAtomicSuite[Boolean, AtomicBoolean](
+  Atomic.builderFor(true), Left128, x => if (x == 1) true else false, x => if (x) 1 else 0)
+
+object GenericAtomicNumberAnyLeft128 extends GenericAtomicSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], Left128, x => BoxedLong(x), x => x.value.toInt)
+
+object GenericAtomicFloatLeft128 extends GenericAtomicSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), Left128, x => x.toFloat, x => x.toInt)
+
+object GenericAtomicDoubleLeft128 extends GenericAtomicSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.toDouble), Left128, x => x.toDouble, x => x.toInt)
+
+object GenericAtomicShortLeft128 extends GenericAtomicSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Left128, x => x.toShort, x => x.toInt)
+
+object GenericAtomicByteLeft128 extends GenericAtomicSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Left128, x => x.toByte, x => x.toInt)
+
+object GenericAtomicCharLeft128 extends GenericAtomicSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Left128, x => x.toChar, x => x.toInt)
+
+object GenericAtomicIntLeft128 extends GenericAtomicSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Left128, x => x, x => x)
+
+object GenericAtomicLongLeft128 extends GenericAtomicSuite[Long, AtomicLong](
+  Atomic.builderFor(0.toLong), Left128, x => x.toLong, x => x.toInt)
+
+// -- Right128
+
+object GenericAtomicAnyRight128 extends GenericAtomicSuite[String, AtomicAny[String]](
+  Atomic.builderFor(""), Right128, x => x.toString, x => x.toInt)
+
+object GenericAtomicBooleanRight128 extends GenericAtomicSuite[Boolean, AtomicBoolean](
+  Atomic.builderFor(true), Right128, x => if (x == 1) true else false, x => if (x) 1 else 0)
+
+object GenericAtomicNumberAnyRight128 extends GenericAtomicSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], Right128, x => BoxedLong(x), x => x.value.toInt)
+
+object GenericAtomicFloatRight128 extends GenericAtomicSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), Right128, x => x.toFloat, x => x.toInt)
+
+object GenericAtomicDoubleRight128 extends GenericAtomicSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.toDouble), Right128, x => x.toDouble, x => x.toInt)
+
+object GenericAtomicShortRight128 extends GenericAtomicSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), Right128, x => x.toShort, x => x.toInt)
+
+object GenericAtomicByteRight128 extends GenericAtomicSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), Right128, x => x.toByte, x => x.toInt)
+
+object GenericAtomicCharRight128 extends GenericAtomicSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), Right128, x => x.toChar, x => x.toInt)
+
+object GenericAtomicIntRight128 extends GenericAtomicSuite[Int, AtomicInt](
+  Atomic.builderFor(0), Right128, x => x, x => x)
+
+object GenericAtomicLongRight128 extends GenericAtomicSuite[Long, AtomicLong](
+  Atomic.builderFor(0.toLong), Right128, x => x.toLong, x => x.toInt)
+
+// -- LeftRight256
+
+object GenericAtomicAnyLeftRight256 extends GenericAtomicSuite[String, AtomicAny[String]](
+  Atomic.builderFor(""), LeftRight256, x => x.toString, x => x.toInt)
+
+object GenericAtomicBooleanLeftRight256 extends GenericAtomicSuite[Boolean, AtomicBoolean](
+  Atomic.builderFor(true), LeftRight256, x => if (x == 1) true else false, x => if (x) 1 else 0)
+
+object GenericAtomicNumberAnyLeftRight256 extends GenericAtomicSuite[BoxedLong, AtomicNumberAny[BoxedLong]](
+  AtomicBuilder.AtomicNumberBuilder[BoxedLong], LeftRight256, x => BoxedLong(x), x => x.value.toInt)
+
+object GenericAtomicFloatLeftRight256 extends GenericAtomicSuite[Float, AtomicFloat](
+  Atomic.builderFor(0.0f), LeftRight256, x => x.toFloat, x => x.toInt)
+
+object GenericAtomicDoubleLeftRight256 extends GenericAtomicSuite[Double, AtomicDouble](
+  Atomic.builderFor(0.toDouble), LeftRight256, x => x.toDouble, x => x.toInt)
+
+object GenericAtomicShortLeftRight256 extends GenericAtomicSuite[Short, AtomicShort](
+  Atomic.builderFor(0.toShort), LeftRight256, x => x.toShort, x => x.toInt)
+
+object GenericAtomicByteLeftRight256 extends GenericAtomicSuite[Byte, AtomicByte](
+  Atomic.builderFor(0.toByte), LeftRight256, x => x.toByte, x => x.toInt)
+
+object GenericAtomicCharLeftRight256 extends GenericAtomicSuite[Char, AtomicChar](
+  Atomic.builderFor(0.toChar), LeftRight256, x => x.toChar, x => x.toInt)
+
+object GenericAtomicIntLeftRight256 extends GenericAtomicSuite[Int, AtomicInt](
+  Atomic.builderFor(0), LeftRight256, x => x, x => x)
+
+object GenericAtomicLongLeftRight256 extends GenericAtomicSuite[Long, AtomicLong](
+  Atomic.builderFor(0.toLong), LeftRight256, x => x.toLong, x => x.toInt)

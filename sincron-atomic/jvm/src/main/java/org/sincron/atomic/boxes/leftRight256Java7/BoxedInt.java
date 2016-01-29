@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package org.sincron.atomic.boxes.leftRight128Java8;
+package org.sincron.atomic.boxes.leftRight256Java7;
 
-import org.sincron.atomic.boxes.common.LeftPadding56;
+import org.sincron.atomic.boxes.common.LeftPadding120;
 import org.sincron.misc.UnsafeAccess;
 import java.lang.reflect.Field;
 
-abstract class BoxedIntImpl extends LeftPadding56
+abstract class BoxedIntImpl extends LeftPadding120
         implements org.sincron.atomic.boxes.BoxedInt {
 
     public volatile int value;
@@ -57,16 +57,23 @@ abstract class BoxedIntImpl extends LeftPadding56
     }
 
     public int getAndSet(int update) {
-        return UnsafeAccess.UNSAFE.getAndSetInt(this, OFFSET, update);
+        int current = value;
+        while (!UnsafeAccess.UNSAFE.compareAndSwapInt(this, OFFSET, current, update))
+            current = value;
+        return current;
     }
 }
 
 public final class BoxedInt extends BoxedIntImpl {
-    public volatile long r1, r2, r3, r4, r5, r6, r7 = 11;
-    @Override public long sum() {
-        return p1 + p2 + p3 + p4 + p5 + p6 + p7 +
-                r1 + r2 + r3 + r4 + r5 + r6 + r7;
+    public volatile long r1, r2, r3, r4, r5, r6, r7, r8 = 7;
+    public volatile long r9, r10, r11, r12, r13, r14, r15 = 7;
+    public long sum() {
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 +
+                p9 + p10 + p11 + p12 + p13 + p14 + p15 +
+                r1 + r2 + r3 + r4 + r5 + r6 + r7 + r8 +
+                r9 + r10 + r11 + r12 + r13 + r14 + r15;
     }
+
 
     public BoxedInt(int initialValue) {
         super(initialValue);

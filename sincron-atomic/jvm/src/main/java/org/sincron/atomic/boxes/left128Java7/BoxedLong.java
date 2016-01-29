@@ -15,27 +15,27 @@
  * limitations under the License.
  */
 
-package org.sincron.atomic.boxes.leftRight128Java7;
+package org.sincron.atomic.boxes.left128Java7;
 
-import org.sincron.atomic.boxes.common.LeftPadding56;
+import org.sincron.atomic.boxes.common.LeftPadding112;
 import org.sincron.misc.UnsafeAccess;
 import java.lang.reflect.Field;
 
-abstract class BoxedLongImpl extends LeftPadding56
+public final class BoxedLong extends LeftPadding112
         implements org.sincron.atomic.boxes.BoxedLong {
 
     public volatile long value;
     public static final long OFFSET;
     static {
         try {
-            Field field = BoxedLongImpl.class.getDeclaredField("value");
+            Field field = BoxedLong.class.getDeclaredField("value");
             OFFSET = UnsafeAccess.UNSAFE.objectFieldOffset(field);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public BoxedLongImpl(long initialValue) {
+    public BoxedLong(long initialValue) {
         this.value = initialValue;
     }
 
@@ -60,17 +60,5 @@ abstract class BoxedLongImpl extends LeftPadding56
         while (!UnsafeAccess.UNSAFE.compareAndSwapLong(this, OFFSET, current, update))
             current = value;
         return current;
-    }
-}
-
-public final class BoxedLong extends BoxedLongImpl {
-    public volatile long r1, r2, r3, r4, r5, r6, r7 = 11;
-    @Override public long sum() {
-        return p1 + p2 + p3 + p4 + p5 + p6 + p7 +
-                r1 + r2 + r3 + r4 + r5 + r6 + r7;
-    }
-
-    public BoxedLong(long initialValue) {
-        super(initialValue);
     }
 }

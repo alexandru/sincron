@@ -15,60 +15,57 @@
  * limitations under the License.
  */
 
-package org.sincron.atomic.boxes.leftRight128Java8;
+package org.sincron.atomic.boxes.right128Java8;
 
-import org.sincron.atomic.boxes.common.LeftPadding56;
 import org.sincron.misc.UnsafeAccess;
 import java.lang.reflect.Field;
 
-abstract class BoxedIntImpl extends LeftPadding56
-        implements org.sincron.atomic.boxes.BoxedInt {
-
-    public volatile int value;
+abstract class BoxedObjectImpl implements org.sincron.atomic.boxes.BoxedObject {
+    public volatile Object value;
     public static final long OFFSET;
-
     static {
         try {
-            Field field = BoxedIntImpl.class.getDeclaredField("value");
+            Field field = BoxedObjectImpl.class.getDeclaredField("value");
             OFFSET = UnsafeAccess.UNSAFE.objectFieldOffset(field);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public BoxedIntImpl(int initialValue) {
+    public BoxedObjectImpl(Object initialValue) {
         this.value = initialValue;
     }
 
-    public int volatileGet() {
+    public Object volatileGet() {
         return value;
     }
 
-    public void volatileSet(int update) {
+    public void volatileSet(Object update) {
         value = update;
     }
 
-    public void lazySet(int update) {
-        UnsafeAccess.UNSAFE.putOrderedInt(this, OFFSET, update);
+    public void lazySet(Object update) {
+        UnsafeAccess.UNSAFE.putOrderedObject(this, OFFSET, update);
     }
 
-    public boolean compareAndSet(int current, int update) {
-        return UnsafeAccess.UNSAFE.compareAndSwapInt(this, OFFSET, current, update);
+    public boolean compareAndSet(Object current, Object update) {
+        return UnsafeAccess.UNSAFE.compareAndSwapObject(this, OFFSET, current, update);
     }
 
-    public int getAndSet(int update) {
-        return UnsafeAccess.UNSAFE.getAndSetInt(this, OFFSET, update);
+    public Object getAndSet(Object update) {
+        return UnsafeAccess.UNSAFE.getAndSetObject(this, OFFSET, update);
     }
 }
 
-public final class BoxedInt extends BoxedIntImpl {
-    public volatile long r1, r2, r3, r4, r5, r6, r7 = 11;
-    @Override public long sum() {
-        return p1 + p2 + p3 + p4 + p5 + p6 + p7 +
-                r1 + r2 + r3 + r4 + r5 + r6 + r7;
+public final class BoxedObject extends BoxedObjectImpl {
+    public volatile long p1, p2, p3, p4, p5, p6, p7, p8 = 7;
+    public volatile long p9, p10, p11, p12, p13, p14 = 7;
+    public long sum() {
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 +
+                p9 + p10 + p11 + p12 + p13 + p14;
     }
 
-    public BoxedInt(int initialValue) {
+    public BoxedObject(Object initialValue) {
         super(initialValue);
     }
 }

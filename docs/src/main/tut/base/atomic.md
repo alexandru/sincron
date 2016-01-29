@@ -228,12 +228,14 @@ classes are provided. For reference on what that means, see:
 To use the cache-padded versions, you need to override the default `PaddingStrategy`:
 
 ```tut:silent
-// Applies padding to the left of the value for a cache line of 64 bytes
-import org.sincron.atomic.PaddingStrategy.Implicits.Left64
-val ref = Atomic(1)
+import org.sincron.atomic.PaddingStrategy.{Left64, LeftRight256}
 
-// In case you want to avoid using implicits
+// Applies padding to the left of the value for a cache line of 64 bytes
 val ref = Atomic.withPadding(1, Left64)
+
+// Applies padding both to the left and the right of the value for
+// a total object size of at least 256 bytes
+val ref = Atomic.withPadding(1, LeftRight256)
 ```
 
 The strategies available are:
@@ -242,5 +244,8 @@ The strategies available are:
 - `Left64`: applies padding to the left of the value, for a cache line of 64 bytes
 - `Right64`: applies padding to the right of the value, for a cache line of 64 bytes
 - `LeftRight64`: applies padding to both the left and the right, for a cache line of 128 bytes
+- `Left128`: applies padding to the left of the value, for a cache line of 128 bytes
+- `Right128`: applies padding to the right of the value, for a cache line of 128 bytes
+- `LeftRight256`: applies padding to both the left and the right, for a cache line of 256 bytes
 
 And now you can join the folks that have mechanical sympathy :-P

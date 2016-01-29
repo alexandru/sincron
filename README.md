@@ -29,9 +29,14 @@ libraryDependencies += "org.sincron" %% "sincron-atomic" % "0.4"
 libraryDependencies += "org.sincron" %% "sincron" % "0.4"
 ```
 
-Available documentation:
+Tutorials:
 
 - [Atomic References](https://github.com/monixio/sincron/wiki/Atomic-References)
+
+API Documentation:
+
+- [0.4](https://sincron.org/docs/0.4/api/)
+
 
 ## Maintainers
 

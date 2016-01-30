@@ -146,6 +146,15 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
     assert(r.addAndGet(value) == ev.plus(value, ev.plus(value, value)))
   }
 
+  test("should add(value)") {
+    val r = Atomic(value)
+    r.add(value)
+    assert(r.get == ev.plus(value, value))
+    r.add(value)
+    assert(r.get == ev.plus(value, ev.plus(value, value)))
+  }
+
+
   test("should getAndAdd(value)") {
     val r = Atomic(value)
     assert(r.getAndAdd(value) == value)
@@ -156,6 +165,14 @@ abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
     val r = Atomic(value)
     assert(r.subtractAndGet(value) == ev.minus(value, value))
     assert(r.subtractAndGet(value) == ev.minus(value, ev.plus(value, value)))
+  }
+
+  test("should subtract(value)") {
+    val r = Atomic(value)
+    r.subtract(value)
+    assert(r.get == ev.minus(value, value))
+    r.subtract(value)
+    assert(r.get == ev.minus(value, ev.plus(value, value)))
   }
 
   test("should getAndSubtract(value)") {

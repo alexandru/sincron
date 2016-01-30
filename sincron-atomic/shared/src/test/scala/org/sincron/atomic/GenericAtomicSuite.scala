@@ -92,6 +92,13 @@ abstract class GenericAtomicSuite[T, R <: Atomic[T]]
     assert(r.transformAndExtract(x => (x, valueFromInt(valueToInt(x) + 1))) == one)
     assert(r.get == two)
   }
+
+  test("should lazySet") {
+    val r = Atomic(zero)
+    assertEquals(r.get, zero)
+    r.lazySet(one)
+    assertEquals(r.get, one)
+  }
 }
 
 // -- NoPadding

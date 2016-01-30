@@ -17,40 +17,31 @@
 
 package org.sincron
 
-/**
- * A small toolkit of classes that support compare-and-swap semantics for mutation of variables.
- *
- * On top of the JVM, this means dealing with lock-free thread-safe programming.
- * On top of Javascript / Scala.js using `Atomic` references is still good because:
- *
- * 1. boxing values in a smart reference with nice helpers for transformations is always a good idea.
- * 2. on the JVM there are times when synchronization, and when used for synchronization, atomic
- *    references can now cross compile to Scala.js
- * 3. `compareAndSet` is actually a good idea to have even in an asynchronous, non-multi-threaded
- *    environment, such as Javascript, because it takes time into account and time related problems
- *    can happen even without multi-threading
- *
- * The backbone of Atomic references is this method:
- * {{{
- *   def compareAndSet(expect: T, update: T): Boolean
- * }}}
- *
- * This method atomically sets a variable to the `update` value if it currently holds
- * the `expect` value, reporting `true` on success or `false` on failure. The classes in this package
- * also contain methods to get and unconditionally set values. In comparison with the JVM version,
- * these `Atomic` references do not have methods for weakly setting values (i.e. `weakCompareAndSet`, `lazySet`),
- * since those really make no sense in Javascript.
- *
- * Building a reference is easy with the provided constructor, which will automatically return the
- * most specific type needed:
- * {{{
- *   val atomicNumber = Atomic(12L)
- *
- *   atomicNumber.incrementAndGet()
- * }}}
- *
- * In comparison with `java.util.concurrent.AtomicReference`, these references implement common interfaces
- * that you can use generically (i.e. `Atomic[T]`, `AtomicNumber[T]`). And also provide useful helpers for
- * atomically mutating of values (i.e. `transform`, `transformAndGet`, `getAndTransform`, etc...).
- */
+/** A small toolkit of classes that support compare-and-swap semantics for safe mutation of variables.
+  *
+  * On top of the JVM, this means dealing with lock-free thread-safe programming. Also works on top of Javascript,
+  * with Scala.js, for API compatibility purposes and because it's a useful way to box a value.
+  *
+  * The backbone of Atomic references is this method:
+  * {{{
+  *   def compareAndSet(expect: T, update: T): Boolean
+  * }}}
+  *
+  * This method atomically sets a variable to the `update` value if it currently holds
+  * the `expect` value, reporting `true` on success or `false` on failure. The classes in this package
+  * also contain methods to get and unconditionally set values.
+  *
+  * Building a reference is easy with the provided constructor, which will automatically return the
+  * most specific type needed (in the following sample, that's an `AtomicDouble`, inheriting from `AtomicNumber[T]`):
+  * {{{
+  *   val atomicNumber = Atomic(12.2)
+  *
+  *   atomicNumber.incrementAndGet()
+  *   // => 13.2
+  * }}}
+  *
+  * These also provide useful helpers for atomically mutating of values
+  * (i.e. `transform`, `transformAndGet`, `getAndTransform`, etc...) or of numbers of any kind
+  * (`incrementAndGet`, `getAndAdd`, etc...).
+  */
 package object atomic

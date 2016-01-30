@@ -23,7 +23,7 @@ import org.sincron.atomic.boxes.BoxPaddingStrategy
 /** A small toolkit of classes that support compare-and-swap semantics for safe mutation of variables.
   *
   * On top of the JVM, this means dealing with lock-free thread-safe programming. Also works on top of Javascript,
-  * with Scala.js (for good reasons, as Atomic references are still useful in non-multi-threaded environments).
+  * with Scala.js, for API compatibility purposes and because it's a useful way to box a value.
   *
   * The backbone of Atomic references is this method:
   * {{{
@@ -32,10 +32,7 @@ import org.sincron.atomic.boxes.BoxPaddingStrategy
   *
   * This method atomically sets a variable to the `update` value if it currently holds
   * the `expect` value, reporting `true` on success or `false` on failure. The classes in this package
-  * also contain methods to get and unconditionally set values. They also support weak operations,
-  * defined in `WeakAtomic[T]`, such as (e.g. `weakCompareAndSet`, `lazySet`) or operations that
-  * block the current thread through ''spin-locking'', until a condition happens (e.g. `waitForCompareAndSet`),
-  * methods exposed by `BlockingAtomic[T]`.
+  * also contain methods to get and unconditionally set values.
   *
   * Building a reference is easy with the provided constructor, which will automatically return the
   * most specific type needed (in the following sample, that's an `AtomicDouble`, inheriting from `AtomicNumber[T]`):
@@ -46,13 +43,12 @@ import org.sincron.atomic.boxes.BoxPaddingStrategy
   *   // => 13.2
   * }}}
   *
-  * In comparison with `java.util.concurrent.AtomicReference`, these references implement common interfaces
-  * that you can use generically (i.e. `Atomic[T]`, `AtomicNumber[T]`).
-  * And also provide useful helpers for atomically mutating of values
+  * These also provide useful helpers for atomically mutating of values
   * (i.e. `transform`, `transformAndGet`, `getAndTransform`, etc...) or of numbers of any kind
   * (`incrementAndGet`, `getAndAdd`, etc...).
   */
 package object atomic {
+  /** Internal utility for converting between padding strategy representations. */
   private[sincron] def boxStrategyToPaddingStrategy(s: PaddingStrategy): BoxPaddingStrategy =
     s match {
       case NoPadding =>

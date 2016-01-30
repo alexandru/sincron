@@ -26,12 +26,8 @@ final class AtomicByte private (private[this] val ref: BoxedInt)
 
   private[this] val mask = 255
 
-  def get: Byte =
-    (ref.volatileGet() & mask).asInstanceOf[Byte]
-
+  def get: Byte = (ref.volatileGet() & mask).asInstanceOf[Byte]
   def set(update: Byte): Unit = ref.volatileSet(update)
-  def update(value: Byte): Unit = ref.volatileSet(value)
-  def `:=`(value: Byte): Unit = ref.volatileSet(value)
 
   def lazySet(update: Byte) = {
     ref.lazySet(update)
@@ -49,7 +45,7 @@ final class AtomicByte private (private[this] val ref: BoxedInt)
   @tailrec
   def increment(v: Int = 1): Unit = {
     val current = (ref.volatileGet() & mask).asInstanceOf[Byte]
-    val update = incrOp(current, v)
+    val update = incrementOp(current, v)
     if (!ref.compareAndSet(current, update))
       increment(v)
   }
@@ -65,7 +61,7 @@ final class AtomicByte private (private[this] val ref: BoxedInt)
   @tailrec
   def incrementAndGet(v: Int = 1): Byte = {
     val current = (ref.volatileGet() & mask).asInstanceOf[Byte]
-    val update = incrOp(current, v)
+    val update = incrementOp(current, v)
     if (!ref.compareAndSet(current, update))
       incrementAndGet(v)
     else
@@ -85,7 +81,7 @@ final class AtomicByte private (private[this] val ref: BoxedInt)
   @tailrec
   def getAndIncrement(v: Int = 1): Byte = {
     val current = (ref.volatileGet() & mask).asInstanceOf[Byte]
-    val update = incrOp(current, v)
+    val update = incrementOp(current, v)
     if (!ref.compareAndSet(current, update))
       getAndIncrement(v)
     else
@@ -130,26 +126,9 @@ final class AtomicByte private (private[this] val ref: BoxedInt)
       current
   }
 
-  @tailrec
-  def countDownToZero(v: Byte = 1): Byte = {
-    val current = (ref.volatileGet() & mask).asInstanceOf[Byte]
-    if (current != 0) {
-      val decrement = if (current >= v) v else current
-      val update = minusOp(current, decrement)
-      if (!ref.compareAndSet(current, update))
-        countDownToZero(v)
-      else
-        decrement
-    }
-    else
-      0
-  }
-
   def decrement(v: Int = 1): Unit = increment(-v)
   def decrementAndGet(v: Int = 1): Byte = incrementAndGet(-v)
   def getAndDecrement(v: Int = 1): Byte = getAndIncrement(-v)
-  def `+=`(v: Byte): Unit = addAndGet(v)
-  def `-=`(v: Byte): Unit = subtractAndGet(v)
 
   private[this] def plusOp(a: Byte, b: Byte): Byte =
     ((a + b) & mask).asInstanceOf[Byte]
@@ -157,7 +136,7 @@ final class AtomicByte private (private[this] val ref: BoxedInt)
   private[this] def minusOp(a: Byte, b: Byte): Byte =
     ((a - b) & mask).asInstanceOf[Byte]
 
-  private[this] def incrOp(a: Byte, b: Int): Byte =
+  private[this] def incrementOp(a: Byte, b: Int): Byte =
     ((a + b) & mask).asInstanceOf[Byte]
 }
 

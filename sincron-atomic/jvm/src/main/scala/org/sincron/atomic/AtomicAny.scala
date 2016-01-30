@@ -22,22 +22,16 @@ import org.sincron.atomic.boxes.{Factory, BoxedObject}
 
 final class AtomicAny[T <: AnyRef] private (private[this] val ref: BoxedObject) extends Atomic[T] {
   def get: T = ref.volatileGet().asInstanceOf[T]
-
   def set(update: T): Unit = ref.volatileSet(update)
-  def update(value: T): Unit = ref.volatileSet(value)
-  def `:=`(value: T): Unit = ref.volatileSet(value)
 
-  def compareAndSet(expect: T, update: T): Boolean = {
+  def compareAndSet(expect: T, update: T): Boolean =
     ref.compareAndSet(expect, update)
-  }
 
-  def getAndSet(update: T): T = {
+  def getAndSet(update: T): T =
     ref.getAndSet(update).asInstanceOf[T]
-  }
 
-  def lazySet(update: T): Unit = {
+  def lazySet(update: T): Unit =
     ref.lazySet(update)
-  }
 }
 
 object AtomicAny {

@@ -27,8 +27,6 @@ final class AtomicFloat private (private[this] val ref: BoxedInt)
 
   def get: Float = intBitsToFloat(ref.volatileGet())
   def set(update: Float): Unit = ref.volatileSet(floatToIntBits(update))
-  def update(value: Float): Unit = ref.volatileSet(floatToIntBits(value))
-  def `:=`(value: Float): Unit = ref.volatileSet(floatToIntBits(value))
   def lazySet(update: Float): Unit = ref.lazySet(floatToIntBits(update))
 
   def compareAndSet(expect: Float, update: Float): Boolean = {
@@ -44,7 +42,7 @@ final class AtomicFloat private (private[this] val ref: BoxedInt)
   @tailrec
   def increment(v: Int = 1): Unit = {
     val current = get
-    val update = incrOp(current, v)
+    val update = incrementOp(current, v)
     if (!compareAndSet(current, update))
       increment(v)
   }
@@ -60,7 +58,7 @@ final class AtomicFloat private (private[this] val ref: BoxedInt)
   @tailrec
   def incrementAndGet(v: Int = 1): Float = {
     val current = get
-    val update = incrOp(current, v)
+    val update = incrementOp(current, v)
     if (!compareAndSet(current, update))
       incrementAndGet(v)
     else
@@ -80,7 +78,7 @@ final class AtomicFloat private (private[this] val ref: BoxedInt)
   @tailrec
   def getAndIncrement(v: Int = 1): Float = {
     val current = get
-    val update = incrOp(current, v)
+    val update = incrementOp(current, v)
     if (!compareAndSet(current, update))
       getAndIncrement(v)
     else
@@ -125,30 +123,13 @@ final class AtomicFloat private (private[this] val ref: BoxedInt)
       current
   }
 
-  @tailrec
-  def countDownToZero(v: Float = 1.0f): Float = {
-    val current = get
-    if (current != 0.0) {
-      val decrement = if (current >= v) v else current
-      val update = current - decrement
-      if (!compareAndSet(current, update))
-        countDownToZero(v)
-      else
-        decrement
-    }
-    else
-      0.0f
-  }
-
   def decrement(v: Int = 1): Unit = increment(-v)
   def decrementAndGet(v: Int = 1): Float = incrementAndGet(-v)
   def getAndDecrement(v: Int = 1): Float = getAndIncrement(-v)
-  def `+=`(v: Float): Unit = addAndGet(v)
-  def `-=`(v: Float): Unit = subtractAndGet(v)
 
   private[this] def plusOp(a: Float, b: Float): Float = a + b
   private[this] def minusOp(a: Float, b: Float): Float = a - b
-  private[this] def incrOp(a: Float, b: Int): Float = a + b
+  private[this] def incrementOp(a: Float, b: Int): Float = a + b
 }
 
 object AtomicFloat {

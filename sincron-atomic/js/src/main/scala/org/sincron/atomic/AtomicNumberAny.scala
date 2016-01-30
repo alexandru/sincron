@@ -44,15 +44,6 @@ final class AtomicNumberAny[T  <: AnyRef : Numeric] private[atomic] (initialValu
 
   def get: T = ref
 
-  @inline
-  def update(value: T): Unit = set(value)
-
-  @inline
-  def `:=`(value: T): Unit = set(value)
-
-  @inline
-  def lazySet(update: T): Unit = set(update)
-
   def getAndSubtract(v: T): T = {
     val c = ref
     ref = ev.minus(ref, v)
@@ -98,22 +89,9 @@ final class AtomicNumberAny[T  <: AnyRef : Numeric] private[atomic] (initialValu
     ref = ev.plus(ref, ev.fromInt(v))
   }
 
-  def countDownToZero(v: T = ev.one): T = {
-    val current = get
-    if (current != ev.zero) {
-      val decrement = if (ev.compare(current, v) >= 0) v else current
-      ref = ev.minus(current, decrement)
-      decrement
-    }
-    else
-      ev.zero
-  }
-
   def decrement(v: Int = 1): Unit = increment(-v)
   def decrementAndGet(v: Int = 1): T = incrementAndGet(-v)
   def getAndDecrement(v: Int = 1): T = getAndIncrement(-v)
-  def `+=`(v: T): Unit = addAndGet(v)
-  def `-=`(v: T): Unit = subtractAndGet(v)
 }
 
 object AtomicNumberAny {

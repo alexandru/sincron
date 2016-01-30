@@ -38,9 +38,6 @@ final class AtomicBoolean private[atomic]
   }
 
   def set(update: Boolean): Unit = ref = update
-  def update(value: Boolean): Unit = ref = value
-  def `:=`(value: Boolean): Unit = ref = value
-  def lazySet(update: Boolean): Unit = ref = update
   def get: Boolean = ref
 }
 

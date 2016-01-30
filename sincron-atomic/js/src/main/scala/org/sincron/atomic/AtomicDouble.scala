@@ -43,15 +43,6 @@ final class AtomicDouble private[atomic]
 
   def get: Double = ref
 
-  @inline
-  def update(value: Double): Unit = set(value)
-
-  @inline
-  def `:=`(value: Double): Unit = set(value)
-
-  @inline
-  def lazySet(update: Double): Unit = set(update)
-
   def getAndSubtract(v: Double): Double = {
     val c = ref
     ref = ref - v
@@ -97,22 +88,9 @@ final class AtomicDouble private[atomic]
     ref = ref + v
   }
 
-  def countDownToZero(v: Double = 1): Double = {
-    val current = get
-    if (current != 0) {
-      val decrement = if (current >= v) v else current
-      ref = current - decrement
-      decrement
-    }
-    else
-      0
-  }
-
   def decrement(v: Int = 1): Unit = increment(-v)
   def decrementAndGet(v: Int = 1): Double = incrementAndGet(-v)
   def getAndDecrement(v: Int = 1): Double = getAndIncrement(-v)
-  def `+=`(v: Double): Unit = addAndGet(v)
-  def `-=`(v: Double): Unit = subtractAndGet(v)
 }
 
 object AtomicDouble {

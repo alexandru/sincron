@@ -23,40 +23,32 @@ import org.sincron.atomic.inline.AtomicMacros
 /**
   * Base trait of all atomic references, no matter the type.
   */
-trait Atomic[T] extends Any {
-  /**
-    * @return the current value persisted by this Atomic
-    */
+abstract class Atomic[T] {
+  /** Get the current value persisted by this Atomic. */
   def get: T
 
-  /**
-    * @return the current value persisted by this Atomic, an alias for `get()`
-    */
-  def apply(): T = get
+  /** Get the current value persisted by this Atomic, an alias for `get()`. */
+  final def apply(): T = macro AtomicMacros.applyMacro[T]
 
-  /**
-    * Updates the current value.
+  /** Updates the current value.
     *
     * @param update will be the new value returned by `get()`
     */
   def set(update: T): Unit
 
-  /**
-    * Alias for `set()`. Updates the current value.
+  /** Alias for [[set]]. Updates the current value.
     *
     * @param value will be the new value returned by `get()`
     */
-  def update(value: T): Unit
+  final def update(value: T): Unit = macro AtomicMacros.setMacro[T]
 
-  /**
-    * Alias for `set()`. Updates the current value.
+  /** Alias for [[set]]. Updates the current value.
     *
     * @param value will be the new value returned by `get()`
     */
-  def `:=`(value: T): Unit
+  final def `:=`(value: T): Unit = macro AtomicMacros.setMacro[T]
 
-  /**
-    * Does a compare-and-set operation on the current value. For more info, checkout the related
+  /** Does a compare-and-set operation on the current value. For more info, checkout the related
     * [[https://en.wikipedia.org/wiki/Compare-and-swap Compare-and-swap Wikipedia page]].
     *
     * It's an atomic, worry free operation.
@@ -67,15 +59,13 @@ trait Atomic[T] extends Any {
     */
   def compareAndSet(expect: T, update: T): Boolean
 
-  /**
-    * Sets the persisted value to `update` and returns the old value that was in place.
+  /** Sets the persisted value to `update` and returns the old value that was in place.
     * It's an atomic, worry free operation.
     */
   def getAndSet(update: T): T
 
-  /**
-    * Eventually sets to the given value. Has weaker visibility guarantees than the normal `set()`.
-    *
+  /** Eventually sets to the given value.
+    * Has weaker visibility guarantees than the normal `set()`.
     */
   def lazySet(update: T): Unit
 

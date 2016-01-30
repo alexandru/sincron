@@ -44,15 +44,6 @@ final class AtomicChar private[atomic]
 
   def get: Char = ref
 
-  @inline
-  def update(value: Char): Unit = set(value)
-
-  @inline
-  def `:=`(value: Char): Unit = set(value)
-
-  @inline
-  def lazySet(update: Char): Unit = set(update)
-
   def getAndSubtract(v: Char): Char = {
     val c = ref
     ref = ((ref - v) & mask).asInstanceOf[Char]
@@ -98,22 +89,9 @@ final class AtomicChar private[atomic]
     ref = ((ref + v) & mask).asInstanceOf[Char]
   }
 
-  def countDownToZero(v: Char = 1): Char = {
-    val current = get
-    if (current != 0) {
-      val decrement = if (current >= v) v else current
-      ref = ((current - decrement) & mask).asInstanceOf[Char]
-      decrement
-    }
-    else
-      0
-  }
-
   def decrement(v: Int = 1): Unit = increment(-v)
   def decrementAndGet(v: Int = 1): Char = incrementAndGet(-v)
   def getAndDecrement(v: Int = 1): Char = getAndIncrement(-v)
-  def `+=`(v: Char): Unit = addAndGet(v)
-  def `-=`(v: Char): Unit = subtractAndGet(v)
 }
 
 object AtomicChar {

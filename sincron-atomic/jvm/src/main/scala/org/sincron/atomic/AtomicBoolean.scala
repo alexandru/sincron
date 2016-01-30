@@ -21,30 +21,23 @@ import org.sincron.atomic.PaddingStrategy.NoPadding
 import org.sincron.atomic.boxes.{Factory, BoxedInt}
 
 final class AtomicBoolean private (private[this] val ref: BoxedInt) extends Atomic[Boolean] {
-  def get: Boolean = {
+  def get: Boolean =
     ref.volatileGet() == 1
-  }
 
   def set(update: Boolean): Unit =
     ref.volatileSet(if (update) 1 else 0)
-  def update(value: Boolean): Unit =
-    ref.volatileSet(if (value) 1 else 0)
-  def `:=`(value: Boolean): Unit =
-    ref.volatileSet(if (value) 1 else 0)
 
-  def compareAndSet(expect: Boolean, update: Boolean): Boolean = {
+  def compareAndSet(expect: Boolean, update: Boolean): Boolean =
     ref.compareAndSet(if (expect) 1 else 0, if (update) 1 else 0)
-  }
 
-  def getAndSet(update: Boolean): Boolean = {
+  def getAndSet(update: Boolean): Boolean =
     ref.getAndSet(if (update) 1 else 0) == 1
-  }
 
-  def lazySet(update: Boolean): Unit = {
+  def lazySet(update: Boolean): Unit =
     ref.lazySet(if (update) 1 else 0)
-  }
 
-  override def toString: String = s"AtomicBoolean($get)"
+  override def toString: String =
+    s"AtomicBoolean($get)"
 }
 
 object AtomicBoolean {

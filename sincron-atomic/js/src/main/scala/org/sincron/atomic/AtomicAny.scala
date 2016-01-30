@@ -40,15 +40,6 @@ final class AtomicAny[T <: AnyRef] private[atomic] (initialValue: T) extends Ato
   }
 
   def get: T = ref
-
-  @inline
-  def update(value: T): Unit = set(value)
-
-  @inline
-  def `:=`(value: T): Unit = set(value)
-
-  @inline
-  def lazySet(update: T): Unit = set(update)
 }
 
 object AtomicAny {

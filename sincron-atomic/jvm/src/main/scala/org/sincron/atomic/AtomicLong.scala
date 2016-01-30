@@ -26,8 +26,6 @@ final class AtomicLong private (private[this] val ref: BoxedLong)
 
   def get: Long = ref.volatileGet()
   def set(update: Long): Unit = ref.volatileSet(update)
-  def update(value: Long): Unit = ref.volatileSet(value)
-  def `:=`(value: Long): Unit = ref.volatileSet(value)
 
   def compareAndSet(expect: Long, update: Long): Boolean = {
     ref.compareAndSet(expect, update)
@@ -105,26 +103,9 @@ final class AtomicLong private (private[this] val ref: BoxedLong)
   def subtractAndGet(v: Long): Long =
     addAndGet(-v)
 
-  @tailrec
-  def countDownToZero(v: Long = 1): Long = {
-    val current = get
-    if (current != 0) {
-      val decrement = if (current >= v) v else current
-      val update = current - decrement
-      if (!ref.compareAndSet(current, update))
-        countDownToZero(v)
-      else
-        decrement
-    }
-    else
-      0
-  }
-
   def decrement(v: Int = 1): Unit = increment(-v)
   def decrementAndGet(v: Int = 1): Long = incrementAndGet(-v)
   def getAndDecrement(v: Int = 1): Long = getAndIncrement(-v)
-  def `+=`(v: Long): Unit = addAndGet(v)
-  def `-=`(v: Long): Unit = subtractAndGet(v)
 
   override def toString: String = s"AtomicLong(${ref.volatileGet()})"
 }

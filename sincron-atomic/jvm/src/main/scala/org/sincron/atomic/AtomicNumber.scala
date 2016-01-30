@@ -17,6 +17,7 @@
 
 package org.sincron.atomic
 
+import org.sincron.atomic.inline.AtomicMacros
 import scala.language.experimental.macros
 
 /** Represents an Atomic reference holding a number, providing helpers
@@ -24,30 +25,35 @@ import scala.language.experimental.macros
   *
   * @tparam T should be something that's Numeric
   */
-trait AtomicNumber[T] extends Atomic[T] {
+abstract class AtomicNumber[T] extends Atomic[T] {
+  /** Increment with the given integer */
   def increment(v: Int = 1): Unit
+  /** Adds to the atomic number the given value. */
   def add(v: T): Unit
+  /** Adds to the atomic number the given value. Alias for `add`. */
+  final def `-=`(value: T): Unit = macro AtomicMacros.subtractMacro[T]
+  /** Decrements the atomic number with the given integer. */
   def decrement(v: Int = 1): Unit
+  /** Subtracts from the atomic number the given value. */
   def subtract(v: T): Unit
+  /** Subtracts from the atomic number the given value. Alias for `subtract`. */
+  final def `+=`(value: T): Unit = macro AtomicMacros.addMacro[T]
 
+  /** Increments the atomic number and returns the result. */
   def incrementAndGet(v: Int = 1): T
+  /** Adds to the atomic number and returns the result. */
   def addAndGet(v: T): T
+  /** Decrements the atomic number and returns the result. */
   def decrementAndGet(v: Int = 1): T
+  /** Subtracts from the atomic number and returns the result. */
   def subtractAndGet(v: T): T
 
+  /** Increments the atomic number and returns the value before the update. */
   def getAndIncrement(v: Int = 1): T
+  /** Adds to the the atomic number and returns the value before the update. */
   def getAndAdd(v: T): T
+  /** Decrements the atomic number and returns the value before the update. */
   def getAndDecrement(v: Int = 1): T
+  /** Subtracts from the atomic number and returns the value before the update. */
   def getAndSubtract(v: T): T
-
-  /**
-   * Decrements this number until it reaches zero.
-   *
-   * @return a number representing how much it was able to subtract, which
-   *         is a value between zero and `v`
-   */
-  def countDownToZero(v: T): T
-
-  def `+=`(v: T): Unit
-  def `-=`(v: T): Unit
 }

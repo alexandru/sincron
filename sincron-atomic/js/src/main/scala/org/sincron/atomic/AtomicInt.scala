@@ -43,15 +43,6 @@ final class AtomicInt private[atomic]
 
   def get: Int = ref
 
-  @inline
-  def update(value: Int): Unit = set(value)
-
-  @inline
-  def `:=`(value: Int): Unit = set(value)
-
-  @inline
-  def lazySet(update: Int): Unit = set(update)
-
   def getAndSubtract(v: Int): Int = {
     val c = ref
     ref = ref - v
@@ -97,22 +88,9 @@ final class AtomicInt private[atomic]
     ref = ref + v
   }
 
-  def countDownToZero(v: Int = 1): Int = {
-    val current = get
-    if (current != 0) {
-      val decrement = if (current >= v) v else current
-      ref = current - decrement
-      decrement
-    }
-    else
-      0
-  }
-
   def decrement(v: Int = 1): Unit = increment(-v)
   def decrementAndGet(v: Int = 1): Int = incrementAndGet(-v)
   def getAndDecrement(v: Int = 1): Int = getAndIncrement(-v)
-  def `+=`(v: Int): Unit = addAndGet(v)
-  def `-=`(v: Int): Unit = subtractAndGet(v)
 }
 
 object AtomicInt {

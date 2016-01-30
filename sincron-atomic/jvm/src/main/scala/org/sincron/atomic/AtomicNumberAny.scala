@@ -28,8 +28,6 @@ final class AtomicNumberAny[T <: AnyRef : Numeric] private (private[this] val re
 
   def get: T = ref.volatileGet().asInstanceOf[T]
   def set(update: T): Unit = ref.volatileSet(update)
-  def update(value: T): Unit = ref.volatileSet(value)
-  def `:=`(value: T): Unit = ref.volatileSet(value)
 
   def compareAndSet(expect: T, update: T): Boolean = {
     ref.compareAndSet(expect, update)
@@ -126,26 +124,9 @@ final class AtomicNumberAny[T <: AnyRef : Numeric] private (private[this] val re
       update
   }
 
-  @tailrec
-  def countDownToZero(v: T = ev.one): T = {
-    val current = get
-    if (current != ev.zero) {
-      val decrement = if (ev.compare(current, v) >= 0) v else current
-      val update = ev.minus(current, decrement)
-      if (!compareAndSet(current, update))
-        countDownToZero(v)
-      else
-        decrement
-    }
-    else
-      ev.zero
-  }
-
   def decrement(v: Int = 1): Unit = increment(-v)
   def decrementAndGet(v: Int = 1): T = incrementAndGet(-v)
   def getAndDecrement(v: Int = 1): T = getAndIncrement(-v)
-  def `+=`(v: T): Unit = addAndGet(v)
-  def `-=`(v: T): Unit = subtractAndGet(v)
 }
 
 object AtomicNumberAny {

@@ -80,7 +80,7 @@ object AtomicMacros {
   }
 
   def transformAndExtractMacro[S : c.WeakTypeTag, A : c.WeakTypeTag]
-  (c: Context { type PrefixType = Atomic[S] })
+    (c: Context { type PrefixType = Atomic[S] })
     (cb: c.Expr[S => (A, S)]): c.Expr[A] = {
 
     import c.universe._
@@ -126,5 +126,36 @@ object AtomicMacros {
     }
 
     new InlineUtil[c.type](c).inlineAndReset[R](expr.tree)
+  }
+
+  def applyMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })(): c.Expr[T] = {
+    import c.universe._
+    val selfExpr: c.Expr[Atomic[T]] = c.prefix
+    val tree = q"""$selfExpr.get"""
+    new InlineUtil[c.type](c).inlineAndReset[T](tree)
+  }
+
+  def setMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })
+    (value: c.Expr[T]): c.Expr[Unit] = {
+    import c.universe._
+    val selfExpr: c.Expr[Atomic[T]] = c.prefix
+    val tree = q"""$selfExpr.set($value)"""
+    new InlineUtil[c.type](c).inlineAndReset[Unit](tree)
+  }
+
+  def addMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })
+    (value: c.Expr[T]): c.Expr[Unit] = {
+    import c.universe._
+    val selfExpr: c.Expr[Atomic[T]] = c.prefix
+    val tree = q"""$selfExpr.add($value)"""
+    new InlineUtil[c.type](c).inlineAndReset[Unit](tree)
+  }
+
+  def subtractMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })
+    (value: c.Expr[T]): c.Expr[Unit] = {
+    import c.universe._
+    val selfExpr: c.Expr[Atomic[T]] = c.prefix
+    val tree = q"""$selfExpr.subtract($value)"""
+    new InlineUtil[c.type](c).inlineAndReset[Unit](tree)
   }
 }

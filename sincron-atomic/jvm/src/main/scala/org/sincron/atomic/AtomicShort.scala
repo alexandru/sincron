@@ -27,8 +27,6 @@ final class AtomicShort private (private[this] val ref: BoxedInt)
 
   def get: Short = (ref.volatileGet() & mask).asInstanceOf[Short]
   def set(update: Short): Unit = ref.volatileSet(update)
-  def update(value: Short): Unit = ref.volatileSet(value)
-  def `:=`(value: Short): Unit = ref.volatileSet(value)
 
   def lazySet(update: Short) = {
     ref.lazySet(update)
@@ -46,7 +44,7 @@ final class AtomicShort private (private[this] val ref: BoxedInt)
   @tailrec
   def increment(v: Int = 1): Unit = {
     val current = (ref.volatileGet() & mask).asInstanceOf[Short]
-    val update = incrOp(current, v)
+    val update = incrementOp(current, v)
     if (!ref.compareAndSet(current, update))
       increment(v)
   }
@@ -62,7 +60,7 @@ final class AtomicShort private (private[this] val ref: BoxedInt)
   @tailrec
   def incrementAndGet(v: Int = 1): Short = {
     val current = (ref.volatileGet() & mask).asInstanceOf[Short]
-    val update = incrOp(current, v)
+    val update = incrementOp(current, v)
     if (!ref.compareAndSet(current, update))
       incrementAndGet(v)
     else
@@ -82,7 +80,7 @@ final class AtomicShort private (private[this] val ref: BoxedInt)
   @tailrec
   def getAndIncrement(v: Int = 1): Short = {
     val current = (ref.volatileGet() & mask).asInstanceOf[Short]
-    val update = incrOp(current, v)
+    val update = incrementOp(current, v)
     if (!ref.compareAndSet(current, update))
       getAndIncrement(v)
     else
@@ -127,26 +125,9 @@ final class AtomicShort private (private[this] val ref: BoxedInt)
       current
   }
 
-  @tailrec
-  def countDownToZero(v: Short = 1): Short = {
-    val current = (ref.volatileGet() & mask).asInstanceOf[Short]
-    if (current != 0) {
-      val decrement = if (current >= v) v else current
-      val update = minusOp(current, decrement)
-      if (!ref.compareAndSet(current, update))
-        countDownToZero(v)
-      else
-        decrement
-    }
-    else
-      0
-  }
-
   def decrement(v: Int = 1): Unit = increment(-v)
   def decrementAndGet(v: Int = 1): Short = incrementAndGet(-v)
   def getAndDecrement(v: Int = 1): Short = getAndIncrement(-v)
-  def `+=`(v: Short): Unit = addAndGet(v)
-  def `-=`(v: Short): Unit = subtractAndGet(v)
 
   private[this] def plusOp(a: Short, b: Short): Short =
     ((a + b) & mask).asInstanceOf[Short]
@@ -154,7 +135,7 @@ final class AtomicShort private (private[this] val ref: BoxedInt)
   private[this] def minusOp(a: Short, b: Short): Short =
     ((a - b) & mask).asInstanceOf[Short]
 
-  private[this] def incrOp(a: Short, b: Int): Short =
+  private[this] def incrementOp(a: Short, b: Int): Short =
     ((a + b) & mask).asInstanceOf[Short]
 }
 

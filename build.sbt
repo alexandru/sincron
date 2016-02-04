@@ -237,12 +237,14 @@ lazy val atomicJVM = project.in(file("sincron-atomic/jvm"))
   .settings(crossSettings)
   .settings(name := "sincron-atomic")
   .settings(crossVersionSharedSources)
+  .settings(scalaMacroDependencies)
 
 lazy val atomicJS = project.in(file("sincron-atomic/js"))
   .enablePlugins(ScalaJSPlugin)
   .dependsOn(macrosJS)
   .settings(crossSettings: _*)
   .settings(crossVersionSharedSources)
+  .settings(scalaMacroDependencies)
   .settings(
     name := "sincron-atomic",
     scalaJSStage in Test := FastOptStage,

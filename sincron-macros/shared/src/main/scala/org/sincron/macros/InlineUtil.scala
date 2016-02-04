@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-package org.sincron.atomic
-package inline
+package org.sincron.macros
 
+import org.sincron.macros.compat._
 import scala.language.higherKinds
-import org.sincron.atomic.inline.compat._
 
 class InlineUtil[C <: Context with Singleton](val c: C) {
   import c.universe._

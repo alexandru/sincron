@@ -134,7 +134,7 @@ lazy val sharedSettings = Seq(
 lazy val unidocSettings = baseUnidocSettings ++ Seq(
   autoAPIMappings := true,
   unidocProjectFilter in (ScalaUnidoc, unidoc) :=
-    inProjects(atomicJVM),
+    inProjects(macrosJVM, atomicJVM),
 
   scalacOptions in (ScalaUnidoc, unidoc) +=
     "-Xfatal-warnings",
@@ -180,7 +180,7 @@ lazy val crossSettings = sharedSettings ++ Seq(
 )
 
 lazy val scalaMacroDependencies = Seq(
-  libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided",
+  libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value % "compile",
   libraryDependencies ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
       // if scala 2.11+ is used, quasiquotes are merged into scala-reflect
@@ -216,17 +216,33 @@ lazy val sincron = project.in(file("."))
       inProjects(atomicJVM)
   )
 
-lazy val atomicJVM = project.in(file("sincron-atomic/jvm"))
+lazy val macrosJVM = project.in(file("sincron-macros/jvm"))
   .settings(crossSettings)
-  .settings(name := "sincron-atomic")
+  .settings(name := "sincron-macros")
   .settings(crossVersionSharedSources)
   .settings(scalaMacroDependencies)
 
-lazy val atomicJS = project.in(file("sincron-atomic/js"))
+lazy val macrosJS = project.in(file("sincron-macros/js"))
   .settings(crossSettings: _*)
   .enablePlugins(ScalaJSPlugin)
   .settings(crossVersionSharedSources)
   .settings(scalaMacroDependencies)
+  .settings(
+    name := "sincron-macros",
+    scalaJSStage in Test := FastOptStage,
+    coverageExcludedFiles := ".*")
+
+lazy val atomicJVM = project.in(file("sincron-atomic/jvm"))
+  .dependsOn(macrosJVM)
+  .settings(crossSettings)
+  .settings(name := "sincron-atomic")
+  .settings(crossVersionSharedSources)
+
+lazy val atomicJS = project.in(file("sincron-atomic/js"))
+  .enablePlugins(ScalaJSPlugin)
+  .dependsOn(macrosJS)
+  .settings(crossSettings: _*)
+  .settings(crossVersionSharedSources)
   .settings(
     name := "sincron-atomic",
     scalaJSStage in Test := FastOptStage,
@@ -234,15 +250,15 @@ lazy val atomicJS = project.in(file("sincron-atomic/js"))
 
 lazy val sincronJVM = project.in(file("sincron/jvm"))
   .settings(crossSettings: _*)
-  .aggregate(atomicJVM)
-  .dependsOn(atomicJVM)
+  .aggregate(macrosJVM, atomicJVM)
+  .dependsOn(macrosJVM, atomicJVM)
   .settings(name := "sincron")
 
 lazy val sincronJS = project.in(file("sincron/js"))
   .settings(crossSettings: _*)
   .enablePlugins(ScalaJSPlugin)
-  .aggregate(atomicJS)
-  .dependsOn(atomicJS)
+  .aggregate(macrosJS, atomicJS)
+  .dependsOn(macrosJS, atomicJS)
   .settings(name := "sincron")
 
 lazy val docs = project.in(file("docs"))

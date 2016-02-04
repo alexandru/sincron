@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.sincron.atomic.inline
+package org.sincron.macros
 
 object compat {
   type Context = scala.reflect.macros.whitebox.Context

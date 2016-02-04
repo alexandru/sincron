@@ -19,7 +19,9 @@ package org.sincron.atomic.inline
 
 import org.sincron.atomic.PaddingStrategy.NoPadding
 import org.sincron.atomic.{PaddingStrategy, AtomicBuilder, Atomic}
-import org.sincron.atomic.inline.compat._
+import org.sincron.macros.{compat, SyntaxUtil, InlineUtil}
+import compat._
+import org.sincron.macros.{SyntaxUtil, InlineUtil}
 
 object AtomicMacros {
   def transformMacro[T : c.WeakTypeTag](c: Context { type PrefixType = Atomic[T] })

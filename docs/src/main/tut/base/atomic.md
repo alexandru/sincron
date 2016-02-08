@@ -174,7 +174,7 @@ ref.transformAndExtract(_.dequeue)
 Voilà, you now have a concurrent, thread-safe and non-blocking Queue. You can do this
 for whatever persistent data-structure you want.
 
-NOTE: the transform methods are implemented using Scala macros, so 
+NOTE: the transform methods are implemented using Scala macros, so
 you get zero overhead by using them.
 
 ## Scala.js support for targeting Javascript
@@ -186,12 +186,6 @@ for targeting Javascript engines, because:
 - it's a building block for doing synchronization, so useful for code that you want cross-compiled
 - because mutability doesn't take *time* into account and `compareAndSet` does, atomic references and
   `compareAndSet` in particular is also useful in a non-multi-threaded / asynchronous environment
-
-What isn't supported on top of Scala.js / Javascript:
-
-- blocking methods aren't supported since the semantics aren't possible (fret not, the compiler will not
-  let you use them since they are missing)
-- cache padded versions, since they make no sense in Javascript
 
 ## Efficiency
 

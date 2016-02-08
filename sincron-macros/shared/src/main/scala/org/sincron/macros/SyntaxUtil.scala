@@ -19,25 +19,23 @@ package org.sincron.macros
 
 import org.sincron.macros.compat._
 
+/** Utilities for macro-hygiene. */
 case class SyntaxUtil[C <: Context with Singleton](val c: C) {
   import c.universe._
 
+  /** Generates a new term name. Used for macro-hygiene. */
   def name(s: String) = freshTermName(c)(s + "$")
+  /** Generates new term names. Used for macro-hygiene. */
   def names(bs: String*) = bs.toList.map(name)
 
+  /** Returns true if the given expressions are either
+    * stable symbols or clean functions, false otherwise.
+    */
   def isClean(es: c.Expr[_]*): Boolean =
     es.forall {
       _.tree match {
         case t @ Ident(_: TermName) if t.symbol.asTerm.isStable => true
         case Function(_, _) => true
-        case _ => false
-      }
-    }
-
-  def isSymbol(es: c.Expr[_]*): Boolean =
-    es.forall {
-      _.tree match {
-        case t @ Ident(_: TermName) if t.symbol.asTerm.isStable => true
         case _ => false
       }
     }

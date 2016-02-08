@@ -180,7 +180,10 @@ lazy val crossSettings = sharedSettings ++ Seq(
 )
 
 lazy val scalaMacroDependencies = Seq(
-  libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value % "compile",
+  libraryDependencies ++= Seq(
+    "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided",
+    "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided"
+  ),
   libraryDependencies ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
       // if scala 2.11+ is used, quasiquotes are merged into scala-reflect
@@ -269,3 +272,4 @@ lazy val docs = project.in(file("docs"))
   .settings(tutSettings)
   .settings(unidocSettings)
   .settings(docsSettings)
+  .settings(scalaMacroDependencies)

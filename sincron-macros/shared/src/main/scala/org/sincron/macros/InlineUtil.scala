@@ -28,8 +28,27 @@ class InlineUtil[C <: Context with Singleton](val c: C) {
   }
 
   def inlineAndResetTree(tree: Tree): c.Tree = {
+    // Workaround for https://issues.scala-lang.org/browse/SI-5465
+    class StripUnApplyNodes extends Transformer {
+      val global = c.universe.asInstanceOf[scala.tools.nsc.Global]
+      import global.nme
+
+      override def transform(tree: Tree): Tree = {
+        super.transform {
+          tree match {
+            case UnApply(Apply(Select(qualifier, nme.unapply | nme.unapplySeq), List(Ident(nme.SELECTOR_DUMMY))), args) =>
+              Apply(transform(qualifier), transformTrees(args))
+            case UnApply(Apply(TypeApply(Select(qualifier, nme.unapply | nme.unapplySeq), _), List(Ident(nme.SELECTOR_DUMMY))), args) =>
+              Apply(transform(qualifier), transformTrees(args))
+            case t => t
+          }
+        }
+      }
+    }
+
     val inlined = inlineApplyRecursive(tree)
-    resetLocalAttrs(c)(inlined)
+    val clean = resetLocalAttrs(c)(inlined)
+    new StripUnApplyNodes().transform(clean)
   }
 
   def inlineApplyRecursive(tree: Tree): Tree = {

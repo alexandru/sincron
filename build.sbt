@@ -154,7 +154,6 @@ lazy val docsSettings =
   site.addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), "api") ++
     site.addMappingsToSiteDir(tut, "_tut") ++
     Seq(
-      (test in Test) <<= (test in Test).dependsOn(tut),
       coverageExcludedFiles := ".*",
       siteMappings += file("CONTRIBUTING.md") -> "contributing.md",
       includeFilter in makeSite :=
@@ -208,15 +207,15 @@ lazy val crossVersionSharedSources =
 
 lazy val sincron = project.in(file("."))
   .aggregate(
+    macrosJVM, macrosJS,
     atomicJVM, atomicJS,
-    sincronJVM, sincronJS,
-    docs)
+    sincronJVM, sincronJS)
   .settings(unidocSettings: _*)
   .settings(sharedSettings: _*)
   .settings(doNotPublishArtifact: _*)
   .settings(
     unidocProjectFilter in (ScalaUnidoc, unidoc) :=
-      inProjects(atomicJVM)
+      inProjects(macrosJVM, atomicJVM)
   )
 
 lazy val macrosJVM = project.in(file("sincron-macros/jvm"))

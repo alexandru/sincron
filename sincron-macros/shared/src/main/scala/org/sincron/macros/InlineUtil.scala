@@ -35,9 +35,9 @@ class InlineUtil[C <: Context with Singleton](val c: C) {
   def inlineApplyRecursive(tree: Tree): Tree = {
     val ApplyName = termName(c)("apply")
 
-    class InlineSymbol(symbol: Symbol, value: Tree) extends Transformer {
+    class InlineSymbol(symbol: TermName, value: Tree) extends Transformer {
       override def transform(tree: Tree): Tree = tree match {
-        case Ident(_) if tree.symbol == symbol =>
+        case i@Ident(_) if i.name == symbol =>
           value
         case tt: TypeTree if tt.original != null =>
           //super.transform(TypeTree().setOriginal(transform(tt.original)))
@@ -48,18 +48,18 @@ class InlineUtil[C <: Context with Singleton](val c: C) {
     }
 
     object InlineApply extends Transformer {
-      def inlineSymbol(symbol: Symbol, body: Tree, arg: Tree): Tree =
+      def inlineSymbol(symbol: TermName, body: Tree, arg: Tree): Tree =
         new InlineSymbol(symbol, arg).transform(body)
 
       override def transform(tree: Tree): Tree = tree match {
         case Apply(Select(Function(params, body), ApplyName), args) =>
           params.zip(args).foldLeft(body) { case (b, (param, arg)) =>
-            inlineSymbol(param.symbol, b, arg)
+            inlineSymbol(param.name, b, arg)
           }
 
         case Apply(Function(params, body), args) =>
           params.zip(args).foldLeft(body) { case (b, (param, arg)) =>
-            inlineSymbol(param.symbol, b, arg)
+            inlineSymbol(param.name, b, arg)
           }
 
         case _ =>

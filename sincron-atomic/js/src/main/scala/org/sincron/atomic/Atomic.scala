@@ -163,12 +163,23 @@ object Atomic {
       val util = SyntaxUtil[c.type](c)
       val selfExpr: c.Expr[Atomic[T]] = c.prefix
 
-      val self = util.name("self")
+      /* If our arguments are all clean (stable identifiers or simple functions)
+       * then inline them directly, otherwise bind arguments to a val for safety.
+       */
       val tree =
-        q"""
-        val $self = $selfExpr
-        $self.set($cb($self.get))
-        """
+        if (util.isClean(selfExpr, cb))
+          q"""
+          $selfExpr.set($cb($selfExpr.get))
+          """
+        else {
+          val self = util.name("self")
+          val fn = util.name("fn")
+          q"""
+          val $self = $selfExpr
+          val $fn = $cb
+          $self.set($fn($self.get))
+          """
+        }
 
       new InlineUtil[c.type](c).inlineAndReset[Unit](tree)
     }
@@ -178,18 +189,32 @@ object Atomic {
       val util = SyntaxUtil[c.type](c)
       val selfExpr: c.Expr[Atomic[T]] = c.prefix
 
-      val self = util.name("self")
       val current = util.name("current")
       val update = util.name("update")
 
+      /* If our arguments are all clean (stable identifiers or simple functions)
+       * then inline them directly, otherwise bind arguments to a val for safety.
+       */
       val tree =
-        q"""
-        val $self = $selfExpr
-        var $current = $self.get
-        var $update = $cb($current)
-        $self.set($update)
-        $update
-        """
+        if (util.isClean(selfExpr, cb)) {
+          q"""
+          var $current = $selfExpr.get
+          var $update = $cb($current)
+          $selfExpr.set($update)
+          $update
+          """
+        } else {
+          val self = util.name("self")
+          val fn = util.name("fn")
+          q"""
+          val $self = $selfExpr
+          val $fn = $cb
+          val $current = $self.get
+          val $update = $fn($current)
+          $self.set($update)
+          $update
+          """
+        }
 
       new InlineUtil[c.type](c).inlineAndReset[T](tree)
     }
@@ -199,18 +224,32 @@ object Atomic {
       val util = SyntaxUtil[c.type](c)
       val selfExpr: c.Expr[Atomic[T]] = c.prefix
 
-      val self = util.name("self")
       val current = util.name("current")
       val update = util.name("update")
 
+      /* If our arguments are all clean (stable identifiers or simple functions)
+       * then inline them directly, otherwise bind arguments to a val for safety.
+       */
       val tree =
-        q"""
-        val $self = $selfExpr
-        var $current = $self.get
-        var $update = $cb($current)
-        $self.set($update)
-        $current
-        """
+        if (util.isClean(selfExpr, cb)) {
+          q"""
+          var $current = $selfExpr.get
+          var $update = $cb($current)
+          $selfExpr.set($update)
+          $current
+          """
+        } else {
+          val self = util.name("self")
+          val fn = util.name("fn")
+          q"""
+          val $self = $selfExpr
+          val $fn = $cb
+          val $current = $self.get
+          val $update = $fn($current)
+          $self.set($update)
+          $current
+          """
+        }
 
       new InlineUtil[c.type](c).inlineAndReset[T](tree)
     }
@@ -223,19 +262,33 @@ object Atomic {
       val util = SyntaxUtil[c.type](c)
       val selfExpr: c.Expr[Atomic[S]] = c.prefix
 
-      val self = util.name("self")
       val current = util.name("current")
       val update = util.name("update")
       val result = util.name("result")
 
+      /* If our arguments are all clean (stable identifiers or simple functions)
+       * then inline them directly, otherwise bind arguments to a val for safety.
+       */
       val tree =
-        q"""
-        val $self = $selfExpr
-        var $current = $self.get
-        var ($result, $update) = $cb($current)
-        $self.set($update)
-        $result
-        """
+        if (util.isClean(selfExpr, cb)) {
+          q"""
+          val $current = $selfExpr.get
+          val ($result, $update) = $cb($current)
+          $selfExpr.set($update)
+          $result
+          """
+        } else {
+          val self = util.name("self")
+          val fn = util.name("fn")
+          q"""
+          val $self = $selfExpr
+          val $fn = $cb
+          val $current = $self.get
+          val ($result, $update) = $fn($current)
+          $self.set($update)
+          $result
+          """
+        }
 
       new InlineUtil[c.type](c).inlineAndReset[A](tree)
     }

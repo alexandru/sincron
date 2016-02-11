@@ -16,12 +16,12 @@ lazy val doNotPublishArtifact = Seq(
 
 lazy val sharedSettings = Seq(
   organization := "org.sincron",
-  scalaVersion := "2.11.7",
-  crossScalaVersions := Seq("2.10.6", "2.11.7"),
+  scalaVersion := "2.12.0-M3",
+  crossScalaVersions := Seq("2.10.6", "2.11.7", "2.12.0-M3"),
 
-  javacOptions ++= Seq("-source", "1.6", "-target", "1.6"),
+  javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
   scalacOptions ++= Seq(
-    "-target:jvm-1.6", // generates code with the Java 6 class format
+    "-target:jvm-1.8", // generates code with the Java 6 class format
     "-optimise", // enables optimisations
     // "-Xfatal-warnings", // turns all warnings into errors ;-)
     // warnings
@@ -89,7 +89,7 @@ lazy val sharedSettings = Seq(
 
   // -- Testing
 
-  libraryDependencies += "io.monix" %%% "minitest" % "0.16" % "test",
+  libraryDependencies += "io.monix" %%% "minitest" % "0.17-SNAPSHOT" % "test",
   testFrameworks += new TestFramework("minitest.runner.Framework"),
 
   // -- Settings meant for deployment on oss.sonatype.org
@@ -154,7 +154,7 @@ lazy val docsSettings =
   site.addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), "api") ++
     site.addMappingsToSiteDir(tut, "_tut") ++
     Seq(
-      coverageExcludedFiles := ".*",
+//      coverageExcludedFiles := ".*",
       siteMappings += file("CONTRIBUTING.md") -> "contributing.md",
       includeFilter in makeSite :=
         "*.html" | "*.css" | "*.scss" | "*.png" | "*.jpg" | "*.jpeg" |
@@ -231,8 +231,8 @@ lazy val macrosJS = project.in(file("sincron-macros/js"))
   .settings(scalaMacroDependencies)
   .settings(
     name := "sincron-macros",
-    scalaJSStage in Test := FastOptStage,
-    coverageExcludedFiles := ".*")
+    scalaJSStage in Test := FastOptStage)//,
+//    coverageExcludedFiles := ".*")
 
 lazy val atomicJVM = project.in(file("sincron-atomic/jvm"))
   .dependsOn(macrosJVM)
@@ -247,8 +247,8 @@ lazy val atomicJS = project.in(file("sincron-atomic/js"))
   .settings(scalaMacroDependencies)
   .settings(
     name := "sincron-atomic",
-    scalaJSStage in Test := FastOptStage,
-    coverageExcludedFiles := ".*")
+    scalaJSStage in Test := FastOptStage)//,
+//    coverageExcludedFiles := ".*")
 
 lazy val sincronJVM = project.in(file("sincron/jvm"))
   .settings(crossSettings: _*)

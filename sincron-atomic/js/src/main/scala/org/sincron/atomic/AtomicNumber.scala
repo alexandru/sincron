@@ -17,7 +17,6 @@
 
 package org.sincron.atomic
 
-import org.sincron.atomic.inline.AtomicMacros
 import scala.language.experimental.macros
 
 /** Represents an Atomic reference holding a number, providing helpers
@@ -31,13 +30,13 @@ abstract class AtomicNumber[T] extends Atomic[T] {
   /** Adds to the atomic number the given value. */
   def add(v: T): Unit
   /** Adds to the atomic number the given value. Alias for `add`. */
-  final def `-=`(value: T): Unit = macro AtomicMacros.subtractMacro[T]
+  final def `-=`(value: T): Unit = macro Atomic.Macros.subtractMacro[T]
   /** Decrements the atomic number with the given integer. */
   def decrement(v: Int = 1): Unit
   /** Subtracts from the atomic number the given value. */
   def subtract(v: T): Unit
   /** Subtracts from the atomic number the given value. Alias for `subtract`. */
-  final def `+=`(value: T): Unit = macro AtomicMacros.addMacro[T]
+  final def `+=`(value: T): Unit = macro Atomic.Macros.addMacro[T]
 
   /** Increments the atomic number and returns the result. */
   def incrementAndGet(v: Int = 1): T

@@ -20,6 +20,8 @@ package org.sincron.atomic
 import minitest.SimpleTestSuite
 import org.sincron.atomic.PaddingStrategy._
 
+import scala.util.control.NonFatal
+
 abstract class GenericAtomicSuite[T, R <: Atomic[T]]
   (builder: AtomicBuilder[T, R], strategy: PaddingStrategy, valueFromInt: Int => T, valueToInt: T => Int)
   extends SimpleTestSuite {
@@ -31,14 +33,14 @@ abstract class GenericAtomicSuite[T, R <: Atomic[T]]
 
   test("should set()") {
     val r = Atomic(zero)
-    assert(r.get == zero)
+    assertEquals(r.get, zero)
     r.set(one)
     assert(r.get == one)
   }
 
   test("should getAndSet()") {
     val r = Atomic(zero)
-    assert(r.get == zero)
+    assertEquals(r.get, zero)
     val old = r.getAndSet(one)
     assert(old == zero)
     assert(r.get == one)
@@ -46,51 +48,214 @@ abstract class GenericAtomicSuite[T, R <: Atomic[T]]
 
   test("should compareAndSet()") {
     val r = Atomic(zero)
-    assert(r.get == zero)
+    assertEquals(r.get, zero)
 
     assert(r.compareAndSet(zero, one))
     assert(r.get == one)
     assert(r.compareAndSet(one, zero))
-    assert(r.get == zero)
+    assertEquals(r.get, zero)
     assert(!r.compareAndSet(one, one))
-    assert(r.get == zero)
+    assertEquals(r.get, zero)
   }
 
-  test("should transform") {
+  test("should transform with clean arguments") {
     val r = Atomic(zero)
-    assert(r.get == zero)
+    assertEquals(r.get, zero)
 
     r.transform(x => valueFromInt(valueToInt(x) + 1))
     assert(r.get == one)
     r.transform(x => valueFromInt(valueToInt(x) + 1))
-    assert(r.get == two)
+    assertEquals(r.get, two)
   }
 
-  test("should transformAndGet") {
+  test("should transform with dirty function #1") {
     val r = Atomic(zero)
-    assert(r.get == zero)
+    r.transform {
+      def increment(y: T): T = valueFromInt(valueToInt(y) + 1)
+      x: T => increment(x)
+    }
+    assert(r.get == one)
+  }
+
+  test("should transform with dirty function #2") {
+    val r = Atomic(zero)
+    def increment(y: T): T = valueFromInt(valueToInt(y) + 1)
+
+    r.transform(increment)
+    assert(r.get == one)
+  }
+
+  test("should transform with dirty function #3") {
+    val r = Atomic(zero)
+    r.transform { x =>
+      try valueFromInt(valueToInt(x) + 1) catch {
+        case NonFatal(ex) =>
+          x
+      }
+    }
+    assert(r.get == one)
+  }
+
+  test("should transform with dirty self") {
+    val r = Atomic(zero)
+    def atomic = r
+    assertEquals(atomic.get, zero)
+
+    atomic.transform(x => valueFromInt(valueToInt(x) + 1))
+    assertEquals(atomic.get, one)
+    atomic.transform(x => valueFromInt(valueToInt(x) + 1))
+    assertEquals(atomic.get, two)
+  }
+
+  test("should transformAndGet with clean arguments") {
+    val r = Atomic(zero)
+    assertEquals(r.get, zero)
 
     assert(r.transformAndGet(x => valueFromInt(valueToInt(x) + 1)) == one)
     assert(r.transformAndGet(x => valueFromInt(valueToInt(x) + 1)) == two)
-    assert(r.get == two)
+    assertEquals(r.get, two)
   }
 
-  test("should getAndTransform") {
+  test("should transformAndGet with dirty function #1") {
     val r = Atomic(zero)
-    assert(r.get == zero)
+    val result = r.transformAndGet {
+      def increment(y: T): T = valueFromInt(valueToInt(y) + 1)
+      x: T => increment(x)
+    }
+    assertEquals(result, one)
+  }
+
+  test("should transformAndGet with dirty function #2") {
+    val r = Atomic(zero)
+    def increment(y: T): T = valueFromInt(valueToInt(y) + 1)
+
+    val result = r.transformAndGet(increment)
+    assertEquals(result, one)
+  }
+
+  test("should transformAndGet with dirty function #3") {
+    val r = Atomic(zero)
+    val result = r.transformAndGet { x =>
+      try valueFromInt(valueToInt(x) + 1) catch {
+        case NonFatal(ex) =>
+          x
+      }
+    }
+    assertEquals(result, one)
+  }
+
+  test("should transformAndGet with dirty self") {
+    var inst = Atomic(zero)
+    def r = inst
+    assertEquals(r.get, zero)
+
+    assert(r.transformAndGet(x => valueFromInt(valueToInt(x) + 1)) == one)
+    assert(r.transformAndGet(x => valueFromInt(valueToInt(x) + 1)) == two)
+    assertEquals(r.get, two)
+  }
+
+  test("should getAndTransform with clean arguments") {
+    val r = Atomic(zero)
+    assertEquals(r.get, zero)
 
     assert(r.getAndTransform(x => valueFromInt(valueToInt(x) + 1)) == zero)
     assert(r.getAndTransform(x => valueFromInt(valueToInt(x) + 1)) == one)
-    assert(r.get == two)
+    assertEquals(r.get, two)
   }
 
-  test("should transformAndExtract") {
+  test("should getAndTransform with dirty function #1") {
     val r = Atomic(zero)
-    assert(r.get == zero)
+    val result = r.getAndTransform {
+      def increment(y: T): T = valueFromInt(valueToInt(y) + 1)
+      x: T => increment(x)
+    }
+    assertEquals(result, zero)
+    assertEquals(r.get, one)
+  }
+
+  test("should getAndTransform with dirty function #2") {
+    val r = Atomic(zero)
+    def increment(y: T): T = valueFromInt(valueToInt(y) + 1)
+
+    val result = r.getAndTransform(increment)
+    assertEquals(result, zero)
+    assertEquals(r.get, one)
+  }
+
+  test("should getAndTransform with dirty function #3") {
+    val r = Atomic(zero)
+    val result = r.getAndTransform { x =>
+      try valueFromInt(valueToInt(x) + 1) catch {
+        case NonFatal(ex) =>
+          x
+      }
+    }
+    assertEquals(result, zero)
+    assertEquals(r.get, one)
+  }
+
+  test("should getAndTransform with dirty self") {
+    var inst = Atomic(zero)
+    def r = inst
+    assertEquals(r.get, zero)
+
+    assert(r.getAndTransform(x => valueFromInt(valueToInt(x) + 1)) == zero)
+    assert(r.getAndTransform(x => valueFromInt(valueToInt(x) + 1)) == one)
+    assertEquals(r.get, two)
+  }
+
+  // --
+  test("should transformAndExtract with clean arguments") {
+    val r = Atomic(zero)
+    assertEquals(r.get, zero)
 
     assert(r.transformAndExtract(x => (x, valueFromInt(valueToInt(x) + 1))) == zero)
     assert(r.transformAndExtract(x => (x, valueFromInt(valueToInt(x) + 1))) == one)
-    assert(r.get == two)
+    assertEquals(r.get, two)
+  }
+
+
+  test("should transformAndExtract with dirty function #1") {
+    val r = Atomic(zero)
+    val result = r.transformAndExtract {
+      def increment(y: T): T = valueFromInt(valueToInt(y) + 1)
+      x: T => (x, increment(x))
+    }
+
+    assertEquals(result, zero)
+    assertEquals(r.get, one)
+  }
+
+  test("should transformAndExtract with dirty function #2") {
+    val r = Atomic(zero)
+    def increment(y: T) = (y, valueFromInt(valueToInt(y) + 1))
+
+    val result = r.transformAndExtract(increment)
+    assertEquals(result, zero)
+    assertEquals(r.get, one)
+  }
+
+  test("should transformAndExtract with dirty function #3") {
+    val r = Atomic(zero)
+    val result = r.transformAndExtract { x =>
+      try { (x, valueFromInt(valueToInt(x) + 1)) } catch {
+        case NonFatal(ex) =>
+          (x, x)
+      }
+    }
+
+    assertEquals(result, zero)
+    assertEquals(r.get, one)
+  }
+
+  test("should transformAndExtract with dirty self") {
+    var inst = Atomic(zero)
+    def r = inst
+    assertEquals(r.get, zero)
+
+    assert(r.transformAndExtract(x => (x, valueFromInt(valueToInt(x) + 1))) == zero)
+    assert(r.transformAndExtract(x => (x, valueFromInt(valueToInt(x) + 1))) == one)
+    assertEquals(r.get, two)
   }
 
   test("should lazySet") {

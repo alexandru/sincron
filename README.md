@@ -23,20 +23,20 @@ added as they become available. Specifying dependencies
 
 ```scala
 // Atomic References
-libraryDependencies += "org.sincron" %% "sincron-atomic" % "0.5"
+libraryDependencies += "org.sincron" %% "sincron-atomic" % "0.9"
 
 // Everything :-)
-libraryDependencies += "org.sincron" %% "sincron" % "0.5"
+libraryDependencies += "org.sincron" %% "sincron" % "0.9"
 ```
 
 Tutorials:
 
 - [Atomic References](https://github.com/monixio/sincron/wiki/Atomic-References)
+- [Macros for Inlining Functions](https://github.com/monixio/sincron/wiki/Macros-for-Inlining-Functions)
 
 API Documentation:
 
-- [0.5](https://sincron.org/docs/0.5/api/)
-
+- [0.9](https://sincron.org/docs/0.9/api/)
 
 ## Maintainers
 

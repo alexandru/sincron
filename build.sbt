@@ -17,7 +17,7 @@ lazy val doNotPublishArtifact = Seq(
 lazy val sharedSettings = Seq(
   organization := "org.sincron",
   scalaVersion := "2.11.7",
-  crossScalaVersions := Seq("2.10.6", "2.11.7"),
+  crossScalaVersions := Seq("2.11.7", "2.10.6"),
 
   javacOptions ++= Seq("-source", "1.6", "-target", "1.6"),
   scalacOptions ++= Seq(
@@ -154,7 +154,6 @@ lazy val docsSettings =
   site.addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), "api") ++
     site.addMappingsToSiteDir(tut, "_tut") ++
     Seq(
-      (test in Test) <<= (test in Test).dependsOn(tut),
       coverageExcludedFiles := ".*",
       siteMappings += file("CONTRIBUTING.md") -> "contributing.md",
       includeFilter in makeSite :=
@@ -180,19 +179,12 @@ lazy val crossSettings = sharedSettings ++ Seq(
 )
 
 lazy val scalaMacroDependencies = Seq(
-  libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value % "compile",
-  libraryDependencies ++= {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      // if scala 2.11+ is used, quasiquotes are merged into scala-reflect
-      case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq.empty
-      // in Scala 2.10, quasiquotes are provided by macro paradise
-      case Some((2, 10)) =>
-        Seq(
-          compilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full),
-          "org.scalamacros" %% "quasiquotes" % "2.0.1" cross CrossVersion.binary
-        )
-    }
-  })
+  libraryDependencies ++= Seq(
+    "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided",
+    "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
+    "org.typelevel" %% "macro-compat" % "1.1.0" % "provided",
+    compilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+  ))
 
 lazy val crossVersionSharedSources =
   Seq(Compile, Test).map { sc =>
@@ -205,15 +197,15 @@ lazy val crossVersionSharedSources =
 
 lazy val sincron = project.in(file("."))
   .aggregate(
+    macrosJVM, macrosJS,
     atomicJVM, atomicJS,
-    sincronJVM, sincronJS,
-    docs)
+    sincronJVM, sincronJS)
   .settings(unidocSettings: _*)
   .settings(sharedSettings: _*)
   .settings(doNotPublishArtifact: _*)
   .settings(
     unidocProjectFilter in (ScalaUnidoc, unidoc) :=
-      inProjects(atomicJVM)
+      inProjects(macrosJVM, atomicJVM)
   )
 
 lazy val macrosJVM = project.in(file("sincron-macros/jvm"))
@@ -230,13 +222,14 @@ lazy val macrosJS = project.in(file("sincron-macros/js"))
   .settings(
     name := "sincron-macros",
     scalaJSStage in Test := FastOptStage,
+    scalaJSUseRhino in Global := false,
     coverageExcludedFiles := ".*")
 
 lazy val atomicJVM = project.in(file("sincron-atomic/jvm"))
   .dependsOn(macrosJVM)
   .settings(crossSettings)
-  .settings(name := "sincron-atomic")
   .settings(scalaMacroDependencies)
+  .settings(name := "sincron-atomic")
 
 lazy val atomicJS = project.in(file("sincron-atomic/js"))
   .enablePlugins(ScalaJSPlugin)
@@ -246,6 +239,7 @@ lazy val atomicJS = project.in(file("sincron-atomic/js"))
   .settings(
     name := "sincron-atomic",
     scalaJSStage in Test := FastOptStage,
+    scalaJSUseRhino in Global := false,
     coverageExcludedFiles := ".*")
 
 lazy val sincronJVM = project.in(file("sincron/jvm"))
@@ -265,6 +259,7 @@ lazy val docs = project.in(file("docs"))
   .dependsOn(atomicJVM)
   .settings(sharedSettings)
   .settings(doNotPublishArtifact)
+  .settings(scalaMacroDependencies)
   .settings(site.settings)
   .settings(tutSettings)
   .settings(unidocSettings)

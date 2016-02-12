@@ -162,6 +162,7 @@ object Atomic {
 
     def transformMacro[T : c.WeakTypeTag](cb: c.Expr[T => T]): c.Expr[Unit] = {
       val selfExpr = c.Expr[Atomic[T]](c.prefix.tree)
+      val self = util.name("self")
       val current = util.name("current")
       val update = util.name("update")
 
@@ -169,18 +170,18 @@ object Atomic {
        * then inline them directly, otherwise bind arguments to a val for safety.
        */
       val tree =
-        if (util.isClean(selfExpr, cb)) {
+        if (util.isClean(cb)) {
           q"""
-          var $current = $selfExpr.get
+          val $self = $selfExpr
+          var $current = $self.get
           var $update = $cb($current)
 
-          while (!$selfExpr.compareAndSet($current, $update)) {
-            $current = $selfExpr.get
+          while (!$self.compareAndSet($current, $update)) {
+            $current = $self.get
             $update = $cb($current)
           }
           """
         } else {
-          val self = util.name("self")
           val fn = util.name("fn")
           q"""
           val $self = $selfExpr
@@ -202,6 +203,7 @@ object Atomic {
 
     def transformAndGetMacro[T : c.WeakTypeTag](cb: c.Expr[T => T]): c.Expr[T] = {
       val selfExpr = c.Expr[Atomic[T]](c.prefix.tree)
+      val self = util.name("self")
       val current = util.name("current")
       val update = util.name("update")
 
@@ -209,20 +211,20 @@ object Atomic {
        * then inline them directly, otherwise bind arguments to a val for safety.
        */
       val tree =
-        if (util.isClean(selfExpr, cb)) {
+        if (util.isClean(cb)) {
           q"""
-          var $current = $selfExpr.get
+          val $self = $selfExpr
+          var $current = $self.get
           var $update = $cb($current)
 
-          while (!$selfExpr.compareAndSet($current, $update)) {
-            $current = $selfExpr.get
+          while (!$self.compareAndSet($current, $update)) {
+            $current = $self.get
             $update = $cb($current)
           }
 
           $update
           """
         } else {
-          val self = util.name("self")
           val fn = util.name("fn")
           q"""
           val $self = $selfExpr
@@ -244,6 +246,7 @@ object Atomic {
 
     def getAndTransformMacro[T : c.WeakTypeTag](cb: c.Expr[T => T]): c.Expr[T] = {
       val selfExpr = c.Expr[Atomic[T]](c.prefix.tree)
+      val self = util.name("self")
       val current = util.name("current")
       val update = util.name("update")
 
@@ -251,20 +254,20 @@ object Atomic {
        * then inline them directly, otherwise bind arguments to a val for safety.
        */
       val tree =
-        if (util.isClean(selfExpr, cb)) {
+        if (util.isClean(cb)) {
           q"""
-          var $current = $selfExpr.get
+          val $self = $selfExpr
+          var $current = $self.get
           var $update = $cb($current)
 
-          while (!$selfExpr.compareAndSet($current, $update)) {
-            $current = $selfExpr.get
+          while (!$self.compareAndSet($current, $update)) {
+            $current = $self.get
             $update = $cb($current)
           }
 
           $current
           """
         } else {
-          val self = util.name("self")
           val fn = util.name("fn")
           q"""
           val $self = $selfExpr
@@ -288,6 +291,7 @@ object Atomic {
       (cb: c.Expr[S => (A, S)]): c.Expr[A] = {
 
       val selfExpr = c.Expr[Atomic[S]](c.prefix.tree)
+      val self = util.name("self")
       val current = util.name("current")
       val updateVar = util.name("updateVar")
       val resultVar = util.name("resultVar")
@@ -298,13 +302,14 @@ object Atomic {
        * then inline them directly, otherwise bind arguments to a val for safety.
        */
       val tree =
-        if (util.isClean(selfExpr, cb)) {
+        if (util.isClean(cb)) {
           q"""
-          var $current = $selfExpr.get
+          val $self = $selfExpr
+          var $current = $self.get
           var ($resultVar, $updateVar) = $cb($current)
 
-          while (!$selfExpr.compareAndSet($current, $updateVar)) {
-            $current = $selfExpr.get
+          while (!$self.compareAndSet($current, $updateVar)) {
+            $current = $self.get
             val ($resultTmp, $updateTmp) = $cb($current)
             $updateVar = $updateTmp
             $resultVar = $resultTmp
@@ -313,7 +318,6 @@ object Atomic {
           $resultVar
           """
         } else {
-          val self = util.name("self")
           val fn = util.name("fn")
           q"""
           val $self = $selfExpr

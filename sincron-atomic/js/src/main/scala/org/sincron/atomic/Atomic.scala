@@ -163,17 +163,18 @@ object Atomic {
 
     def transformMacro[T : c.WeakTypeTag](cb: c.Expr[T => T]): c.Expr[Unit] = {
       val selfExpr = c.Expr[Atomic[T]](c.prefix.tree)
+      val self = util.name("self")
 
       /* If our arguments are all clean (stable identifiers or simple functions)
        * then inline them directly, otherwise bind arguments to a val for safety.
        */
       val tree =
-        if (util.isClean(selfExpr, cb))
+        if (util.isClean(cb))
           q"""
-          $selfExpr.set($cb($selfExpr.get))
+          val $self = $selfExpr
+          $self.set($cb($self.get))
           """
         else {
-          val self = util.name("self")
           val fn = util.name("fn")
           q"""
           val $self = $selfExpr
@@ -187,6 +188,7 @@ object Atomic {
 
     def transformAndGetMacro[T : c.WeakTypeTag](cb: c.Expr[T => T]): c.Expr[T] = {
       val selfExpr = c.Expr[Atomic[T]](c.prefix.tree)
+      val self = util.name("self")
       val current = util.name("current")
       val update = util.name("update")
 
@@ -194,15 +196,15 @@ object Atomic {
        * then inline them directly, otherwise bind arguments to a val for safety.
        */
       val tree =
-        if (util.isClean(selfExpr, cb)) {
+        if (util.isClean(cb)) {
           q"""
-          var $current = $selfExpr.get
-          var $update = $cb($current)
-          $selfExpr.set($update)
+          val $self = $selfExpr
+          val $current = $self.get
+          val $update = $cb($current)
+          $self.set($update)
           $update
           """
         } else {
-          val self = util.name("self")
           val fn = util.name("fn")
           q"""
           val $self = $selfExpr
@@ -219,6 +221,7 @@ object Atomic {
 
     def getAndTransformMacro[T : c.WeakTypeTag](cb: c.Expr[T => T]): c.Expr[T] = {
       val selfExpr = c.Expr[Atomic[T]](c.prefix.tree)
+      val self = util.name("self")
       val current = util.name("current")
       val update = util.name("update")
 
@@ -226,15 +229,15 @@ object Atomic {
        * then inline them directly, otherwise bind arguments to a val for safety.
        */
       val tree =
-        if (util.isClean(selfExpr, cb)) {
+        if (util.isClean(cb)) {
           q"""
-          var $current = $selfExpr.get
-          var $update = $cb($current)
-          $selfExpr.set($update)
+          val $self = $selfExpr
+          val $current = $self.get
+          val $update = $cb($current)
+          $self.set($update)
           $current
           """
         } else {
-          val self = util.name("self")
           val fn = util.name("fn")
           q"""
           val $self = $selfExpr
@@ -253,6 +256,7 @@ object Atomic {
       (cb: c.Expr[S => (A, S)]): c.Expr[A] = {
 
       val selfExpr = c.Expr[Atomic[S]](c.prefix.tree)
+      val self = util.name("self")
       val current = util.name("current")
       val update = util.name("update")
       val result = util.name("result")
@@ -261,15 +265,15 @@ object Atomic {
        * then inline them directly, otherwise bind arguments to a val for safety.
        */
       val tree =
-        if (util.isClean(selfExpr, cb)) {
+        if (util.isClean(cb)) {
           q"""
-          val $current = $selfExpr.get
+          val $self = $selfExpr
+          val $current = $self.get
           val ($result, $update) = $cb($current)
-          $selfExpr.set($update)
+          $self.set($update)
           $result
           """
         } else {
-          val self = util.name("self")
           val fn = util.name("fn")
           q"""
           val $self = $selfExpr

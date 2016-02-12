@@ -43,19 +43,16 @@ private[sincron] object TestBox {
       val selfExpr = c.Expr[TestBox[A]](c.prefix.tree)
 
       val tree =
-        if (util.isClean(selfExpr, f)) {
+        if (util.isClean(f)) {
           q"""
           TestBox($f($selfExpr.value))
           """
         }
         else {
-          val self = util.name("self")
           val fn = util.name("fn")
-
           q"""
-          val $self = $selfExpr
           val $fn = $f
-          TestBox($fn($self.value))
+          TestBox($fn($selfExpr.value))
           """
         }
 

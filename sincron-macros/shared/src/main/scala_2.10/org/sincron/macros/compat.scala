@@ -17,7 +17,7 @@
 
 package org.sincron.macros
 
-private[macros] object compat {
+private[sincron] object compat {
   type Context = scala.reflect.macros.Context
 
   def freshTermName[C <: Context](c: C)(s: String) =

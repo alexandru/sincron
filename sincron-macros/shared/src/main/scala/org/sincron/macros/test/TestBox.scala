@@ -15,24 +15,26 @@
  * limitations under the License.
  */
 
-package org.sincron.macros
+package org.sincron.macros.test
 
+import org.sincron.macros.{HygieneUtilMacros, InlineMacros}
 import scala.language.experimental.macros
 import scala.reflect.macros.whitebox
 
 /** Represents a boxed value, to be used in the testing
   * of [[InlineMacros]].
   */
-private[macros] final case class TestBox[A](value: A) {
+private[sincron] final case class TestBox[A](value: A) {
   def map[B](f: A => B): TestBox[B] = macro TestBox.Macros.mapMacroImpl[A,B]
 }
 
 /** Represents a boxed value, to be used in the testing
   * of [[InlineMacros]].
   */
-private[macros] object TestBox {
+private[sincron] object TestBox {
   @macrocompat.bundle
-  class Macros(override val c: whitebox.Context) extends InlineMacros with HygieneUtilMacros {
+  class Macros(override val c: whitebox.Context)
+    extends InlineMacros with HygieneUtilMacros {
     import c.universe._
 
     def mapMacroImpl[A : c.WeakTypeTag, B : c.WeakTypeTag]

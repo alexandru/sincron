@@ -154,6 +154,7 @@ lazy val docsSettings =
   site.addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), "api") ++
     site.addMappingsToSiteDir(tut, "_tut") ++
     Seq(
+      (test in Test) <<= (test in Test).dependsOn(tut),
       coverageExcludedFiles := ".*",
       siteMappings += file("CONTRIBUTING.md") -> "contributing.md",
       includeFilter in makeSite :=
@@ -199,7 +200,8 @@ lazy val sincron = project.in(file("."))
   .aggregate(
     macrosJVM, macrosJS,
     atomicJVM, atomicJS,
-    sincronJVM, sincronJS)
+    sincronJVM, sincronJS,
+    docs)
   .settings(unidocSettings: _*)
   .settings(sharedSettings: _*)
   .settings(doNotPublishArtifact: _*)
@@ -245,14 +247,14 @@ lazy val atomicJS = project.in(file("sincron-atomic/js"))
 lazy val sincronJVM = project.in(file("sincron/jvm"))
   .settings(crossSettings: _*)
   .aggregate(macrosJVM, atomicJVM)
-  .dependsOn(macrosJVM, atomicJVM)
+  .dependsOn(atomicJVM)
   .settings(name := "sincron")
 
 lazy val sincronJS = project.in(file("sincron/js"))
   .settings(crossSettings: _*)
   .enablePlugins(ScalaJSPlugin)
   .aggregate(macrosJS, atomicJS)
-  .dependsOn(macrosJS, atomicJS)
+  .dependsOn(atomicJS)
   .settings(name := "sincron")
 
 lazy val docs = project.in(file("docs"))

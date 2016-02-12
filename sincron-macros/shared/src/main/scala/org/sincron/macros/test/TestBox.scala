@@ -15,30 +15,32 @@
  * limitations under the License.
  */
 
-package org.sincron.macros
+package org.sincron.macros.test
 
-import org.sincron.macros.compat._
+import org.sincron.macros.{HygieneUtilMacros, InlineMacros}
 import scala.language.experimental.macros
+import scala.reflect.macros.whitebox
 
 /** Represents a boxed value, to be used in the testing
-  * of [[InlineUtil]].
+  * of [[InlineMacros]].
   */
-private[macros] final case class TestBox[T](value: T) {
-  def map[U](f: T => U): TestBox[U] = macro TestBox.Macros.mapMacroImpl[T,U]
+private[sincron] final case class TestBox[A](value: A) {
+  def map[B](f: A => B): TestBox[B] = macro TestBox.Macros.mapMacroImpl[A,B]
 }
 
 /** Represents a boxed value, to be used in the testing
-  * of [[InlineUtil]].
+  * of [[InlineMacros]].
   */
-private[macros] object TestBox {
-  object Macros {
-    def mapMacroImpl[T : c.WeakTypeTag, U : c.WeakTypeTag]
-      (c: Context { type PrefixType = TestBox[T] })
-      (f: c.Expr[T => U]): c.Expr[TestBox[U]] = {
+private[sincron] object TestBox {
+  @macrocompat.bundle
+  class Macros(override val c: whitebox.Context)
+    extends InlineMacros with HygieneUtilMacros {
+    import c.universe._
 
-      import c.universe._
-      val util = SyntaxUtil[c.type](c)
-      val selfExpr: c.Expr[TestBox[T]] = c.prefix
+    def mapMacroImpl[A : c.WeakTypeTag, B : c.WeakTypeTag]
+      (f: c.Expr[A => B]): c.Expr[TestBox[B]] = {
+
+      val selfExpr = c.Expr[TestBox[A]](c.prefix.tree)
 
       val tree =
         if (util.isClean(selfExpr, f)) {
@@ -57,7 +59,7 @@ private[macros] object TestBox {
           """
         }
 
-      new InlineUtil[c.type](c).inlineAndReset[TestBox[U]](tree)
+      inlineAndReset[TestBox[B]](tree)
     }
   }
 }

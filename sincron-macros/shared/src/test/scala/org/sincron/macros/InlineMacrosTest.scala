@@ -18,11 +18,28 @@
 package org.sincron.macros
 
 import minitest.SimpleTestSuite
+import org.sincron.macros.test.{TestBox, TestInlineMacros}
 
 import scala.util.control.NonFatal
 
-object InlineUtilTest extends SimpleTestSuite {
+object InlineMacrosTest extends SimpleTestSuite {
   case class DummyException(msg: String) extends RuntimeException(msg)
+
+  test("inline a function") {
+    val result = TestInlineMacros.testInlineSingleArg()
+    result match {
+      case Right(()) => assert(true)
+      case Left(msg) => fail(msg)
+    }
+  }
+
+  test("inline a function with 2 params") {
+    val result = TestInlineMacros.testInlineMultipleArgs()
+    result match {
+      case Right(()) => assert(true)
+      case Left(msg) => fail(msg)
+    }
+  }
 
   test("Inline function with underscore") {
     val box = TestBox(1)

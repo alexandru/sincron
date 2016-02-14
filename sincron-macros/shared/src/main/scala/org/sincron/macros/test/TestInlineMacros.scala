@@ -28,6 +28,16 @@ private[sincron] object TestInlineMacros {
   def testInlineMultipleArgs(): Either[String, Unit] =
     macro Macros.testInlineMultipleArgs
 
+  def testInlineSingleArgUnderscore(): Either[String, Unit] =
+    macro Macros.testInlineSingleArgUnderscore
+
+  def testInlineMultipleArgsUnderscore(): Either[String, Unit] =
+    macro Macros.testInlineMultipleArgsUnderscore
+
+  def testInlinePatternMatch(): Either[String, Unit] =
+    macro Macros.testInlinePatternMatch
+
+
   @macrocompat.bundle
   class Macros(override val c: whitebox.Context)
     extends InlineMacros {
@@ -86,5 +96,79 @@ private[sincron] object TestInlineMacros {
         reify(Right(()) : Either[String, Unit])
       }
     }
+
+    def testInlineSingleArgUnderscore(): c.Expr[Either[String, Unit]] = {
+      val tests = List({
+        val actual = inlineAndReset(q"(_ + 1)(10)").tree
+        val expected = q"10 + 1"
+        if (actual.equalsStructure(expected))
+          Right(())
+        else
+          Left(s"Expected $expected but got $actual".replaceAll("[\\n\\s]+", " "))
+      },
+        {
+          val actual = inlineAndReset(q"(_ + 1).apply(10)").tree
+          val expected = q"10 + 1"
+          if (actual.equalsStructure(expected))
+            Right(())
+          else
+            Left(s"Expected $expected but got $actual".replaceAll("[\\n\\s]+", " "))
+        })
+
+      val result = tests.collect { case Left(msg) => msg }
+      if (result.nonEmpty) {
+        val expr = c.Expr[String](Literal(Constant(result.mkString("; "))))
+        reify(Left(expr.splice) : Either[String, Unit])
+      } else {
+        reify(Right(()) : Either[String, Unit])
+      }
+    }
+
+    def testInlineMultipleArgsUnderscore(): c.Expr[Either[String, Unit]] = {
+      val tests = List({
+        val actual = inlineAndReset(q"(_ + _)(10, 20)").tree
+        val expected = q"10 + 20"
+        if (actual.equalsStructure(expected))
+          Right(())
+        else
+          Left(s"Expected $expected but got $actual".replaceAll("[\\n\\s]+", " "))
+      },
+        {
+          val actual = inlineAndReset(q"(_ + _).apply(10, 20)").tree
+          val expected = q"10 + 20"
+          if (actual.equalsStructure(expected))
+            Right(())
+          else
+            Left(s"Expected $expected but got $actual".replaceAll("[\\n\\s]+", " "))
+        })
+
+      val result = tests.collect { case Left(msg) => msg }
+      if (result.nonEmpty) {
+        val expr = c.Expr[String](Literal(Constant(result.mkString("; "))))
+        reify(Left(expr.splice) : Either[String, Unit])
+      } else {
+        reify(Right(()) : Either[String, Unit])
+      }
+    }
+
+    def testInlinePatternMatch(): c.Expr[Either[String, Unit]] = {
+      val tests = List({
+        val actual = inlineAndReset(q"((x:Int) => x match { case x => x + 1})(10)").tree
+        val expected = q"10 match { case x => 10 + 1}"
+        if (actual.equalsStructure(expected))
+          Right(())
+        else
+          Left(s"Expected $expected but got $actual".replaceAll("[\\n\\s]+", " "))
+      })
+
+      val result = tests.collect { case Left(msg) => msg }
+      if (result.nonEmpty) {
+        val expr = c.Expr[String](Literal(Constant(result.mkString("; "))))
+        reify(Left(expr.splice) : Either[String, Unit])
+      } else {
+        reify(Right(()) : Either[String, Unit])
+      }
+    }
+
   }
 }

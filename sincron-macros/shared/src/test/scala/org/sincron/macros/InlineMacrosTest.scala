@@ -25,7 +25,7 @@ import scala.util.control.NonFatal
 object InlineMacrosTest extends SimpleTestSuite {
   case class DummyException(msg: String) extends RuntimeException(msg)
 
-  test("inline a function") {
+  test("inline a function code gen") {
     val result = TestInlineMacros.testInlineSingleArg()
     result match {
       case Right(()) => assert(true)
@@ -33,13 +33,38 @@ object InlineMacrosTest extends SimpleTestSuite {
     }
   }
 
-  test("inline a function with 2 params") {
+  test("inline a function with 2 params code gen") {
     val result = TestInlineMacros.testInlineMultipleArgs()
     result match {
       case Right(()) => assert(true)
       case Left(msg) => fail(msg)
     }
   }
+
+  test("inline a function with underscore code gen") {
+    val result = TestInlineMacros.testInlineSingleArgUnderscore()
+    result match {
+      case Right(()) => assert(true)
+      case Left(msg) => fail(msg)
+    }
+  }
+
+  test("inline a function with 2 params as underscore code gen") {
+    val result = TestInlineMacros.testInlineMultipleArgsUnderscore()
+    result match {
+      case Right(()) => assert(true)
+      case Left(msg) => fail(msg)
+    }
+  }
+
+  test("inline a function pattern match code gen") {
+    val result = TestInlineMacros.testInlinePatternMatch()
+    result match {
+      case Right(()) => assert(true)
+      case Left(msg) => fail(msg)
+    }
+  }
+
 
   test("Inline function with underscore") {
     val box = TestBox(1)

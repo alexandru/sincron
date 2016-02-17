@@ -119,7 +119,7 @@ trait InlineMacros {
   object Fixer extends Transformer {
 
     /**
-      * Check the given list of trees to see if they reprsent a series
+      * Check the given list of trees to see if they represent a series
       * of tuple access. Return either None (if they don't) or a Some
       * tuple of the argument names, and the remaining trees (that were
       * not part of the tuple assignments).
@@ -202,17 +202,17 @@ trait InlineMacros {
           transform(body)
 
       case Match(
-      body,
-      List(
-        CaseDef(Apply(Ident(TermName("Tuple2")), List(
-          Bind(TermName("b2"), Ident(termNames.WILDCARD)),
-          Bind(TermName("c2"), Ident(termNames.WILDCARD))
-        )), EmptyTree,
-        Apply(Select(Ident(TermName("Tuple2")), ApplyName), List(
-          Ident(TermName("b2")),
-          Ident(TermName("c2"))
-        ))))) =>
-          transform(body)
+        body,
+        List(
+          CaseDef(Apply(Ident(TermName("Tuple2")), List(
+            Bind(TermName("b2"), Ident(termNames.WILDCARD)),
+            Bind(TermName("c2"), Ident(termNames.WILDCARD))
+          )), EmptyTree,
+          Apply(Select(Ident(TermName("Tuple2")), ApplyName), List(
+            Ident(TermName("b2")),
+            Ident(TermName("c2"))
+          ))))) =>
+            transform(body)
 
       case Typed(y, z) => y
 

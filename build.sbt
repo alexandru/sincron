@@ -16,8 +16,8 @@ lazy val doNotPublishArtifact = Seq(
 
 lazy val sharedSettings = Seq(
   organization := "org.sincron",
-  scalaVersion := "2.11.7",
-  crossScalaVersions := Seq("2.11.7", "2.10.6"),
+  scalaVersion := "2.11.8",
+  crossScalaVersions := Seq("2.11.8", "2.10.6"),
 
   javacOptions ++= Seq("-source", "1.6", "-target", "1.6"),
   scalacOptions ++= Seq(
@@ -89,7 +89,7 @@ lazy val sharedSettings = Seq(
 
   // -- Testing
 
-  libraryDependencies += "io.monix" %%% "minitest" % "0.16" % "test",
+  libraryDependencies += "io.monix" %%% "minitest" % "0.19" % "test",
   testFrameworks += new TestFramework("minitest.runner.Framework"),
 
   // -- Settings meant for deployment on oss.sonatype.org

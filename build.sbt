@@ -1,9 +1,4 @@
-import java.text.SimpleDateFormat
-import java.util.Date
-
-import com.typesafe.sbt.SbtSite.SiteKeys._
 import com.typesafe.sbt.pgp.PgpKeys
-import com.typesafe.sbt.site.PreprocessSupport._
 import sbtunidoc.Plugin.UnidocKeys._
 import sbtunidoc.Plugin.{ScalaUnidoc, unidocSettings => baseUnidocSettings}
 
@@ -14,25 +9,52 @@ lazy val doNotPublishArtifact = Seq(
   publishArtifact in (Compile, packageBin) := false
 )
 
+lazy val scalaLinterOptions =
+  Seq(
+    // Enables linter options
+    "-Ywarn-unused-import", // warn of unused import
+    "-Xlint:adapted-args", // warn if an argument list is modified to match the receiver
+    "-Xlint:nullary-unit", // warn when nullary methods return Unit
+    "-Xlint:inaccessible", // warn about inaccessible types in method signatures
+    "-Xlint:nullary-override", // warn when non-nullary `def f()' overrides nullary `def f'
+    "-Xlint:infer-any", // warn when a type argument is inferred to be `Any`
+    "-Xlint:missing-interpolator", // a string literal appears to be missing an interpolator id
+    "-Xlint:doc-detached", // a ScalaDoc comment appears to be detached from its element
+    "-Xlint:private-shadow", // a private field (or class parameter) shadows a superclass field
+    "-Xlint:type-parameter-shadow", // a local type parameter shadows a type already in scope
+    "-Xlint:poly-implicit-overload", // parameterized overloaded implicit methods are not visible as view bounds
+    "-Xlint:option-implicit", // Option.apply used implicit view
+    "-Xlint:delayedinit-select", // Selecting member of DelayedInit
+    "-Xlint:by-name-right-associative", // By-name parameter of right associative operator
+    "-Xlint:package-object-classes", // Class or object defined in package object
+    "-Xlint:unsound-match" // Pattern match may not be typesafe
+  )
+
 lazy val sharedSettings = Seq(
   organization := "org.sincron",
   scalaVersion := "2.11.8",
-  crossScalaVersions := Seq("2.11.8", "2.10.6"),
+  crossScalaVersions := Seq("2.11.8", "2.10.6", "2.12.0-M4"),
 
   javacOptions ++= Seq("-source", "1.6", "-target", "1.6"),
   scalacOptions ++= Seq(
-    "-target:jvm-1.6", // generates code with the Java 6 class format
-    "-optimise", // enables optimisations
-    // "-Xfatal-warnings", // turns all warnings into errors ;-)
     // warnings
     "-unchecked", // able additional warnings where generated code depends on assumptions
     "-deprecation", // emit warning for usages of deprecated APIs
     "-feature", // emit warning usages of features that should be imported explicitly
     // possibly deprecated options
-    "-Yinline-warnings",
     "-Ywarn-dead-code",
     "-Ywarn-inaccessible"
   ),
+
+  // Version specific options
+  scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, 12)) =>
+      scalaLinterOptions ++ Seq("-Yopt:l:classpath")
+    case Some((2, 11)) =>
+      scalaLinterOptions ++ Seq("-target:jvm-1.6", "-optimise")
+    case _ =>
+      Seq("-target:jvm-1.6")
+  }),
 
   // Force building with Java 8
   initialize := {
@@ -40,31 +62,6 @@ lazy val sharedSettings = Seq(
     val current  = sys.props("java.specification.version")
     assert(current == required, s"Unsupported build JDK: java.specification.version $current != $required")
   },
-
-  // version specific compiler options
-  scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, majorVersion)) if majorVersion >= 11 =>
-      Seq(
-        // enables linter options
-        "-Xlint:adapted-args", // warn if an argument list is modified to match the receiver
-        "-Xlint:nullary-unit", // warn when nullary methods return Unit
-        "-Xlint:inaccessible", // warn about inaccessible types in method signatures
-        "-Xlint:nullary-override", // warn when non-nullary `def f()' overrides nullary `def f'
-        "-Xlint:infer-any", // warn when a type argument is inferred to be `Any`
-        "-Xlint:missing-interpolator", // a string literal appears to be missing an interpolator id
-        "-Xlint:doc-detached", // a ScalaDoc comment appears to be detached from its element
-        "-Xlint:private-shadow", // a private field (or class parameter) shadows a superclass field
-        "-Xlint:type-parameter-shadow", // a local type parameter shadows a type already in scope
-        "-Xlint:poly-implicit-overload", // parameterized overloaded implicit methods are not visible as view bounds
-        "-Xlint:option-implicit", // Option.apply used implicit view
-        "-Xlint:delayedinit-select", // Selecting member of DelayedInit
-        "-Xlint:by-name-right-associative", // By-name parameter of right associative operator
-        "-Xlint:package-object-classes", // Class or object defined in package object
-        "-Xlint:unsound-match" // Pattern match may not be typesafe
-      )
-    case _ =>
-      Seq.empty
-  }),
 
   // Turning off fatal warnings for ScalaDoc, otherwise we can't release.
   scalacOptions in (Compile, doc) ~= (_ filterNot (_ == "-Xfatal-warnings")),
@@ -89,7 +86,7 @@ lazy val sharedSettings = Seq(
 
   // -- Testing
 
-  libraryDependencies += "io.monix" %%% "minitest" % "0.19" % "test",
+  libraryDependencies += "io.monix" %%% "minitest" % "0.22" % "test",
   testFrameworks += new TestFramework("minitest.runner.Framework"),
 
   // -- Settings meant for deployment on oss.sonatype.org
@@ -124,9 +121,9 @@ lazy val sharedSettings = Seq(
       </scm>
       <developers>
         <developer>
-          <id>alex_ndc</id>
+          <id>alexelcu</id>
           <name>Alexandru Nedelcu</name>
-          <url>https://www.bionicspirit.com/</url>
+          <url>https://alexn.org/</url>
         </developer>
       </developers>
 )
@@ -150,30 +147,6 @@ lazy val unidocSettings = baseUnidocSettings ++ Seq(
     Opts.doc.version(s"${version.value}")
 )
 
-lazy val docsSettings =
-  site.addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), "api") ++
-    site.addMappingsToSiteDir(tut, "_tut") ++
-    Seq(
-      (test in Test) <<= (test in Test).dependsOn(tut),
-      coverageExcludedFiles := ".*",
-      siteMappings += file("CONTRIBUTING.md") -> "contributing.md",
-      includeFilter in makeSite :=
-        "*.html" | "*.css" | "*.scss" | "*.png" | "*.jpg" | "*.jpeg" |
-          "*.gif" | "*.svg" | "*.js" | "*.swf" | "*.yml" | "*.md" | "*.xml",
-
-      preprocessVars := {
-        val now = new Date()
-        val dayFormat = new SimpleDateFormat("yyyy-MM-dd")
-        val timeFormat = new SimpleDateFormat("HH:mm:ss")
-
-        Map(
-          "VERSION" -> version.value,
-          "DATE" -> dayFormat.format(now),
-          "TIME" -> timeFormat.format(now)
-        )
-      }
-    )
-
 lazy val crossSettings = sharedSettings ++ Seq(
   unmanagedSourceDirectories in Compile <+= baseDirectory(_.getParentFile / "shared" / "src" / "main" / "scala"),
   unmanagedSourceDirectories in Test <+= baseDirectory(_.getParentFile / "shared" / "src" / "test" / "scala")
@@ -187,11 +160,16 @@ lazy val scalaMacroDependencies = Seq(
     compilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
   ))
 
-lazy val crossVersionSharedSources =
+def scalaPartV = Def setting (CrossVersion partialVersion scalaVersion.value)
+
+lazy val crossVersionSharedSources: Seq[Setting[_]] =
   Seq(Compile, Test).map { sc =>
     (unmanagedSourceDirectories in sc) ++= {
-      (unmanagedSourceDirectories in sc ).value.map {
-        dir:File => new File(dir.getPath + "_" + scalaBinaryVersion.value)
+      (unmanagedSourceDirectories in sc).value.map { dir =>
+        scalaPartV.value match {
+          case Some((2, y)) if y == 10 => new File(dir.getPath + "_2.10")
+          case Some((2, y)) if y >= 11 => new File(dir.getPath + "_2.11+")
+        }
       }
     }
   }
@@ -200,11 +178,10 @@ lazy val sincron = project.in(file("."))
   .aggregate(
     macrosJVM, macrosJS,
     atomicJVM, atomicJS,
-    sincronJVM, sincronJS,
-    docs)
-  .settings(unidocSettings: _*)
-  .settings(sharedSettings: _*)
-  .settings(doNotPublishArtifact: _*)
+    sincronJVM, sincronJS)
+  .settings(sharedSettings)
+  .settings(doNotPublishArtifact)
+  .settings(unidocSettings)
   .settings(
     unidocProjectFilter in (ScalaUnidoc, unidoc) :=
       inProjects(macrosJVM, atomicJVM)
@@ -224,8 +201,7 @@ lazy val macrosJS = project.in(file("sincron-macros/js"))
   .settings(
     name := "sincron-macros",
     scalaJSStage in Test := FastOptStage,
-    scalaJSUseRhino in Global := false,
-    coverageExcludedFiles := ".*")
+    scalaJSUseRhino in Global := false)
 
 lazy val atomicJVM = project.in(file("sincron-atomic/jvm"))
   .dependsOn(macrosJVM)
@@ -241,8 +217,7 @@ lazy val atomicJS = project.in(file("sincron-atomic/js"))
   .settings(
     name := "sincron-atomic",
     scalaJSStage in Test := FastOptStage,
-    scalaJSUseRhino in Global := false,
-    coverageExcludedFiles := ".*")
+    scalaJSUseRhino in Global := false)
 
 lazy val sincronJVM = project.in(file("sincron/jvm"))
   .settings(crossSettings: _*)
@@ -256,13 +231,3 @@ lazy val sincronJS = project.in(file("sincron/js"))
   .aggregate(macrosJS, atomicJS)
   .dependsOn(atomicJS)
   .settings(name := "sincron")
-
-lazy val docs = project.in(file("docs"))
-  .dependsOn(atomicJVM)
-  .settings(sharedSettings)
-  .settings(doNotPublishArtifact)
-  .settings(scalaMacroDependencies)
-  .settings(site.settings)
-  .settings(tutSettings)
-  .settings(unidocSettings)
-  .settings(docsSettings)

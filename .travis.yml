@@ -2,7 +2,8 @@ language: scala
 sudo: false
 scala:
   - 2.10.6
-  - 2.11.7
+  - 2.11.8
+  - 2.12.0-M4
 jdk:
  - oraclejdk8
 
@@ -14,13 +15,6 @@ notifications:
     on_failure: always  # options: [always|never|change] default: always
     on_start: false     # default: false
 
-script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test
-before_install:
-  - pip install --user codecov
-after_success:
-  - sbt coverageAggregate coverageReport && codecov
-
 cache:
   directories:
   - $HOME/.sbt/0.13
@@ -28,6 +22,7 @@ cache:
   - $HOME/.sbt/cache
   - $HOME/.sbt/launchers
   - $HOME/.ivy2
+
 before_cache:
   - du -h -d 1 $HOME/.ivy2/
   - du -h -d 2 $HOME/.sbt/

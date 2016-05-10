@@ -18,7 +18,6 @@
 package org.sincron.macros
 
 import org.sincron.macros.compat.setOrig
-import scala.language.higherKinds
 import scala.reflect.macros.whitebox
 
 @macrocompat.bundle

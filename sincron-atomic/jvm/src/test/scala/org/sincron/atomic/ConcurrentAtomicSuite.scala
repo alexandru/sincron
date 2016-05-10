@@ -41,7 +41,7 @@ abstract class ConcurrentAtomicSuite[T, R <: Atomic[T]]
     }
 
     val f = Future.sequence(futures)
-    Await.result(f, 5.second)
+    Await.result(f, 10.seconds)
     assert(r.get == valueFromInt(500))
   }
 
@@ -53,7 +53,7 @@ abstract class ConcurrentAtomicSuite[T, R <: Atomic[T]]
     }
 
     val f = Future.sequence(futures)
-    Await.result(f, 5.second)
+    Await.result(f, 10.seconds)
     assert(r.get == valueFromInt(99))
   }
 }

@@ -32,7 +32,6 @@ libraryDependencies += "org.sincron" %% "sincron" % "0.12"
 Tutorials:
 
 - [Atomic References](https://github.com/monixio/sincron/wiki/Atomic-References)
-- [Macros for Inlining Functions](https://github.com/monixio/sincron/wiki/Macros-for-Inlining-Functions)
 
 API Documentation:
 

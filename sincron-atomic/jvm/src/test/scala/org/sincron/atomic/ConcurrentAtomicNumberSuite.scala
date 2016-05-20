@@ -24,11 +24,11 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 abstract class ConcurrentAtomicNumberSuite[T, R <: AtomicNumber[T]]
-  (builder: AtomicBuilder[T, R], strategy: PaddingStrategy,
+  (builder: AtomicBuilder[T], strategy: PaddingStrategy,
    value: T, nan1: Option[T], maxValue: T, minValue: T)(implicit ev: Numeric[T])
   extends SimpleTestSuite {
 
-  def Atomic(initial: T): R = builder.buildInstance(initial, strategy)
+  def Atomic(initial: T): R = builder.buildInstance(initial, strategy).asInstanceOf[R]
   val two = ev.plus(ev.one, ev.one)
 
   test("should perform concurrent compareAndSet") {

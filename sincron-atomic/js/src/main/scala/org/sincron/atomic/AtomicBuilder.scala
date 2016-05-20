@@ -17,22 +17,28 @@
 
 package org.sincron.atomic
 
-trait AtomicBuilder[T, R <: Atomic[T]] {
+trait AtomicBuilder[T] extends Serializable {
+  type R <: Atomic[T]
+
   def buildInstance(initialValue: T, strategy: PaddingStrategy): R
 }
 
 private[atomic] object Implicits {
   abstract class Level1 {
-    implicit def AtomicRefBuilder[T <: AnyRef]: AtomicBuilder[T, AtomicAny[T]] =
-      new AtomicBuilder[T, AtomicAny[T]] {
-        def buildInstance(initialValue: T, strategy: PaddingStrategy) =
+    implicit def AtomicRefBuilder[T <: AnyRef]: AtomicBuilder[T] =
+      new AtomicBuilder[T] {
+        type R = AtomicAny[T]
+
+        def buildInstance(initialValue: T, strategy: PaddingStrategy): AtomicAny[T] =
           AtomicAny(initialValue)
       }
   }
 
   abstract class Level2 extends Level1 {
-    implicit def AtomicNumberBuilder[T  <: AnyRef : Numeric]: AtomicBuilder[T, AtomicNumberAny[T]] =
-      new AtomicBuilder[T, AtomicNumberAny[T]] {
+    implicit def AtomicNumberBuilder[T  <: AnyRef : Numeric]: AtomicBuilder[T] =
+      new AtomicBuilder[T] {
+        type R = AtomicNumberAny[T]
+
         def buildInstance(initialValue: T, strategy: PaddingStrategy) =
           AtomicNumberAny(initialValue)
       }
@@ -40,50 +46,66 @@ private[atomic] object Implicits {
 }
 
 object AtomicBuilder extends Implicits.Level2 {
-  implicit val AtomicIntBuilder: AtomicBuilder[Int, AtomicInt] =
-    new AtomicBuilder[Int, AtomicInt] {
+  implicit val AtomicIntBuilder: AtomicBuilder[Int] =
+    new AtomicBuilder[Int] {
+      type R = AtomicInt
+
       def buildInstance(initialValue: Int, strategy: PaddingStrategy) =
         AtomicInt(initialValue)
     }
 
-  implicit val AtomicLongBuilder: AtomicBuilder[Long, AtomicLong] =
-    new AtomicBuilder[Long, AtomicLong] {
+  implicit val AtomicLongBuilder: AtomicBuilder[Long] =
+    new AtomicBuilder[Long] {
+      type R = AtomicLong
+
       def buildInstance(initialValue: Long, strategy: PaddingStrategy) =
         AtomicLong(initialValue)
     }
 
-  implicit val AtomicBooleanBuilder: AtomicBuilder[Boolean, AtomicBoolean] =
-    new AtomicBuilder[Boolean, AtomicBoolean] {
+  implicit val AtomicBooleanBuilder: AtomicBuilder[Boolean] =
+    new AtomicBuilder[Boolean] {
+      type R = AtomicBoolean
+
       def buildInstance(initialValue: Boolean, strategy: PaddingStrategy) =
         AtomicBoolean(initialValue)
     }
 
-  implicit val AtomicByteBuilder: AtomicBuilder[Byte, AtomicByte] =
-    new AtomicBuilder[Byte, AtomicByte] {
+  implicit val AtomicByteBuilder: AtomicBuilder[Byte] =
+    new AtomicBuilder[Byte] {
+      type R = AtomicByte
+
       def buildInstance(initialValue: Byte, strategy: PaddingStrategy): AtomicByte =
         AtomicByte(initialValue)
     }
 
-  implicit val AtomicCharBuilder: AtomicBuilder[Char, AtomicChar] =
-    new AtomicBuilder[Char, AtomicChar] {
+  implicit val AtomicCharBuilder: AtomicBuilder[Char] =
+    new AtomicBuilder[Char] {
+      type R = AtomicChar
+
       def buildInstance(initialValue: Char, strategy: PaddingStrategy): AtomicChar =
         AtomicChar(initialValue)
     }
 
-  implicit val AtomicShortBuilder: AtomicBuilder[Short, AtomicShort] =
-    new AtomicBuilder[Short, AtomicShort] {
+  implicit val AtomicShortBuilder: AtomicBuilder[Short] =
+    new AtomicBuilder[Short] {
+      type R = AtomicShort
+
       def buildInstance(initialValue: Short, strategy: PaddingStrategy): AtomicShort =
         AtomicShort(initialValue)
     }
 
-  implicit val AtomicFloatBuilder: AtomicBuilder[Float, AtomicFloat] =
-    new AtomicBuilder[Float, AtomicFloat] {
+  implicit val AtomicFloatBuilder: AtomicBuilder[Float] =
+    new AtomicBuilder[Float] {
+      type R = AtomicFloat
+
       def buildInstance(initialValue: Float, strategy: PaddingStrategy): AtomicFloat =
         AtomicFloat(initialValue)
     }
 
-  implicit val AtomicDoubleBuilder: AtomicBuilder[Double, AtomicDouble] =
-    new AtomicBuilder[Double, AtomicDouble] {
+  implicit val AtomicDoubleBuilder: AtomicBuilder[Double] =
+    new AtomicBuilder[Double] {
+      type R = AtomicDouble
+
       def buildInstance(initialValue: Double, strategy: PaddingStrategy): AtomicDouble =
         AtomicDouble(initialValue)
     }

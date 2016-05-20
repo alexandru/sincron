@@ -21,11 +21,13 @@ import minitest.SimpleTestSuite
 import org.sincron.atomic.PaddingStrategy._
 
 abstract class AtomicNumberSuite[T, R <: AtomicNumber[T]]
-  (builder: AtomicBuilder[T, R], strategy: PaddingStrategy,
+  (builder: AtomicBuilder[T], strategy: PaddingStrategy,
   value: T, maxValue: T, minValue: T)(implicit ev: Numeric[T])
   extends SimpleTestSuite {
 
-  def Atomic(initial: T): R = builder.buildInstance(initial, strategy)
+  def Atomic(initial: T): R =
+    builder.buildInstance(initial, strategy).asInstanceOf[R]
+
   val zero = ev.zero
   val one = ev.one
   val two = ev.plus(ev.one, ev.one)

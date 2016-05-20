@@ -12,7 +12,7 @@ lazy val doNotPublishArtifact = Seq(
 lazy val scalaLinterOptions =
   Seq(
     // Enables linter options
-    "-Ywarn-unused-import", // warn of unused import
+    // "-Ywarn-unused-import", // warn of unused import
     "-Xlint:adapted-args", // warn if an argument list is modified to match the receiver
     "-Xlint:nullary-unit", // warn when nullary methods return Unit
     "-Xlint:inaccessible", // warn about inaccessible types in method signatures

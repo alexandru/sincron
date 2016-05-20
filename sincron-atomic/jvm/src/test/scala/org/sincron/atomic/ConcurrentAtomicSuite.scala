@@ -25,10 +25,10 @@ import scala.concurrent.{Await, Future}
 
 
 abstract class ConcurrentAtomicSuite[T, R <: Atomic[T]]
-  (builder: AtomicBuilder[T, R], strategy: PaddingStrategy, valueFromInt: Int => T, valueToInt: T => Int)
+  (builder: AtomicBuilder[T], strategy: PaddingStrategy, valueFromInt: Int => T, valueToInt: T => Int)
   extends SimpleTestSuite {
 
-  def Atomic(initial: T): R = builder.buildInstance(initial, strategy)
+  def Atomic(initial: T): R = builder.buildInstance(initial, strategy).asInstanceOf[R]
   def zero = valueFromInt(0)
   def one = valueFromInt(1)
   def two = valueFromInt(2)

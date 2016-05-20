@@ -363,16 +363,18 @@ object Atomic {
       """
     }
 
-    def builderForSimpleMacro[T : c.WeakTypeTag](builder: c.Expr[AtomicBuilder[T]]): c.Tree = {
-      q"""
-      $builder
-      """
+    def builderForSimpleMacro[T : c.WeakTypeTag](builder: c.Expr[AtomicBuilder[T]]): c.Expr[AtomicBuilder[T]] = {
+      c.Expr[AtomicBuilder[T]](
+        q"""
+        $builder
+        """)
     }
 
-    def builderForMacro[T : c.WeakTypeTag](initialValue: c.Expr[T])(builder: c.Expr[AtomicBuilder[T]]): c.Tree = {
-      q"""
-      $builder
-      """
+    def builderForMacro[T : c.WeakTypeTag](initialValue: c.Expr[T])(builder: c.Expr[AtomicBuilder[T]]): c.Expr[AtomicBuilder[T]] = {
+      c.Expr[AtomicBuilder[T]](
+        q"""
+        $builder
+        """)
     }
 
     def applyMacro[T : c.WeakTypeTag](): c.Expr[T] = {

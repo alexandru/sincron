@@ -23,10 +23,10 @@ added as they become available. Specifying dependencies
 
 ```scala
 // Atomic References
-libraryDependencies += "org.sincron" %% "sincron-atomic" % "0.12"
+libraryDependencies += "org.sincron" %% "sincron-atomic" % "0.13"
 
 // Everything :-)
-libraryDependencies += "org.sincron" %% "sincron" % "0.12"
+libraryDependencies += "org.sincron" %% "sincron" % "0.13"
 ```
 
 Tutorials:
@@ -35,7 +35,7 @@ Tutorials:
 
 API Documentation:
 
-- [0.12](https://sincron.org/docs/0.12/api/)
+- [0.13](https://sincron.org/docs/0.13/api/)
 
 ## Maintainers
 

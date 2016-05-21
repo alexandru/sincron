@@ -135,7 +135,7 @@ object Atomic {
     * @param builder is the builder that helps us to build the best reference possible, based on our `initialValue`
     */
   def apply[T](initialValue: T)(implicit builder: AtomicBuilder[T]): builder.R =
-    macro Atomic.Macros.buildAnyMacro[T]
+    macro AtomicBuilder.Macros.buildAnyMacro[T]
 
   /** Constructs an `Atomic[T]` reference. Based on the `initialValue`, it will return the best, most specific
     * type. E.g. you give it a number, it will return something inheriting from `AtomicNumber[T]`. That's why
@@ -146,19 +146,19 @@ object Atomic {
     * @param builder is the builder that helps us to build the best reference possible, based on our `initialValue`
     */
   def withPadding[T](initialValue: T, padding: PaddingStrategy)(implicit builder: AtomicBuilder[T]): builder.R =
-    macro Atomic.Macros.buildAnyWithPaddingMacro[T]
+    macro AtomicBuilder.Macros.buildAnyWithPaddingMacro[T]
 
   /** Returns the builder that would be chosen to construct Atomic references
     * for the given type.
     */
   def builderFor[T](implicit builder: AtomicBuilder[T]): AtomicBuilder[T] =
-    macro Atomic.Macros.builderForSimpleMacro[T]
+    macro AtomicBuilder.Macros.builderForSimpleMacro[T]
 
   /** Returns the builder that would be chosen to construct Atomic references
     * for the given `initialValue`.
     */
   def builderFor[T](initialValue: T)(implicit builder: AtomicBuilder[T]): AtomicBuilder[T] =
-    macro Atomic.Macros.builderForMacro[T]
+    macro AtomicBuilder.Macros.builderForMacro[T]
 
   /** Macros implementations for the [[Atomic]] type */
   @macrocompat.bundle
@@ -343,38 +343,6 @@ object Atomic {
         }
 
       inlineAndReset[A](tree)
-    }
-
-    def buildAnyMacro[T : c.WeakTypeTag]
-      (initialValue: c.Expr[T])
-      (builder: c.Expr[AtomicBuilder[T]]): c.Tree = {
-
-      q"""
-      $builder.buildInstance($initialValue, _root_.org.sincron.atomic.PaddingStrategy.NoPadding)
-      """
-    }
-
-    def buildAnyWithPaddingMacro[T : c.WeakTypeTag]
-      (initialValue: c.Expr[T], padding: c.Expr[PaddingStrategy])
-      (builder: c.Expr[AtomicBuilder[T]]): c.Tree = {
-
-      q"""
-      $builder.buildInstance($initialValue, $padding)
-      """
-    }
-
-    def builderForSimpleMacro[T : c.WeakTypeTag](builder: c.Expr[AtomicBuilder[T]]): c.Expr[AtomicBuilder[T]] = {
-      c.Expr[AtomicBuilder[T]](
-        q"""
-        $builder
-        """)
-    }
-
-    def builderForMacro[T : c.WeakTypeTag](initialValue: c.Expr[T])(builder: c.Expr[AtomicBuilder[T]]): c.Expr[AtomicBuilder[T]] = {
-      c.Expr[AtomicBuilder[T]](
-        q"""
-        $builder
-        """)
     }
 
     def applyMacro[T : c.WeakTypeTag](): c.Expr[T] = {

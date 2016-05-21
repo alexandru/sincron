@@ -17,6 +17,8 @@
 
 package org.sincron.atomic
 
+import org.sincron.macros.compat
+
 trait AtomicBuilder[T] extends Serializable {
   type R <: Atomic[T]
 
@@ -109,4 +111,49 @@ object AtomicBuilder extends Implicits.Level2 {
       def buildInstance(initialValue: Double, strategy: PaddingStrategy): AtomicDouble =
         AtomicDouble(initialValue)
     }
+
+  /** Macros implementations for building [[Atomic]] instances. */
+  object Macros {
+    def buildAnyMacro[T: c.WeakTypeTag](c: compat.Context)
+      (initialValue: c.Expr[T])
+      (builder: c.Expr[AtomicBuilder[T]]): c.Expr[builder.value.R] = {
+
+      import c.universe._
+      c.Expr[builder.value.R](
+        q"""
+         $builder.buildInstance($initialValue, _root_.org.sincron.atomic.PaddingStrategy.NoPadding)
+         """)
+    }
+
+    def buildAnyWithPaddingMacro[T: c.WeakTypeTag](c: compat.Context)
+      (initialValue: c.Expr[T], padding: c.Expr[PaddingStrategy])
+      (builder: c.Expr[AtomicBuilder[T]]): c.Expr[builder.value.R] = {
+
+      import c.universe._
+      c.Expr[builder.value.R](
+        q"""
+        $builder.buildInstance($initialValue, $padding)
+        """)
+    }
+
+    def builderForSimpleMacro[T: c.WeakTypeTag](c: compat.Context)
+      (builder: c.Expr[AtomicBuilder[T]]): c.Expr[AtomicBuilder[T]] = {
+
+      import c.universe._
+      c.Expr[AtomicBuilder[T]](
+        q"""
+        $builder
+        """)
+    }
+
+    def builderForMacro[T: c.WeakTypeTag](c: compat.Context)
+      (initialValue: c.Expr[T])(builder: c.Expr[AtomicBuilder[T]]): c.Expr[AtomicBuilder[T]] = {
+
+      import c.universe._
+      c.Expr[AtomicBuilder[T]](
+        q"""
+        $builder
+        """)
+    }
+  }
 }

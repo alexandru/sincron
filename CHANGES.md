@@ -1,3 +1,9 @@
+## 0.13 (May 21, 2016)
+
+- [Issue #6](https://github.com/monixio/sincron/issues/6) - in `AtomicBuilder`
+  make the return `R` type param a type member, which should make it possible
+  to force an input `T` when building a new instance with `Atomic.apply` 
+
 ## 0.12 (May 10, 2016)
 
 - Add support for Scala 2.12.0-M4

@@ -23,12 +23,10 @@ import org.sincron.atomic.PaddingStrategy._
 import scala.util.control.NonFatal
 
 abstract class GenericAtomicSuite[T, R <: Atomic[T]]
-  (builder: AtomicBuilder[T], strategy: PaddingStrategy, valueFromInt: Int => T, valueToInt: T => Int)
+  (builder: AtomicBuilder[T, R], strategy: PaddingStrategy, valueFromInt: Int => T, valueToInt: T => Int)
   extends SimpleTestSuite {
 
-  def Atomic(initial: T): R =
-    builder.buildInstance(initial, strategy).asInstanceOf[R]
-
+  def Atomic(initial: T): R = builder.buildInstance(initial, strategy)
   val zero = valueFromInt(0)
   val one = valueFromInt(1)
   val two = valueFromInt(2)

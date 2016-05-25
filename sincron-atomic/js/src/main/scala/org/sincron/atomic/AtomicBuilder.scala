@@ -17,30 +17,22 @@
 
 package org.sincron.atomic
 
-import org.sincron.macros.compat
-
-trait AtomicBuilder[T] extends Serializable {
-  type R <: Atomic[T]
-
+trait AtomicBuilder[T, R <: Atomic[T]] {
   def buildInstance(initialValue: T, strategy: PaddingStrategy): R
 }
 
 private[atomic] object Implicits {
   abstract class Level1 {
-    implicit def AtomicRefBuilder[T <: AnyRef]: AtomicBuilder[T] =
-      new AtomicBuilder[T] {
-        type R = AtomicAny[T]
-
-        def buildInstance(initialValue: T, strategy: PaddingStrategy): AtomicAny[T] =
+    implicit def AtomicRefBuilder[T <: AnyRef]: AtomicBuilder[T, AtomicAny[T]] =
+      new AtomicBuilder[T, AtomicAny[T]] {
+        def buildInstance(initialValue: T, strategy: PaddingStrategy) =
           AtomicAny(initialValue)
       }
   }
 
   abstract class Level2 extends Level1 {
-    implicit def AtomicNumberBuilder[T  <: AnyRef : Numeric]: AtomicBuilder[T] =
-      new AtomicBuilder[T] {
-        type R = AtomicNumberAny[T]
-
+    implicit def AtomicNumberBuilder[T  <: AnyRef : Numeric]: AtomicBuilder[T, AtomicNumberAny[T]] =
+      new AtomicBuilder[T, AtomicNumberAny[T]] {
         def buildInstance(initialValue: T, strategy: PaddingStrategy) =
           AtomicNumberAny(initialValue)
       }
@@ -48,112 +40,51 @@ private[atomic] object Implicits {
 }
 
 object AtomicBuilder extends Implicits.Level2 {
-  implicit val AtomicIntBuilder: AtomicBuilder[Int] =
-    new AtomicBuilder[Int] {
-      type R = AtomicInt
-
+  implicit val AtomicIntBuilder: AtomicBuilder[Int, AtomicInt] =
+    new AtomicBuilder[Int, AtomicInt] {
       def buildInstance(initialValue: Int, strategy: PaddingStrategy) =
         AtomicInt(initialValue)
     }
 
-  implicit val AtomicLongBuilder: AtomicBuilder[Long] =
-    new AtomicBuilder[Long] {
-      type R = AtomicLong
-
+  implicit val AtomicLongBuilder: AtomicBuilder[Long, AtomicLong] =
+    new AtomicBuilder[Long, AtomicLong] {
       def buildInstance(initialValue: Long, strategy: PaddingStrategy) =
         AtomicLong(initialValue)
     }
 
-  implicit val AtomicBooleanBuilder: AtomicBuilder[Boolean] =
-    new AtomicBuilder[Boolean] {
-      type R = AtomicBoolean
-
+  implicit val AtomicBooleanBuilder: AtomicBuilder[Boolean, AtomicBoolean] =
+    new AtomicBuilder[Boolean, AtomicBoolean] {
       def buildInstance(initialValue: Boolean, strategy: PaddingStrategy) =
         AtomicBoolean(initialValue)
     }
 
-  implicit val AtomicByteBuilder: AtomicBuilder[Byte] =
-    new AtomicBuilder[Byte] {
-      type R = AtomicByte
-
+  implicit val AtomicByteBuilder: AtomicBuilder[Byte, AtomicByte] =
+    new AtomicBuilder[Byte, AtomicByte] {
       def buildInstance(initialValue: Byte, strategy: PaddingStrategy): AtomicByte =
         AtomicByte(initialValue)
     }
 
-  implicit val AtomicCharBuilder: AtomicBuilder[Char] =
-    new AtomicBuilder[Char] {
-      type R = AtomicChar
-
+  implicit val AtomicCharBuilder: AtomicBuilder[Char, AtomicChar] =
+    new AtomicBuilder[Char, AtomicChar] {
       def buildInstance(initialValue: Char, strategy: PaddingStrategy): AtomicChar =
         AtomicChar(initialValue)
     }
 
-  implicit val AtomicShortBuilder: AtomicBuilder[Short] =
-    new AtomicBuilder[Short] {
-      type R = AtomicShort
-
+  implicit val AtomicShortBuilder: AtomicBuilder[Short, AtomicShort] =
+    new AtomicBuilder[Short, AtomicShort] {
       def buildInstance(initialValue: Short, strategy: PaddingStrategy): AtomicShort =
         AtomicShort(initialValue)
     }
 
-  implicit val AtomicFloatBuilder: AtomicBuilder[Float] =
-    new AtomicBuilder[Float] {
-      type R = AtomicFloat
-
+  implicit val AtomicFloatBuilder: AtomicBuilder[Float, AtomicFloat] =
+    new AtomicBuilder[Float, AtomicFloat] {
       def buildInstance(initialValue: Float, strategy: PaddingStrategy): AtomicFloat =
         AtomicFloat(initialValue)
     }
 
-  implicit val AtomicDoubleBuilder: AtomicBuilder[Double] =
-    new AtomicBuilder[Double] {
-      type R = AtomicDouble
-
+  implicit val AtomicDoubleBuilder: AtomicBuilder[Double, AtomicDouble] =
+    new AtomicBuilder[Double, AtomicDouble] {
       def buildInstance(initialValue: Double, strategy: PaddingStrategy): AtomicDouble =
         AtomicDouble(initialValue)
     }
-
-  /** Macros implementations for building [[Atomic]] instances. */
-  object Macros {
-    def buildAnyMacro[T: c.WeakTypeTag](c: compat.Context)
-      (initialValue: c.Expr[T])
-      (builder: c.Expr[AtomicBuilder[T]]): c.Expr[builder.value.R] = {
-
-      import c.universe._
-      c.Expr[builder.value.R](
-        q"""
-         $builder.buildInstance($initialValue, _root_.org.sincron.atomic.PaddingStrategy.NoPadding)
-         """)
-    }
-
-    def buildAnyWithPaddingMacro[T: c.WeakTypeTag](c: compat.Context)
-      (initialValue: c.Expr[T], padding: c.Expr[PaddingStrategy])
-      (builder: c.Expr[AtomicBuilder[T]]): c.Expr[builder.value.R] = {
-
-      import c.universe._
-      c.Expr[builder.value.R](
-        q"""
-        $builder.buildInstance($initialValue, $padding)
-        """)
-    }
-
-    def builderForSimpleMacro[T: c.WeakTypeTag](c: compat.Context)
-      (builder: c.Expr[AtomicBuilder[T]]): c.Expr[AtomicBuilder[T]] = {
-
-      import c.universe._
-      c.Expr[AtomicBuilder[T]](
-        q"""
-        $builder
-        """)
-    }
-
-    def builderForMacro[T: c.WeakTypeTag](c: compat.Context)
-      (initialValue: c.Expr[T])(builder: c.Expr[AtomicBuilder[T]]): c.Expr[AtomicBuilder[T]] = {
-
-      import c.universe._
-      c.Expr[AtomicBuilder[T]](
-        q"""
-        $builder
-        """)
-    }
-  }
 }

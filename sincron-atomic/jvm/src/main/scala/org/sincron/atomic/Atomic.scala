@@ -18,6 +18,7 @@
 package org.sincron.atomic
 
 import org.sincron.macros._
+import org.sincron.atomic.PaddingStrategy.NoPadding
 import scala.language.experimental.macros
 import scala.reflect.macros.whitebox
 
@@ -134,8 +135,8 @@ object Atomic {
     * @param initialValue is the initial value with which to initialize the Atomic reference
     * @param builder is the builder that helps us to build the best reference possible, based on our `initialValue`
     */
-  def apply[T](initialValue: T)(implicit builder: AtomicBuilder[T]): builder.R =
-    macro AtomicBuilder.Macros.buildAnyMacro[T]
+  def apply[T, R <: Atomic[T]](initialValue: T)(implicit builder: AtomicBuilder[T, R]): R =
+    macro Atomic.Macros.buildAnyMacro[T, R]
 
   /** Constructs an `Atomic[T]` reference. Based on the `initialValue`, it will return the best, most specific
     * type. E.g. you give it a number, it will return something inheriting from `AtomicNumber[T]`. That's why
@@ -145,20 +146,14 @@ object Atomic {
     * @param padding is the [[PaddingStrategy]] to apply
     * @param builder is the builder that helps us to build the best reference possible, based on our `initialValue`
     */
-  def withPadding[T](initialValue: T, padding: PaddingStrategy)(implicit builder: AtomicBuilder[T]): builder.R =
-    macro AtomicBuilder.Macros.buildAnyWithPaddingMacro[T]
-
-  /** Returns the builder that would be chosen to construct Atomic references
-    * for the given type.
-    */
-  def builderFor[T](implicit builder: AtomicBuilder[T]): AtomicBuilder[T] =
-    macro AtomicBuilder.Macros.builderForSimpleMacro[T]
+  def withPadding[T, R <: Atomic[T]](initialValue: T, padding: PaddingStrategy)(implicit builder: AtomicBuilder[T, R]): R =
+    macro Atomic.Macros.buildAnyWithPaddingMacro[T, R]
 
   /** Returns the builder that would be chosen to construct Atomic references
     * for the given `initialValue`.
     */
-  def builderFor[T](initialValue: T)(implicit builder: AtomicBuilder[T]): AtomicBuilder[T] =
-    macro AtomicBuilder.Macros.builderForMacro[T]
+  def builderFor[T, R <: Atomic[T]](initialValue: T)(implicit builder: AtomicBuilder[T, R]): AtomicBuilder[T, R] =
+    builder
 
   /** Macros implementations for the [[Atomic]] type */
   @macrocompat.bundle
@@ -343,6 +338,28 @@ object Atomic {
         }
 
       inlineAndReset[A](tree)
+    }
+
+    def buildAnyMacro[T : c.WeakTypeTag, R <: Atomic[T] : c.WeakTypeTag]
+      (initialValue: c.Expr[T])
+      (builder: c.Expr[AtomicBuilder[T, R]]): c.Expr[R] = {
+
+      val expr = reify {
+        builder.splice.buildInstance(initialValue.splice, NoPadding)
+      }
+
+      inlineAndReset[R](expr.tree)
+    }
+
+    def buildAnyWithPaddingMacro[T : c.WeakTypeTag, R <: Atomic[T] : c.WeakTypeTag]
+      (initialValue: c.Expr[T], padding: c.Expr[PaddingStrategy])
+      (builder: c.Expr[AtomicBuilder[T, R]]): c.Expr[R] = {
+
+      val expr = reify {
+        builder.splice.buildInstance(initialValue.splice, padding.splice)
+      }
+
+      inlineAndReset[R](expr.tree)
     }
 
     def applyMacro[T : c.WeakTypeTag](): c.Expr[T] = {

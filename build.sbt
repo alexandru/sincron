@@ -86,7 +86,7 @@ lazy val sharedSettings = Seq(
 
   // -- Testing
 
-  libraryDependencies += "io.monix" %%% "minitest" % "0.22" % "test",
+  libraryDependencies += "io.monix" %%% "minitest" % "0.23" % "test",
   testFrameworks += new TestFramework("minitest.runner.Framework"),
 
   // -- Settings meant for deployment on oss.sonatype.org
@@ -126,6 +126,17 @@ lazy val sharedSettings = Seq(
           <url>https://alexn.org/</url>
         </developer>
       </developers>
+)
+
+lazy val miniboxingSettings = Seq(
+  libraryDependencies +=
+    "org.scala-miniboxing.plugins" %% "miniboxing-runtime" % "0.4-M8",
+  addCompilerPlugin(
+    "org.scala-miniboxing.plugins" %% "miniboxing-plugin" % "0.4-M8")
+)
+
+lazy val scalaJSSettings = Seq(
+  scalaJSUseRhino in Global := false
 )
 
 lazy val unidocSettings = baseUnidocSettings ++ Seq(
@@ -198,10 +209,8 @@ lazy val macrosJS = project.in(file("sincron-macros/js"))
   .enablePlugins(ScalaJSPlugin)
   .settings(crossVersionSharedSources)
   .settings(scalaMacroDependencies)
-  .settings(
-    name := "sincron-macros",
-    scalaJSStage in Test := FastOptStage,
-    scalaJSUseRhino in Global := false)
+  .settings(scalaJSSettings)
+  .settings(name := "sincron-macros")
 
 lazy val atomicJVM = project.in(file("sincron-atomic/jvm"))
   .dependsOn(macrosJVM)
@@ -212,12 +221,30 @@ lazy val atomicJVM = project.in(file("sincron-atomic/jvm"))
 lazy val atomicJS = project.in(file("sincron-atomic/js"))
   .enablePlugins(ScalaJSPlugin)
   .dependsOn(macrosJS)
-  .settings(crossSettings: _*)
+  .settings(crossSettings)
   .settings(scalaMacroDependencies)
+  .settings(scalaJSSettings)
+  .settings(name := "sincron-atomic")
+
+lazy val collectionJVM = project.in(file("sincron-collection/jvm"))
+  .settings(crossSettings)
   .settings(
-    name := "sincron-atomic",
-    scalaJSStage in Test := FastOptStage,
-    scalaJSUseRhino in Global := false)
+    name := "sincron-collection",
+    unmanagedSourceDirectories in Compile <+= baseDirectory(_.getParentFile / "stubs")
+  )
+
+lazy val collectionJS = project.in(file("sincron-collection/js"))
+  .settings(crossSettings)
+  .settings(scalaJSSettings)
+  .settings(
+    name := "sincron-collection",
+    unmanagedSourceDirectories in Compile <+= baseDirectory(_.getParentFile / "stubs")
+  )
+
+lazy val collectionSpecialJVM = project.in(file("sincron-collection/jvm-mini"))
+  .settings(crossSettings)
+  .settings(miniboxingSettings)
+  .settings(name := "sincron-collection-coll")
 
 lazy val sincronJVM = project.in(file("sincron/jvm"))
   .settings(crossSettings: _*)
